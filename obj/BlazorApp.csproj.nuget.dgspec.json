@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/matias/Desktop/BlazorApp/BlazorApp.csproj": {}
+    "/home/matias/Desktop/ObligatorioBD2023/BlazorApp.csproj": {}
   },
   "projects": {
-    "/home/matias/Desktop/BlazorApp/BlazorApp.csproj": {
+    "/home/matias/Desktop/ObligatorioBD2023/BlazorApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/matias/Desktop/BlazorApp/BlazorApp.csproj",
+        "projectUniqueName": "/home/matias/Desktop/ObligatorioBD2023/BlazorApp.csproj",
         "projectName": "BlazorApp",
-        "projectPath": "/home/matias/Desktop/BlazorApp/BlazorApp.csproj",
+        "projectPath": "/home/matias/Desktop/ObligatorioBD2023/BlazorApp.csproj",
         "packagesPath": "/home/matias/.nuget/packages/",
-        "outputPath": "/home/matias/Desktop/BlazorApp/obj/",
+        "outputPath": "/home/matias/Desktop/ObligatorioBD2023/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/matias/.nuget/NuGet/NuGet.Config"

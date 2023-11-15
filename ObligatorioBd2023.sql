@@ -19,7 +19,7 @@ CREATE TABLE Funcionarios(
 );
 
 CREATE TABLE Agenda(
-    Nro INT PRIMARY KEY ,
+    Nro INT PRIMARY KEY AUTO_INCREMENT ,
     Ci INT(8) NOT NULL ,
     Fch_Agenda DATE NOT NULL
 );
