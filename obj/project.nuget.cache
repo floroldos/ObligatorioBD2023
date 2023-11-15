@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gfTYPh5vbAIWFZ9Bk6R022OXd6rVx49Zk++0d5+a/A9dAeUAKdT+Hi7xtu+3kOK7SlyErex9kxly5HDGtWw2Ug==",
+  "dgSpecHash": "xKbS3L0UsRwsIBysgapEqax5ElYp86fZc+iTNYTqw8LVXCL/q6b7dYkxEQ3OAPSnqwLV6KinlWKZFRCHVINQOw==",
   "success": true,
-  "projectFilePath": "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
+  "projectFilePath": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Leon\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\Leon\\.nuget\\packages\\google.protobuf\\3.21.9\\google.protobuf.3.21.9.nupkg.sha512",

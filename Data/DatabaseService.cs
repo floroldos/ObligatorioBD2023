@@ -31,26 +31,19 @@ public class DatabaseService
 
         }
     }
-    public async Task<List<string>> ObtenerDatos()
-    {
-        StringBuilder query = new StringBuilder();
-        query.Append("SELECT * FROM Funcionarios");
 
-        MySqlCommand command = new MySqlCommand(query.ToString(), connection);
-
-        MySqlDataReader reader = command.ExecuteReader();
-
-        List<string> result = new List<string>();
-
-        while (reader.Read())
-        {
-            int ci = reader.GetInt32("CI");
-            string nombre = reader.GetString("Nombre");
-
-            result.Add($"{ci} {nombre}");
+    
+    public async Task<bool> CheckUser(int ci){
+        string query = "SELECT * FROM Funcionarios WHERE CI = " + ci + ";" ;
+        using MySqlCommand command = new MySqlCommand(query.ToString(), connection);
+        using MySqlDataReader reader = command.ExecuteReader();
+    
+        if(reader.Read()){
+            return true;
         }
-
-        return result;
+        else{
+            return false;
+        }
     }
     public async Task<bool> insertarRegistroAgenda(string ci, DateTime fechaAgenda)
     {
