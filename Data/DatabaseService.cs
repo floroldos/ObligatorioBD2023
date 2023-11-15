@@ -36,9 +36,9 @@ public class DatabaseService
         StringBuilder query = new StringBuilder();
         query.Append("SELECT * FROM Funcionarios");
 
-        using MySqlCommand command = new MySqlCommand(query.ToString(), connection);
+        MySqlCommand command = new MySqlCommand(query.ToString(), connection);
 
-        using MySqlDataReader reader = command.ExecuteReader();
+        MySqlDataReader reader = command.ExecuteReader();
 
         List<string> result = new List<string>();
 
@@ -52,4 +52,17 @@ public class DatabaseService
 
         return result;
     }
+    public async Task<bool> insertarRegistroAgenda(string ci, DateTime fechaAgenda)
+    {
+        bool check = false;
+        string query = $"INSERT INTO Agenda VALUES ('{ci}', '{fechaAgenda}');";
+        MySqlCommand command = new MySqlCommand(query, connection);
+        int result = command.ExecuteNonQuery();
+        if (command.ExecuteNonQuery() > 0)
+        {
+            check = true;
+        }
+        return check;
+    }
+
 }
