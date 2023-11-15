@@ -1,0 +1,37 @@
+﻿@inject DatabaseService DatabaseService
+
+@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>BASE DE DATOS YUPI!</h1>
+
+@if (datosCargados){
+    @foreach (string datos in datosObtenidos)
+    {
+        <p>@datos</p>
+    }
+}
+else
+{
+    <p>Esperando a que se carguen los datos...</p>
+}
+
+@code {
+    private List<string> datosObtenidos;
+    private bool datosCargados = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            datosObtenidos = await DatabaseService.ObtenerDatos();
+            datosCargados = true;
+        }
+        catch (Exception ex)
+        {
+            // Maneja la excepción según tus necesidades (puede ser un problema de conexión, etc.)
+            Console.WriteLine($"Error al obtener datos: {ex.Message}");
+        }
+    }
+}
