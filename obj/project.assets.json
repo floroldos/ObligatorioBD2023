@@ -1792,19 +1792,19 @@
     ]
   },
   "packageFolders": {
-    "/home/matias/.nuget/packages/": {}
+    "C:\\Users\\sowon\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/matias/Desktop/ObligatorioBD2023/BlazorApp.csproj",
+      "projectUniqueName": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\BlazorApp.csproj",
       "projectName": "BlazorApp",
-      "projectPath": "/home/matias/Desktop/ObligatorioBD2023/BlazorApp.csproj",
-      "packagesPath": "/home/matias/.nuget/packages/",
-      "outputPath": "/home/matias/Desktop/ObligatorioBD2023/obj/",
+      "projectPath": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\BlazorApp.csproj",
+      "packagesPath": "C:\\Users\\sowon\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/matias/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\sowon\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -1852,7 +1852,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/home/matias/.dotnet/sdk/6.0.411/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.417\\RuntimeIdentifierGraph.json"
       }
     }
   }

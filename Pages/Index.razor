@@ -1,15 +1,19 @@
-﻿@inject DatabaseService DatabaseService
-@inject NavigationManager NavigationManager
+﻿@page "/"
 
-@page "/login"
+@inject DatabaseService DatabaseService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Iniciar sesión</PageTitle>
 
-<form @onsubmit="OnSubmitForm">
-    <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="formCI">
-    <input type="password" name="password" id="password" placeholder="Ingrese su constraseña"> 
-    <button type="submit" class="btn btn-primary">Ingresar</button>
-</form>
+<div id="contenedor" class="container">
+    <h1> INICIAR SESIÓN </h1>
+    <hr />
+    <form @onsubmit="OnSubmitForm">
+        <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="formCI">
+        <input type="password" name="password" id="password" placeholder="Ingrese su constraseña"> 
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+    </form>
+</div>
 
 
 @code {
@@ -27,10 +31,12 @@
             if(res){
                 error = false;
                 await Task.Delay(2000);
+                Console.WriteLine("Usuario váldo");
                 NavigationManager.NavigateTo("/formulario");
             }else{
                 error = true;
                 error_str = "El usuario no existe";
+                Console.WriteLine("Usuario inválido");
                 await Task.Delay(2000);
                 NavigationManager.NavigateTo("/registro");                
             }

@@ -9,7 +9,7 @@ public class DatabaseService
     public void Conectar()
     {
         StringBuilder connectionString = new StringBuilder();
-        connectionString.Append("Server=localhost;");
+        connectionString.Append("Server=10.4.102.230;");
         connectionString.Append("Database=ObligatorioBD2023;");
         connectionString.Append("Uid=root;");
         connectionString.Append("Pwd=bernardo;");
