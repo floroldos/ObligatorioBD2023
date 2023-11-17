@@ -1,0 +1,25 @@
+@inject DatabaseService DatabaseService
+
+@page "/RegistroClinica"
+@namespace BlazorApp.Pages
+
+@code{
+    private string ci = "";
+    //Cambiar por la fecha seleccionada arriba
+    private DateTime fechaAgenda = DateTime.Now; 
+    async public Task<bool> insertarDatos()
+    {
+        bool check = false;
+        try
+        {
+            check = await DatabaseService.InsertarRegistroAgenda(ci, fechaAgenda);
+        }
+        catch (Exception ex)
+        {
+            // Maneja la excepción según tus necesidades (puede ser un problema de conexión, etc.)
+            Console.WriteLine($"Error al insertar datos: {ex.Message}");
+        }
+        return check;
+    }
+        
+}

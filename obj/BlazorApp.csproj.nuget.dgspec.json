@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj": {}
+    "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj": {
+    "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
+        "projectUniqueName": "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
         "projectName": "BlazorApp",
-        "projectPath": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
+        "projectPath": "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
         "packagesPath": "C:\\Users\\Leon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\obj\\",
+        "outputPath": "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Leon\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -20,7 +20,7 @@
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files\\dotnet\\sdk\\7.0.310\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.311\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -55,24 +55,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.24, 6.0.24]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[6.0.24, 6.0.24]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.24, 6.0.24]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.24, 6.0.24]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -81,7 +63,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.310\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.311\\RuntimeIdentifierGraph.json"
         }
       }
     }

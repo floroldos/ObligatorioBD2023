@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YpFlpAgzvNgdf/47u/3LEPreGfN6paMwQJjT3kdV9r1GFQzd3YDLRo8Yu4+sk0Q+WOWqLZeuzom6ASNMaMOA7Q==",
+  "dgSpecHash": "M8NqmUYiYPfbDF/2mqc93CcVnfUu2erbCYfZywBaxkoBJQRYpAQjJ5rZkdvKa+d00ESsbDZxlNOkqkJ7Ecyvng==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
+  "projectFilePath": "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Leon\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\Leon\\.nuget\\packages\\google.protobuf\\3.21.9\\google.protobuf.3.21.9.nupkg.sha512",
@@ -35,11 +35,7 @@
     "C:\\Users\\Leon\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\Leon\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "C:\\Users\\Leon\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
-    "C:\\Users\\Leon\\.nuget\\packages\\zstdsharp.port\\0.7.1\\zstdsharp.port.0.7.1.nupkg.sha512",
-    "C:\\Users\\Leon\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.24\\microsoft.netcore.app.ref.6.0.24.nupkg.sha512",
-    "C:\\Users\\Leon\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.24\\microsoft.windowsdesktop.app.ref.6.0.24.nupkg.sha512",
-    "C:\\Users\\Leon\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.24\\microsoft.aspnetcore.app.ref.6.0.24.nupkg.sha512",
-    "C:\\Users\\Leon\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.24\\microsoft.netcore.app.host.win-x64.6.0.24.nupkg.sha512"
+    "C:\\Users\\Leon\\.nuget\\packages\\zstdsharp.port\\0.7.1\\zstdsharp.port.0.7.1.nupkg.sha512"
   ],
   "logs": []
 }
