@@ -1,35 +1,22 @@
 ﻿@inject DatabaseService DatabaseService
 @inject NavigationManager NavigationManager
 
-@page "/"
+@page "/login"
 
-<PageTitle>Index</PageTitle>
-
-<h2>FORMULARIO INICIO</h2>
-
-@if(error){
-    <h3>ERROR: @error_str</h3>
-}
+<PageTitle>Iniciar sesión</PageTitle>
 
 <form @onsubmit="OnSubmitForm">
     <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="formCI">
-    <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre">
-    <input type="text" name="apellido" id="apellido" placeholder="Ingrese su apellido">
-    <input type="date" name="fechaN" id="FechaN" placeholder="Ingrese su fecha de nacimiento"> 
-    <select name="carneSalud" id="carneSalud">
-        <option value="null" default>Ingrese una opcion</option>
-        <option value="si">Si</option>
-        <option value="no">No</option>
-    </select>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <input type="password" name="password" id="password" placeholder="Ingrese su constraseña"> 
+    <button type="submit" class="btn btn-primary">Ingresar</button>
 </form>
 
+
 @code {
+    public string? formCI;
     public bool error = false;
     public string error_str = "";
-    public string? formCI;
-
-    private async Task OnSubmitForm()
+   private async Task OnSubmitForm()
     {
         int ci;
         try{
@@ -39,6 +26,8 @@
 
             if(res){
                 error = false;
+                await Task.Delay(2000);
+                NavigationManager.NavigateTo("/formulario");
             }else{
                 error = true;
                 error_str = "El usuario no existe";
@@ -47,11 +36,11 @@
             }
             
         }
-
         catch(Exception){
             error = true;
             error_str = "La cedula debe ser un numero";
             return;
         }
+
     }
 }

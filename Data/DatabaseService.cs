@@ -4,12 +4,8 @@ using MySql.Data.MySqlClient;
 public class DatabaseService
 {
     private MySqlConnection? connection;
-    
-    public DatabaseService()
-    {
-        Conectar();
-    }
 
+    //Conexión y desconexión a la base de datos --------------------------------------------------------------------
     public void Conectar()
     {
         StringBuilder connectionString = new StringBuilder();
@@ -28,20 +24,30 @@ public class DatabaseService
         catch (MySqlException ex)
         {
             Console.WriteLine("Error al conectar a la base de datos: " + ex.Message);
-
         }
     }
+
+    private void Desconectar()
+    {
+        if(connection != null){
+            connection.Close();
+            Console.WriteLine("Desconectado de la base de datos");
+        }else{
+            Console.Error.WriteLine("Se intento desconectarse de la base de datos pero no habia una conexion activa");
+        }
+    }
+
+    //Funciones de la base de datos --------------------------------------------------------------------------------
     
     public async Task<bool> CheckUser(int ci){
+        Conectar();
         string query = "SELECT * FROM Funcionarios WHERE CI = " + ci + ";" ;
         using MySqlCommand command = new MySqlCommand(query.ToString(), connection);
         using MySqlDataReader reader = command.ExecuteReader();
-    
-        if(reader.Read()){
-            return true;
-        }
-        else{
-            return false;
-        }
+        Desconectar();
+
+        return reader.Read() ? true : false;
     }
+
+    
 }

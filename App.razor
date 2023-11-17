@@ -6,7 +6,12 @@
     <NotFound>
         <PageTitle>Not found</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
+            <div class="text-center">
+                <h1 class="text-center">Error: 404</h1>
+                <br/>
+                <p class="alert alert-danger">Sorry, there's nothing at this address.</p>
+            </div>
+            
         </LayoutView>
     </NotFound>
 </Router>
