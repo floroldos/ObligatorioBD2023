@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj": {}
+    "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj": {
+    "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
+        "projectUniqueName": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
         "projectName": "BlazorApp",
-        "projectPath": "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
+        "projectPath": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\BlazorApp.csproj",
         "packagesPath": "C:\\Users\\Leon\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\obj\\",
+        "outputPath": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Leon\\AppData\\Roaming\\NuGet\\NuGet.Config"

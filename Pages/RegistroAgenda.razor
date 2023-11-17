@@ -1,7 +1,6 @@
-@inject DatabaseService DatabaseService 
-@namespace BlazorApp.Pages
-
 @page "/RegistroAgenda"
+@inject DatabaseService DatabaseService 
+
 <PageTitle>Registro Agenda</PageTitle>
         
 <h2>Registro Agenda</h2>
@@ -17,10 +16,10 @@
     private DateOnly fechaAgenda; 
     async public Task<bool> InsertarDatos()
     {
+        
         bool check = false;
         try
         {
-            Console.WriteLine($"CI: {ci} Fecha: {fechaAgenda}");
             check = await DatabaseService.InsertarRegistroAgenda(ci, fechaAgenda);
         }
         catch (Exception ex)
