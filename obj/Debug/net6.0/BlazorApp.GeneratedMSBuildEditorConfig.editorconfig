@@ -31,6 +31,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVnaXN0cm8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/matias/Desktop/ObligatorioBD2023/Pages/RegistroClinica.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVnaXN0cm9DbGluaWNhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/matias/Desktop/ObligatorioBD2023/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL05hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

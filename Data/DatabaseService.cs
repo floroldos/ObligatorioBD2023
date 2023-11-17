@@ -1,5 +1,5 @@
-using System.Text;
 using MySql.Data.MySqlClient;
+using System.Text;
 
 public class DatabaseService
 {
@@ -48,6 +48,4 @@ public class DatabaseService
 
         return reader.Read() ? true : false;
     }
-
-    
 }
