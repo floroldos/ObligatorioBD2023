@@ -13,7 +13,7 @@ public class DatabaseService
     public void Conectar()
     {
         StringBuilder connectionString = new StringBuilder();
-        connectionString.Append("Server=localhost;");
+        connectionString.Append("Server=10.4.102.230;");
         connectionString.Append("Database=ObligatorioBD2023;");
         connectionString.Append("Uid=root;");
         connectionString.Append("Pwd=bernardo;");
@@ -45,7 +45,7 @@ public class DatabaseService
             return false;
         }
     }
-    public async Task<bool> insertarRegistroAgenda(string ci, DateTime fechaAgenda)
+    public async Task<bool> InsertarRegistroAgenda(string ci, DateOnly fechaAgenda)
     {
         bool check = false;
         string query = $"INSERT INTO Agenda VALUES ('{ci}', '{fechaAgenda}');";
