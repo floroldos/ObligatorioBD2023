@@ -9,57 +9,59 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = BlazorApp
 build_property.RootNamespace = BlazorApp
-build_property.ProjectDir = c:\Users\Leon\Desktop\Base de Datos\ObligatorioBD2023\
+build_property.ProjectDir = C:\Users\sowon\Desktop\bases de datos\ObligatorioBD2023\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\Users\Leon\Desktop\Base de Datos\ObligatorioBD2023
+build_property.MSBuildProjectDirectory = C:\Users\sowon\Desktop\bases de datos\ObligatorioBD2023
 build_property._RazorSourceGeneratorDebug = 
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/App.razor]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/Pages/Formulario.razor]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/Pages/Formulario.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybXVsYXJpby5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/Pages/Index.razor]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/Pages/Registro.razor]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/Pages/Registro.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cm8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/Pages/RegistroClinica.razor]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/Pages/RegistroClinica.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cm9DbGluaWNhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/Shared/NavMenu.razor]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/Shared/SurveyPrompt.razor]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/Shared/SurveyPrompt.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/_Imports.razor]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/Shared/MainLayout.razor]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-3dsd3z3yec
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/Pages/Error.cshtml]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/Pages/_Host.cshtml]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/Pages/_Host.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Leon/Desktop/Base de Datos/ObligatorioBD2023/Pages/_Layout.cshtml]
+[C:/Users/sowon/Desktop/bases de datos/ObligatorioBD2023/Pages/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
