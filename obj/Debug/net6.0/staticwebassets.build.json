@@ -1,6 +1,10 @@
 {
   "Version": 1,
+<<<<<<< HEAD
   "Hash": "W3yjrwcE+AOZAeXxQF83F+0mBm92KsDaKhCgCqekLWE=",
+=======
+  "Hash": "+aQ0bBa7klMm9agAeVNf2v84qBOJQdsyxDvynSzjtMk=",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
   "Source": "BlazorApp",
   "BasePath": "_content/BlazorApp",
   "Mode": "Default",
@@ -10,17 +14,28 @@
     {
       "Name": "BlazorApp\\wwwroot",
       "Source": "BlazorApp",
+<<<<<<< HEAD
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\obj\\Debug\\net6.0\\scopedcss\\bundle\\BlazorApp.styles.css",
       "SourceId": "BlazorApp",
       "SourceType": "Computed",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\obj\\Debug\\net6.0\\scopedcss\\bundle\\BlazorApp.styles.css",
+      "SourceId": "BlazorApp",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "BlazorApp.styles.css",
       "AssetKind": "All",
@@ -31,6 +46,7 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
+<<<<<<< HEAD
       "OriginalItemSpec": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\obj\\Debug\\net6.0\\scopedcss\\bundle\\BlazorApp.styles.css"
     },
     {
@@ -38,6 +54,15 @@
       "SourceId": "BlazorApp",
       "SourceType": "Computed",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
+=======
+      "OriginalItemSpec": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\obj\\Debug\\net6.0\\scopedcss\\bundle\\BlazorApp.styles.css"
+    },
+    {
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\BlazorApp.bundle.scp.css",
+      "SourceId": "BlazorApp",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "BlazorApp.bundle.scp.css",
       "AssetKind": "All",
@@ -48,6 +73,7 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
+<<<<<<< HEAD
       "OriginalItemSpec": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\BlazorApp.bundle.scp.css"
     },
     {
@@ -55,6 +81,15 @@
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "OriginalItemSpec": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\BlazorApp.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -68,10 +103,17 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -85,10 +127,17 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/open-iconic/FONT-LICENSE",
       "AssetKind": "All",
@@ -102,10 +151,17 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/open-iconic/font/css/open-iconic-bootstrap.min.css",
       "AssetKind": "All",
@@ -119,10 +175,17 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.eot",
       "AssetKind": "All",
@@ -136,10 +199,17 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.otf",
       "AssetKind": "All",
@@ -153,10 +223,17 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.svg",
       "AssetKind": "All",
@@ -170,10 +247,17 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.ttf",
       "AssetKind": "All",
@@ -187,10 +271,17 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.woff",
       "AssetKind": "All",
@@ -204,10 +295,17 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/open-iconic/ICON-LICENSE",
       "AssetKind": "All",
@@ -221,10 +319,17 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\ICON-LICENSE"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\README.md",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\open-iconic\\README.md",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/open-iconic/README.md",
       "AssetKind": "All",
@@ -238,10 +343,17 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\README.md"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\css\\site.css",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\css\\site.css",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "css/site.css",
       "AssetKind": "All",
@@ -255,10 +367,17 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
+<<<<<<< HEAD
       "Identity": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\favicon.ico",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sowon\\Desktop\\bases de datos\\ObligatorioBD2023\\wwwroot\\",
+=======
+      "Identity": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\favicon.ico",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leon\\Desktop\\Base de Datos\\ObligatorioBD2023\\wwwroot\\",
+>>>>>>> d2e29eb7fbaef79415a2d37d5664a6eed567c5d3
       "BasePath": "_content/BlazorApp",
       "RelativePath": "favicon.ico",
       "AssetKind": "All",

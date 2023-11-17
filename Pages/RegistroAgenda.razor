@@ -1,0 +1,32 @@
+@page "/RegistroAgenda"
+@inject DatabaseService DatabaseService 
+
+<PageTitle>Registro Agenda</PageTitle>
+        
+<h2>Registro Agenda</h2>
+
+    <form @onsubmit="InsertarDatos">
+        <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="this.ci">
+        <input type="date" name="fechaAgenda" id="fechaAgenda" @bind="this.fechaAgenda">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+@code{
+    private string ci = "";
+    private DateOnly fechaAgenda; 
+    async public Task<bool> InsertarDatos()
+    {
+        
+        bool check = false;
+        try
+        {
+            check = await DatabaseService.InsertarRegistroAgenda(ci, fechaAgenda);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al insertar datos: {ex.Message}");
+        }
+        return check;
+    }
+        
+}

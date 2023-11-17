@@ -4,6 +4,8 @@ using System.Text;
 public class DatabaseService
 {
     private MySqlConnection? connection;
+    private MySqlCommand cmd = new MySqlCommand();
+    private MySqlDataReader reader;
 
     //Conexión y desconexión a la base de datos --------------------------------------------------------------------
     public void Conectar()
@@ -41,11 +43,35 @@ public class DatabaseService
     
     public async Task<bool> CheckUser(int ci){
         Conectar();
-        string query = "SELECT * FROM Funcionarios WHERE CI = " + ci + ";" ;
-        using MySqlCommand command = new MySqlCommand(query.ToString(), connection);
-        using MySqlDataReader reader = command.ExecuteReader();
+        cmd.Connection = connection;
+        cmd.CommandText = "SELECT * FROM Funcionarios WHERE CI = @number;" ;
+        cmd.Prepare();
+        cmd.Parameters.AddWithValue("@number", ci);
+        cmd.ExecuteNonQuery();
+        reader = cmd.ExecuteReader();
         Desconectar();
 
         return reader.Read() ? true : false;
+
     }
+    public async Task<bool> InsertarRegistroAgenda(string ci, DateOnly fechaAgenda)
+    {
+        Conectar();
+        bool check = false;
+        var aux = fechaAgenda.ToString("yyyy-MM-dd");
+        string query = $"INSERT INTO Agenda (Ci, Fch_Agenda) VALUES (@number, @text);";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Prepare();
+        cmd.Parameters.AddWithValue("@number", ci);
+        cmd.Parameters.AddWithValue("@text", aux);  
+        int result = cmd.ExecuteNonQuery();
+        if (result > 0)
+        {
+            check = true;
+        }
+        Desconectar();
+        return check;
+    }
+
 }
