@@ -34,7 +34,7 @@
         try{
             //(formCI ?? "a") si formCI no es un numero se intenta parsear J a int y eso da error :D
             ci = int.Parse(formCI ?? "J");
-            bool res = await DatabaseService.CheckUser(ci);
+            bool res = DatabaseService.CheckUser(ci);
 
             if(res){
                 error = false;
