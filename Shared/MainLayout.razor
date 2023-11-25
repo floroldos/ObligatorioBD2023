@@ -1,15 +1,37 @@
 ﻿@inherits LayoutComponentBase
+@inject DatabaseService DatabaseService
 
 <PageTitle>FuncionarioSano</PageTitle>
 
 <div class="page">
     <main>
         <div class="top-row px-4">
-            <h1> FuncionarioSano </h1>
+            <h1>FuncionarioSano</h1>
         </div>
-
         <article class="content px-4">
-            @Body
+            @if(connected)
+            {
+                @Body
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">¡Error de conexión con la base de datos!</h4>
+                    <p>La base de datos no se pudo encontrar.</p>
+                    <hr>
+                    <p class="mb-0">Por favor, verifique que la base de datos este funcionando.</p>
+                </div>
+            }
         </article>
     </main>
 </div>
+
+
+@code{
+    bool connected = false;
+    bool loader = false;
+    protected override void OnInitialized()
+    {
+        connected = DatabaseService.CheckConnection();
+    }
+}

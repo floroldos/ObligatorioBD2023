@@ -14,19 +14,19 @@
 @code{
     private string ci = "";
     private DateOnly fechaAgenda; 
-    async public Task<bool> InsertarDatos()
+    public Task<bool> InsertarDatos()
     {
         
         bool check = false;
         try
         {
-            check = await DatabaseService.InsertarRegistroAgenda(ci, fechaAgenda);
+            check = DatabaseService.InsertarRegistroAgenda(ci, fechaAgenda);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error al insertar datos: {ex.Message}");
         }
-        return check;
+        return Task.FromResult(check);
     }
         
 }

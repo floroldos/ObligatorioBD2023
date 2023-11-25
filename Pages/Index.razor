@@ -1,46 +1,75 @@
-﻿@inject DatabaseService DatabaseService
-@inject NavigationManager NavigationManager
+﻿@page "/"
 
-@page "/login"
+@inject DatabaseService DatabaseService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Iniciar sesión</PageTitle>
 
-<form @onsubmit="OnSubmitForm">
-    <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="formCI">
-    <input type="password" name="password" id="password" placeholder="Ingrese su constraseña"> 
-    <button type="submit" class="btn btn-primary">Ingresar</button>
-</form>
+<div id="contenedor" class="container">
+    <div class="row">
+        <div class="col-sm-6 mx-auto">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h1> INICIAR SESIÓN </h1>
+                    <hr />
+                    <form @onsubmit="OnSubmitForm">
+                        <div class="form-group">
+                            <label for="ci">Cedula</label>
+                            <input type="text" id="ci" class="form-control" placeholder="Ingrese su cedula..." @bind="formCI">
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="Password">Contraseña</label>
+                            <input type="password" class="form-control" id="Password" placeholder="Password" @bind="password">
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Ingresar</button>
+                        <br>
+                        <br>
+                        @if(error_str.Length > 0)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @error_str
+                            </div>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 @code {
     public string? formCI;
-    public bool error = false;
+    public string? password;
     public string error_str = "";
    private async Task OnSubmitForm()
     {
-        int ci;
+        if(formCI == null || password == null){
+            error_str = "Debe llenar todos los campos";
+            return;
+        }
+
         try{
-            //(formCI ?? "a") si formCI no es un numero se intenta parsear J a int y eso da error :D
-            ci = int.Parse(formCI ?? "J");
-            bool res = await DatabaseService.CheckUser(ci);
+            int ci = int.Parse(formCI);
+            bool res = DatabaseService.CheckUser(ci);
 
             if(res){
-                error = false;
                 await Task.Delay(2000);
                 NavigationManager.NavigateTo("/formulario");
             }else{
-                error = true;
-                error_str = "El usuario no existe";
+                error_str = "El usuario no existe... \n\n\n Redireccionando a la pagina de registro";
                 await Task.Delay(2000);
                 NavigationManager.NavigateTo("/registro");                
             }
             
         }
-        catch(Exception){
-            error = true;
+        catch(Exception e){
+            Console.WriteLine(e.Message);
             error_str = "La cedula debe ser un numero";
             return;
         }
-
     }
 }
