@@ -40,8 +40,6 @@ CREATE TABLE Rol(
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Rol VARCHAR(30) NOT NULL
 );
-INSERT INTO Rol(Rol) VALUES('Admin');
-INSERT INTO Rol(Rol) VALUES('Funcionario');
 
 CREATE TABLE UsuarioRol(
     Ci_Funcionario INT NOT NULL ,
@@ -51,3 +49,9 @@ CREATE TABLE UsuarioRol(
     FOREIGN KEY (Id_Rol) REFERENCES Rol(Id)
 );
 
+INSERT INTO Rol(Rol) VALUES ('Admin');
+INSERT INTO Rol(Rol) VALUES ('Funcionario');
+
+INSERT INTO Logins (LogId, Password) VALUES (1, '2a2e9a58102784ca18e2605a4e727b5f');
+INSERT INTO Funcionarios (Ci, Nombre, Apellido, Fch_Nacimiento, Direccion, Email, Telefono, LogId) VALUES (11111111, 'Administrador', 'Administrador', '1990-01-01', 'Administrador', 'admin@admin.com', '00000000', 1);
+INSERT INTO UsuarioRol (Ci_Funcionario, Id_Rol) VALUES (11111111, 1);
