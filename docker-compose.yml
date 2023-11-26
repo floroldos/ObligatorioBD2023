@@ -6,9 +6,26 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     ports:
-    - "3306:3306"
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: bernardo
       MYSQL_DATABASE: ObligatorioBD2023
     volumes:
       - ./sql-scripts:/docker-entrypoint-initdb.d
+      
+  # Redis Commander: tool to manage our Redis container from localhost
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=redis
+    ports:
+      - "8013:8081"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:6-alpine
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"

@@ -4,12 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>FuncionarioSano</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
     <PackageReference Include="MD5" Version="2.0.4" />
     <PackageReference Include="MySql.Data" Version="8.2.0" />
+    <PackageReference Include="NRedisStack" Version="0.10.1" />
   </ItemGroup>
 
 </Project>

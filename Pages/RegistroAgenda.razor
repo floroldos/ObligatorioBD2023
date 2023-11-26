@@ -5,22 +5,27 @@
         
 <h2>Registro Agenda</h2>
 
-    <form @onsubmit="InsertarDatos">
+    <form @onsubmit="InsertData">
         <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="this.ci">
         <input type="date" name="fechaAgenda" id="fechaAgenda" @bind="this.fechaAgenda">
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
 @code{
-    private string ci = "";
-    private DateOnly fechaAgenda; 
-    public Task<bool> InsertarDatos()
+    private int ci;
+    private DateOnly fechaAgenda;
+
+    public Task<bool> InsertData()
     {
+        // select de agendas a base de datos where ci null
+        // asignar cedula del usuario a cedula de agenda y hacer update
+
         
+
         bool check = false;
         try
         {
-            check = DatabaseService.InsertarRegistroAgenda(ci, fechaAgenda);
+            check = DatabaseService.InsertAgenda(ci, fechaAgenda);
         }
         catch (Exception ex)
         {

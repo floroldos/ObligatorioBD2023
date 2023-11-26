@@ -8,11 +8,18 @@
 <div id="contenedor" class="container">
     <div class="row">
         <div class="col-sm-6 mx-auto">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h1> INICIAR SESIÓN </h1>
-                    <hr />
-                    <form @onsubmit="OnSubmitForm">
+                    <div class="background">
+                        <div class="shape"></div>
+                        <div class="shape"></div>
+                    </div>
+                    <form @onsubmit="OnSubmitForm" id="login">
+                        <div class = "logo-container">
+                            <img src="logo-ucu.png" alt="Logo" class="logo-ucu">
+                            <img src="favicon.ico" alt="Logo" class="logo">
+                        </div>
+                        <br>
+                        <h1 id = "iniciar-sesion"> INICIAR SESIÓN </h1>
+                        <br>
                         <div class="form-group">
                             <label for="ci">Cedula</label>
                             <input type="text" id="ci" class="form-control" placeholder="Ingrese su cedula..." @bind="formCI">
@@ -32,9 +39,7 @@
                                 @error_str
                             </div>
                         }
-                    </form>
-                </div>
-            </div>
+                 </form>
         </div>
     </div>
 </div>
@@ -67,7 +72,7 @@
 
         catch(Exception e){
             Console.WriteLine(e.Message);
-            error_str = "La cedula debe ser un numero";
+            error_str = "La cédula debe ser un número.";
             return;
         }
     }

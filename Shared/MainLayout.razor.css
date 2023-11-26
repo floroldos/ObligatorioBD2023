@@ -12,42 +12,10 @@ main {
     display: block;
     margin: 20px;
     padding: 20px;
-    border: black 1px solid;
+    border: #303030 1px solid;
 }
 
-.top-row {
-    background-color: #565554ff;
-    border-bottom: 1px solid #bdb1b1;
-    justify-content: center;
-    height: 4rem;
-    display: flex;
-    align-items: center;
-    color: #F7FFF7;
-}
-
-    .top-row ::deep a, .top-row .btn-link {
-        white-space: nowrap;
-        margin-left: 1.5rem;
-    }
-
-    .top-row a:first-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-@media (max-width: 640.98px) {
-    .top-row:not(.auth) {
-        display: none;
-    }
-
-    .top-row.auth {
-        justify-content: space-between;
-    }
-
-    .top-row a, .top-row .btn-link {
-        margin-left: 0;
-    }
-}
+/* Responsive Design for Small Screens */
 
 @media (min-width: 641px) {
     .page {
