@@ -49,8 +49,8 @@
     private string domicilioCompleto = "";
     private string correo = "";
     private int telefono;
-    private async Task OnSubmitForm(){
-        
+    private bool OnSubmitForm(){
+        return DatabaseService.InsertarFuncionario(ci, nombre, apellido, fechaN, domicilioCompleto, correo, telefono);
     }
 }
 
