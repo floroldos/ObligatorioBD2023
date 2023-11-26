@@ -158,15 +158,17 @@ public class DatabaseService
     }
     public bool RegisterUser(string hashedPassword)
     {
+        Console.WriteLine("ENTRO A REGISTER USER");
         Connect();
         cmd.Parameters.Clear();
         bool check = false;
-        string query = $"INSERT INTO Usuarios (Password) VALUES (@password)";
+        string query = $"INSERT INTO Logins (Password) VALUES (@password)";
         cmd.Connection = connection;
         cmd.CommandText = query;
         cmd.Parameters.AddWithValue("@password", hashedPassword);
         cmd.Prepare();  
         int result = cmd.ExecuteNonQuery();
+        Console.WriteLine("EL RESULTADO DE INSERTAR EN LOGINS ES: " + result);
         if (result > 0)
         {
             check = true;
@@ -206,7 +208,7 @@ public class DatabaseService
             string hashedPassword = MD5Hash.Hash.Content(password);
             bool transaction1 = RegisterUser(hashedPassword);
             string logID = cmd.CommandText = "SELECT LAST_INSERT_ID();";
-            Console.WriteLine(logID);
+            Console.WriteLine("EL LOGID ES ESTE: " + logID);
             bool transaction2 = InsertWorker(ci, name, lastName, birthDate, adress, telephone, email, Int32.Parse(logID));
             if (transaction1 && transaction2)
             {

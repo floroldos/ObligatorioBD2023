@@ -13,35 +13,6 @@
     <input type="text" name="lastName" id="lastName" placeholder="Ingrese su apellido" @bind="lastName">
     <label>Fecha de nacimiento</label>
     <input type="date" name="bithDate" id="birthDate" placeholder="Ingrese su fecha de nacimiento" @bind="birthDate"> 
-    <hr> 
-    <label for="healthCard">¿Tiene carnet de salud vigente?</label><br>
-        <div id="healthCardOptions" class = "form-check">
-            <input class="form-check-input" type="checkbox" id="carnetSi" @bind="showDocument" /> Si
-            <br>
-            <input class="form-check-input" type="checkbox" id="carnetNo" @bind="showAgenda" /> No
-        </div>
-        @if (showDocument)
-        {
-        <div id="uploadDocument">
-            <label for="documentoInput">Subir comprobante de carné de salud</label>
-            <input type="file" id="documentoInput" accept=".jpg, .pdf" name="documentoInput"  OnChange="HandleFileChange" />
-            <label for="docInput">Subir comprobante de carné de salud</label>
-            <input type="file" id="docInput" accept=".jpg, .pdf" name="docInput">
-            <label>Fecha de emisión:</label>
-            <input type="date" name="fechaE" id="FechaE" placeholder="Ingrese la fecha de emisión" @bind="emissionDate">
-            <input type="date" name="eDate" id="eDate" placeholder="Ingrese la fecha de emisión">
-            <label>Fecha de vencimiento:</label>
-            <input type="date" name="fechaV" id="FechaV" placeholder="Ingrese la fecha de vencimiento" @bind = "expirationDate">
-            <input type="date" name="vDate" id="vDate" placeholder="Ingrese la fecha de vencimiento">
-            <button @onclick="Confirmar" class="btn btn-primary">Confirmar</button>
-        </div>
-        }
-        @if (showAgenda){
-        <p>Usted debe tener el carné de salud al día. Agende una cita médica para poder continuar.</p>
-        <div id="bookAppointment">
-            <a href="/RegistroAgenda">Agendar Cita</a>
-        </div>
-        }
     <hr>
     <label>Ingrese su domicilio completo</label> 
     <input type="text" name="domicilioCompleto" id="domicilioCompleto" placeholder="Ingrese su domicilio de residencia" @bind="address"> 
@@ -50,6 +21,8 @@
     <label>Ingrese su teléfono de contacto</label>
     <input type="text" name="telefono" id="telefono" placeholder="Ingrese su teléfono" @bind="telephone"> 
     <button id="botonRegistro" type="submit" class="btn btn-primary">Registrarse</button>
+
+
 </form>
 
 @code {
@@ -60,64 +33,30 @@
     private DateTime birthDate;
     private string address = "";
     private string email = "";
-    private int telephone = 0;
+    private int telephone;
     private string lastName = "";
 
     private DateTime emissionDate;
     private DateTime expirationDate;
-    private byte[] imageBytes = null;
     private string password = "";
 
 
     private async Task<bool> OnSubmitForm()
     {
         bool check = false;
-    try
-    {
-        DatabaseService.UserRegisterTransaction(ci, name, lastName, birthDate, address, telephone, email, password);
-    }
-    catch (Exception e)
-    {
-        check = true;
-        Console.WriteLine(e);
-    }
-    return check;
-    } 
-
-    private void HandleFileChange(InputFileChangeEventArgs e)
-    {
-        var imageFile = e.File;
-
-        using (var stream = imageFile.OpenReadStream())
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                stream.CopyTo(memoryStream);
-                imageBytes = memoryStream.ToArray();
-            }
-        }
-    }
-
-    private void Confirmar()
-    {
         try
         {
-            bool success = DatabaseService.InsertCarnet(emissionDate, expirationDate, imageBytes);
-
-            if (success)
-            {
-                Console.WriteLine("Imagen guardada exitosamente en la base de datos.");
-            }
-            else
-            {
-                Console.WriteLine("Error al guardar la imagen en la base de datos.");
-            }
+            //DatabaseService.UserRegisterTransaction(ci, name, lastName, birthDate, address, telephone, email, password);
+            DatabaseService.RegisterUser(password);
+            check = true;
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            check = false;
+            Console.WriteLine(e);
         }
-    }
+        return check;
+    } 
 }
 
 }
