@@ -25,7 +25,7 @@ CREATE TABLE Carnet_Salud(
     Ci INT(8) PRIMARY KEY ,
     Fch_Emision DATE NOT NULL ,
     Fch_Vencimiento DATE NOT NULL ,
-    Comprobante VARCHAR(250) NOT NULL ,
+    Comprobante VARBINARY(MAX) NOT NULL ,
     FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci)
 );
 

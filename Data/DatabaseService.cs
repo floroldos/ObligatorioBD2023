@@ -149,5 +149,14 @@ public class DatabaseService
         Disconnect();
         return check;
     }
+
+    public bool InsertCarnet (string Fch_Emision, string Fch_Vencimiento, string Comprobante){
+
+        Connect();
+        cmd.Parameters.Clear();
+        bool check = false;
+        return check;
+
+    }
 }
  

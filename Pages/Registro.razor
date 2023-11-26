@@ -20,18 +20,24 @@
         </div>
         @if (showDocument)
         {
-        <div id="subirDocumento">
-            <input type="file" id="documentoInput" accept=".jpg, .pdf" name="documentoInput"  @onchange="HandleFileUpload">
+        <div id="uploadDocument">
+            <label for="documentoInput">Subir comprobante de carné de salud</label>
+            <input type="file" id="documentoInput" accept=".jpg, .pdf" name="documentoInput">
+            <label>Fecha de emisión:</label>
+            <input type="date" name="fechaE" id="FechaE" placeholder="Ingrese la fecha de emisión">
+            <label>Fecha de vencimiento:</label>
+            <input type="date" name="fechaV" id="FechaV" placeholder="Ingrese la fecha de vencimiento">
         </div>
         }
         @if (showAgenda){
-        <div id="agendarCita">
+        <p>Usted debe tener el carné de salud al día. Agende una cita médica para poder continuar.</p>
+        <div id="bookAppointment">
             <a href="/RegistroAgenda">Agendar Cita</a>
         </div>
         }
     <hr>
     <label>Ingrese su domicilio completo</label> 
-    <input type="text" name="domicilioCompleto" id="domicilioCompleto" placeholder="Ingrese su domicilio de residencia" @bind="adress"> 
+    <input type="text" name="domicilioCompleto" id="domicilioCompleto" placeholder="Ingrese su domicilio de residencia" @bind="address"> 
     <label>Ingrese su correo electrónico</label> 
     <input type="text" name="correo" id="correo" placeholder="Ingrese su correo electrónico" @bind="email"> 
     <label>Ingrese su teléfono de contacto</label>
@@ -45,29 +51,24 @@
     private string ci = "";
      private string name = "";
     private DateTime birthDate;
-    private string adress = "";
+    private string address = "";
     private string email = "";
     private int telephone = 0;
     private string lastName = "";
-
-    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    private async Task<bool> OnSubmitForm()
     {
-        var file = e.File;
-        await ImageService.UploadImageAsync(imageModel, file);
-        Console.WriteLine("pepe");
-    }
-    private async Task<bool> OnSubmitForm(){
-   
         bool check = false;
-        try {
-            DatabaseService.InsertWorker(ci, name, lastName, birthDate, adress, telephone, email);
-        } catch (Exception e) {
-            check = true;
-            Console.WriteLine(e);
-
-        }
-        return check;
+    try
+    {
+        DatabaseService.InsertWorker(ci, name, lastName, birthDate, address, telephone, email);
     }
+    catch (Exception e)
+    {
+        check = true;
+        Console.WriteLine(e);
+    }
+    return check;
+}
         
 }
 
