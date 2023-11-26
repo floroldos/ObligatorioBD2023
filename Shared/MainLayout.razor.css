@@ -16,25 +16,13 @@ main {
 }
 
 /* Navbar */
-.top-row {
+#navbar {
     background-color: rgb(207, 208, 212);
-    border-bottom: 1px solid #bdb1b1;
     height: 3rem;
     display: flex;
-    align-items: center;
+    align-items: right;
     justify-content: flex-start;
     color: #383838;
-}
-
-.top-row a,
-.top-row .btn-link {
-    white-space: nowrap;
-    margin-left: 1.5rem;
-}
-
-.top-row a:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 /* Responsive Design for Small Screens */

@@ -1,9 +1,9 @@
 @inject DatabaseService DatabaseService;
 @page "/registro"
 
-<h1>Alta de funcionario</h1>
+<h1 id = "register-page">Alta de funcionario</h1>
 
-<form @onsubmit='OnSubmitForm'>
+<form>
     <label>Cédula de identidad</label> 
     <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
     <label>Nombre</label> 
@@ -14,9 +14,10 @@
     <input type="date" name="fechaN" id="FechaN" placeholder="Ingrese su fecha de nacimiento" @bind="fechaN"> 
     <hr> 
     <label for="tieneCarnetSalud">¿Tiene carnet de salud vigente?</label><br>
-        <div id="opcionesCarnetSalud">
-            <input type="checkbox" id="carnetSi" @bind="mostrarSubirDocumento" /> Si
-            <input type="checkbox" id="carnetNo" @bind="mostrarAgendarCita" /> No
+        <div id="opcionesCarnetSalud" class = "form-check">
+            <input class="form-check-input" type="checkbox" id="carnetSi" @bind="mostrarSubirDocumento" /> Si
+            <br>
+            <input class="form-check-input" type="checkbox" id="carnetNo" @bind="mostrarAgendarCita" /> No
         </div>
         @if (mostrarSubirDocumento)
         {
@@ -49,9 +50,6 @@
     private string domicilioCompleto = "";
     private string correo = "";
     private int telefono;
-    private bool OnSubmitForm(){
-        return DatabaseService.InsertarFuncionario(ci, nombre, apellido, fechaN, domicilioCompleto, correo, telefono);
-    }
 }
 
 
