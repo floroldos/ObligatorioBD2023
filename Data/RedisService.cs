@@ -13,32 +13,24 @@ public class RedisService
         IDatabase db = redis.GetDatabase();
     }
 
-//mira, en el docker puse para q se cree la base de datos redis, dale docker-compose up, despues entra en localhost:8013 y 
-//ahi podes ver la base de datos y podes ver los valores que se van guardando, y podes hacer consultas con la consola, bueno esta clase es para hacer las consultas
-
-    public void SetValue(string key, string value) // esto agarra el key y el value y lo guarda
+   public void SetValue(string key, string value) // O(1)
     {
         IDatabase db = redis.GetDatabase();
         db.StringSet(key, value);
     }
 
-    //Cuando se registra el funcionario, se guarda en cache
-    public void setListElement(string key, string value)
-    //cuando se hace el checkuser, antes de hacer la consulta SQL tiene que venir aca y preguntar si el get devuelve algo, si no, hace SQL
+    public void setListElement(string key, string value) // O(1)
     {
         IDatabase db = redis.GetDatabase();
         db.ListRightPush(key, value);
     }
 
-    public void DeleteKey(string key)
+    public void DeleteKey(string key) // O(1)
     {
         IDatabase db = redis.GetDatabase();
         db.KeyDelete(key);
     } 
-//Y como iria eso en el dbservice voy
-    public string Get(string key) // aca esta el get, me queda poner en DataBaseService que haga esto antes siiiiiii, la documentacion oficial esta buena, te paso
-    // https://redis.io/commands/
-    // https://redis.io/docs/connect/clients/dotnet/
+    public string Get(string key) // O(1)
     {
         IDatabase db = redis.GetDatabase();
         var valor = db.StringGet(key);
@@ -53,7 +45,7 @@ public class RedisService
         return valor;
     }
 
-    public RedisValue[] getList(string key)
+    public RedisValue[] getList(string key) // O(1)
     {
         IDatabase db = redis.GetDatabase();
         var lista = db.ListRange(key);
@@ -70,7 +62,7 @@ public class RedisService
         else{
             Console.WriteLine("Lista no encontrada");
         }
-        
+
         return lista;
     }
 

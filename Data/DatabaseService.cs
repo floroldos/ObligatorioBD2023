@@ -96,14 +96,14 @@ public class DatabaseService
             Disconnect();
         }
 
-        
-
         return reader.HasRows;
     }
 
     public bool InsertAgenda(string ci, DateOnly agendDate)
     {
-        // aca podemos asumir
+        
+        redisService.SetValue(ci, agendDate.ToString()); // Agregar la cedula del funcionario junto a la fecha de la agenda al cache
+
         Connect();
         cmd.Parameters.Clear();
         bool check = false;
