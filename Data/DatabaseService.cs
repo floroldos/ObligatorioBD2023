@@ -109,6 +109,18 @@ public class DatabaseService
         Desconectar();
         return check;
     }
+    /* Table
+    CREATE TABLE Funcionarios(
+    Ci INT(8) PRIMARY KEY ,
+    Nombre VARCHAR(50) NOT NULL ,
+    Apellido VARCHAR(50) NOT NULL ,
+    Fch_Nacimiento DATE NOT NULL ,
+    Direccion VARCHAR(100) NOT NULL ,
+    Telefono INT NOT NULL ,
+    Email VARCHAR(100) NOT NULL ,
+    LogId INT NOT NULL ,
+    FOREIGN KEY (LogId) REFERENCES Logins(LogId) */
     
+);
 
 }
