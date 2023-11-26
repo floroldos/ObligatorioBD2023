@@ -10,7 +10,7 @@
         <div class="col-sm-6 mx-auto">
             <div class="card">
                 <div class="card-body text-center">
-                    <h1> INICIAR SESIÓN </h1>
+                    <h1 id = "iniciar-sesion"> INICIAR SESIÓN </h1>
                     <hr />
                     <form @onsubmit="OnSubmitForm">
                         <div class="form-group">
@@ -68,7 +68,7 @@
         }
         catch(Exception e){
             Console.WriteLine(e.Message);
-            error_str = "La cedula debe ser un numero";
+            error_str = "La cédula debe ser un número.";
             return;
         }
     }
