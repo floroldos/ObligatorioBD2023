@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.2.0" />
+    <PackageReference Include="NRedisStack" Version="0.10.1" />
   </ItemGroup>
 
 </Project>
