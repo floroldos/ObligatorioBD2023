@@ -44,20 +44,22 @@
     private bool showDocument = false;
     private bool showAgenda = false;
     private string ci = "";
-    private async Task<bool> OnSubmitForm(){
-    private string name = "";
+     private string name = "";
     private DateTime birthDate;
     private string adress = "";
     private string email = "";
     private int telephone = 0;
     private string lastName = "";
+    private async Task<bool> OnSubmitForm(){
+   
         bool check = false;
         try {
             DatabaseService.InsertWorker(ci, name, lastName, birthDate, adress, telephone, email);
         } catch (Exception e) {
             check = true;
-        }
             Console.WriteLine(e);
+
+        }
         return check;
     }
         
