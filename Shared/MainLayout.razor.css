@@ -15,15 +15,6 @@ main {
     border: #303030 1px solid;
 }
 
-/* Navbar */
-#navbar {
-    background-color: rgb(22, 27, 49);
-    height: 3rem;
-    display: flex;
-    align-items: right;
-    justify-content: flex-start;
-}
-
 /* Responsive Design for Small Screens */
 
 @media (min-width: 641px) {

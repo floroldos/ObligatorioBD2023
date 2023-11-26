@@ -1,9 +1,8 @@
 @page "/registro"
 @inject DatabaseService DatabaseService;
 
-<h1 id = "register-page">Alta de funcionario</h1>
-
-    <form @onsubmit="OnSubmitForm">
+    <h1 id = "register-page">Alta de funcionario</h1>
+    <form id= "alert alert-danger" @onsubmit="OnSubmitForm">
     <label>Cédula de identidad</label> 
     <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
     <label>Nombre</label> 
@@ -14,9 +13,10 @@
     <input type="date" name="fechaN" id="FechaN" placeholder="Ingrese su fecha de nacimiento" @bind="birthDate"> 
     <hr> 
     <label for="tieneCarnetSalud">¿Tiene carnet de salud vigente?</label><br>
-            <input type="checkbox" id="carnetSi" @bind="showDocument" /> Si
-        <div id="opcionesCarnetSalud">
-            <input type="checkbox" id="carnetNo" @bind="showAgenda" /> No
+        <div id="opcionesCarnetSalud" class = "form-check">
+            <input class="form-check-input" type="checkbox" id="carnetSi" @bind="showDocument" /> Si
+            <br>
+            <input class="form-check-input" type="checkbox" id="carnetNo" @bind="showAgenda" /> No
         </div>
         @if (showDocument)
         {
