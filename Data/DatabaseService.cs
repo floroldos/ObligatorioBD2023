@@ -6,6 +6,7 @@ using System.Data;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Drawing;
 
 public class DatabaseService
 {
@@ -102,6 +103,36 @@ public class DatabaseService
         return reader.HasRows;
     }
 
+    public bool selectAgendas(string ci, string fecha){
+        Connect();
+        cmd.Parameters.Clear();
+        bool check = false;
+        string query = $"SELECT * FROM Agenda WHERE ci IS NULL AND Fch_Agenda = {fecha};";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Prepare(); 
+        cmd.ExecuteNonQuery(); 
+        MySqlDataReader result = cmd.ExecuteReader();
+
+        if (result != null)
+        {
+            cmd.Parameters.Clear();
+            string queryUpd = $"UPDATE Agenda SET ci = {ci} WHERE Fch_Agenda = {fecha};";
+            cmd.Connection = connection;
+            cmd.CommandText = query;
+            cmd.Prepare();  
+            var resultQuery = cmd.ExecuteNonQuery();
+            if(resultQuery > 0 ){
+                check = true;
+            }
+            else{
+                Console.WriteLine("Hubo un error actualizando la base de datos");
+            }
+        }
+        Disconnect();
+        return check;
+    }
+
     public bool InsertAgenda(int ci, DateOnly agendDate)
     {
         
@@ -172,7 +203,10 @@ public class DatabaseService
         return check;
     }
 
-    public bool InsertCarnet (DateTime fch_emision, DateTime fch_vencimiento, byte[] comprobante){
+    public bool InsertCarnet (DateTime fch_emision, DateTime fch_vencimiento, string comprobante){
+
+        // redis Settear
+
         Connect();
         cmd.Parameters.Clear();
         bool check = false;
@@ -222,4 +256,5 @@ public class DatabaseService
         }
         return transactionCheck;
     }
+
 }

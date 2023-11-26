@@ -17,7 +17,7 @@ CREATE TABLE Funcionarios(
 
 CREATE TABLE Agenda(
     Nro INT AUTO_INCREMENT PRIMARY KEY,
-    Ci INT(8) NOT NULL ,
+    Ci INT(8) ,
     Fch_Agenda DATE NOT NULL
 );
 
@@ -25,7 +25,7 @@ CREATE TABLE Carnet_Salud(
     Ci INT(8) PRIMARY KEY ,
     Fch_Emision DATE NOT NULL ,
     Fch_Vencimiento DATE NOT NULL ,
-    Comprobante VARBINARY(42000) NOT NULL ,
+    Comprobante VARCHAR(350) NOT NULL ,
     FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci)
 );
 

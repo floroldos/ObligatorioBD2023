@@ -1,5 +1,6 @@
 @page "/registro"
 @inject DatabaseService DatabaseService;
+@inject NavigationManager NavigationManager;
 
 <h1 id = "register-page">Alta de funcionario</h1>
 <form id= "alert alert-danger" @onsubmit="OnSubmitForm">
@@ -13,36 +14,6 @@
     <input type="password" name="password" id="password" placeholder="Ingrese una contraseña" @bind="password">
     <label>Fecha de nacimiento</label>
     <input type="date" name="bithDate" id="birthDate" placeholder="Ingrese su fecha de nacimiento" @bind="birthDate"> 
-    <hr> 
-    <label for="healthCard">¿Tiene carnet de salud vigente?</label><br>
-        <div id="healthCardOptions" class = "form-check">
-            <input class="form-check-input" type="checkbox" id="carnetSi" @bind="showDocument" /> Si
-            <br>
-            <input class="form-check-input" type="checkbox" id="carnetNo" @bind="showAgenda" /> No
-        </div>
-        @if (showDocument)
-        {
-        <div id="uploadDocument">
-            <label for="documentoInput">Subir comprobante de carné de salud</label>
-            <input type="file" id="documentoInput" accept=".jpg, .pdf" name="documentoInput"  OnChange="HandleFileChange" />
-            <label for="docInput">Subir comprobante de carné de salud</label>
-            <input type="file" id="docInput" accept=".jpg, .pdf" name="docInput">
-            <label>Fecha de emisión:</label>
-            <input type="date" name="fechaE" id="FechaE" placeholder="Ingrese la fecha de emisión" @bind="emissionDate">
-            <input type="date" name="eDate" id="eDate" placeholder="Ingrese la fecha de emisión">
-            <label>Fecha de vencimiento:</label>
-            <input type="date" name="fechaV" id="FechaV" placeholder="Ingrese la fecha de vencimiento" @bind = "expirationDate">
-            <input type="date" name="vDate" id="vDate" placeholder="Ingrese la fecha de vencimiento">
-            <button @onclick="Confirmar" class="btn btn-primary">Confirmar</button>
-        </div>
-        }
-        @if (showAgenda){
-        <p>Usted debe tener el carné de salud al día. Agende una cita médica para poder continuar.</p>
-        <div id="bookAppointment">
-            <a href="/RegistroAgenda">Agendar Cita</a>
-        </div>
-        }
-    <hr>
     <label>Ingrese su domicilio completo</label> 
     <input type="text" name="domicilioCompleto" id="domicilioCompleto" placeholder="Ingrese su domicilio de residencia" @bind="address"> 
     <label>Ingrese su correo electrónico</label> 
@@ -50,11 +21,16 @@
     <label>Ingrese su teléfono de contacto</label>
     <input type="text" name="telefono" id="telefono" placeholder="Ingrese su teléfono" @bind="telephone"> 
     <button id="botonRegistro" type="submit" class="btn btn-primary">Registrarse</button>
+    @if(alert_str == true)
+        {
+        <div class="alert alert-success" role="alert">
+             @alert_str
+        </div>
+        }
 </form>
 
+
 @code {
-    private bool showDocument = false;
-    private bool showAgenda = false;
     private int ci;
     private string name = "";
     private DateTime birthDate;
@@ -63,63 +39,36 @@
     private int telephone = 0;
     private string lastName = "";
     private string password = "";
-    private DateTime emissionDate;
-    private DateTime expirationDate;
-    private byte[] imageBytes = null;
+    public bool alert_str = false;
 
 
     private async Task<bool> OnSubmitForm()
     {
+        DatabaseService dbs = new DatabaseService();
         bool check = false;
-    try
-    {
-        //DatabaseService.InsertWorker(ci, name, lastName, birthDate, address, telephone, email);
-        DatabaseService.InsertCarnet(emissionDate, expirationDate, imageBytes);
-    }
-    catch (Exception e)
-    {
-        check = true;
-        Console.WriteLine(e);
-    }
-    return check;
-    } 
-
-    private void HandleFileChange(InputFileChangeEventArgs e)
-    {
-        var imageFile = e.File;
-
-        using (var stream = imageFile.OpenReadStream())
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                stream.CopyTo(memoryStream);
-                imageBytes = memoryStream.ToArray();
-            }
-        }
-    }
-
-    private void Confirmar()
-    {
         try
         {
-            bool success = DatabaseService.InsertCarnet(emissionDate, expirationDate, imageBytes);
-
-            if (success)
+            if (check)
             {
-                Console.WriteLine("Imagen guardada exitosamente en la base de datos.");
+                var hashedPassword = MD5Hash.Hash.Content(password);
+                dbs.RegisterUser(hashedPassword);
+                alert_str = true;
+                NavigationManager.NavigateTo("/Carnet");
             }
             else
             {
-                Console.WriteLine("Error al guardar la imagen en la base de datos.");
+                Console.WriteLine("Campos incompletos");
             }
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            check = true;
+            Console.WriteLine(e);
         }
-    }
-}
+        return check;
+        } 
 
+    
 }
 
 
