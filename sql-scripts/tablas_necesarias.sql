@@ -25,7 +25,7 @@ CREATE TABLE Carnet_Salud(
     Ci INT(8) PRIMARY KEY ,
     Fch_Emision DATE NOT NULL ,
     Fch_Vencimiento DATE NOT NULL ,
-    Comprobante VARBINARY(MAX) NOT NULL ,
+    Comprobante VARBINARY(42000) NOT NULL ,
     FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci)
 );
 
@@ -50,3 +50,5 @@ CREATE TABLE UsuarioRol(
     FOREIGN KEY (Ci_Funcionario) REFERENCES Funcionarios(Ci) ,
     FOREIGN KEY (Id_Rol) REFERENCES Rol(Id)
 );
+
+SELECT LAST_INSERT_ID()

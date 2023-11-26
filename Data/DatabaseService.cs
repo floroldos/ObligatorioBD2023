@@ -1,7 +1,9 @@
 
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Utilities;
 using StackExchange.Redis;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 
 public class DatabaseService
@@ -99,10 +101,10 @@ public class DatabaseService
         return reader.HasRows;
     }
 
-    public bool InsertAgenda(string ci, DateOnly agendDate)
+    public bool InsertAgenda(int ci, DateOnly agendDate)
     {
         
-        redisService.SetValue(ci, agendDate.ToString()); // Agregar la cedula del funcionario junto a la fecha de la agenda al cache
+        redisService.SetValue(ci.ToString(), agendDate.ToString()); // Agregar la cedula del funcionario junto a la fecha de la agenda al cache
 
         Connect();
         cmd.Parameters.Clear();
@@ -122,15 +124,15 @@ public class DatabaseService
         Disconnect();
         return check;
     }
-    public bool InsertWorker(string ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email)
+    public bool InsertWorker(int ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email, int logId)
     {
 
-        redisService.setListElement("funcionarios", ci); // Agregar el funcionario a la lista de funcionarios de la cache
+        redisService.setListElement("funcionarios", ci.ToString()); // Agregar el funcionario a la lista de funcionarios de la cache
 
         Connect();
         cmd.Parameters.Clear();
         bool check = false;
-        string query = $"INSERT INTO Funcionarios (Ci, Nombre, Apellido, Fch_Nacimiento, Direccion, Telefono, Email) VALUES (@ci, @nombre, @apellido, @nacimiento, @direccion, @telefono, @email)";
+        string query = $"INSERT INTO Funcionarios (Ci, Nombre, Apellido, Fch_Nacimiento, Direccion, Telefono, Email, LogId) VALUES (@ci, @nombre, @apellido, @nacimiento, @direccion, @telefono, @email, @logId)";
         cmd.Connection = connection;
         cmd.CommandText = query;
         cmd.Parameters.AddWithValue("@ci", ci);
@@ -149,6 +151,24 @@ public class DatabaseService
         Disconnect();
         return check;
     }
+    public bool RegisterUser(string hashedPassword)
+    {
+        Connect();
+        cmd.Parameters.Clear();
+        bool check = false;
+        string query = $"INSERT INTO Usuarios (Password) VALUES (@password)";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.AddWithValue("@password", hashedPassword);
+        cmd.Prepare();  
+        int result = cmd.ExecuteNonQuery();
+        if (result > 0)
+        {
+            check = true;
+        }
+        Disconnect();
+        return check;
+    }
 
     public bool InsertCarnet (string Fch_Emision, string Fch_Vencimiento, string Comprobante){
 
@@ -157,6 +177,37 @@ public class DatabaseService
         bool check = false;
         return check;
 
+    }
+    public bool UserRegisterTransaction(int ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email, string password)
+    {
+        bool transactionCheck = false;
+        try
+        {
+            Connect();
+            cmd.Connection = connection;
+            cmd.Parameters.Clear();
+            cmd.Transaction = connection.BeginTransaction();
+            string hashedPassword = MD5Hash.Hash.Content(password);
+            bool transaction1 = RegisterUser(hashedPassword);
+            string logID = cmd.CommandText = "SELECT LAST_INSERT_ID();";
+            bool transaction2 = InsertWorker(ci, name, lastName, birthDate, adress, telephone, email, Int32.Parse(logID));
+            if (transaction1 && transaction2)
+            {
+                cmd.Transaction.Commit();
+                transactionCheck = true;
+            }
+            else
+            {
+                cmd.Transaction.Rollback();
+                transactionCheck = false;
+            }
+            Disconnect();
+        }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine("Error al conectar a la base de datos: " + ex.Message);
+        }
+        return transactionCheck;
     }
 }
  
