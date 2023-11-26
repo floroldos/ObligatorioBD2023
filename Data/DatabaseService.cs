@@ -1,3 +1,4 @@
+
 using MySql.Data.MySqlClient;
 using System.Text;
 
@@ -23,16 +24,6 @@ public class DatabaseService
             connection.Open();
             Console.WriteLine("Conectado a la base de datos... existe!");
             cmd.Connection = connection;
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS Logins( LogId INT PRIMARY KEY , Password VARCHAR(50) NOT NULL );";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS Funcionarios( Ci INT(8) PRIMARY KEY , Nombre VARCHAR(50) NOT NULL , Apellido VARCHAR(50) NOT NULL , Fch_Nacimiento DATE NOT NULL , Direccion VARCHAR(100) NOT NULL , Telefono INT NOT NULL , Email VARCHAR(100) NOT NULL , LogId INT NOT NULL , FOREIGN KEY (LogId) REFERENCES Logins(LogId) );";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS Agenda( Nro INT PRIMARY KEY AUTO_INCREMENT , Ci INT(8) NOT NULL , Fch_Agenda DATE NOT NULL );";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS Carnet_Salud( Ci INT(8) PRIMARY KEY , Fch_Emision DATE NOT NULL , Fch_Vencimiento DATE NOT NULL , Comprobante VARCHAR(200) NOT NULL , FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci) );";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS Periodos_Actualizacion( Año YEAR NOT NULL , Semestre VARCHAR(20) , Fch_Inicio DATE PRIMARY KEY , Fch_Fin DATE NOT NULL );";
-            cmd.ExecuteNonQuery();
             Desconectar();
             return true;
         }
@@ -90,17 +81,18 @@ public class DatabaseService
 
         return reader.HasRows;
     }
-    public bool InsertarRegistroAgenda(string ci, DateOnly fechaAgenda)
+    public bool InsertarRegistroAgenda(string ci, DateOnly agendDate)
     {
         Conectar();
+        cmd.Parameters.Clear();
         bool check = false;
-        var aux = fechaAgenda.ToString("yyyy-MM-dd");
+        var aux = agendDate.ToString("yyyy-MM-dd");
         string query = $"INSERT INTO Agenda (Ci, Fch_Agenda) VALUES (@number, @text);";
         cmd.Connection = connection;
         cmd.CommandText = query;
-        cmd.Prepare();
         cmd.Parameters.AddWithValue("@number", ci);
-        cmd.Parameters.AddWithValue("@text", aux);  
+        cmd.Parameters.AddWithValue("@text", aux);
+        cmd.Prepare();  
         int result = cmd.ExecuteNonQuery();
         if (result > 0)
         {
