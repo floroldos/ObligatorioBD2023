@@ -193,7 +193,7 @@ public class DatabaseService
         Connect();
         cmd.Parameters.Clear();
         bool check = false;
-        string query = $"INSERT INTO Logins (Password) VALUES (@password)";
+        string query = $"INSERT INTO Logins (LogId, Password) SELECT MAX(LogId) + 1, @password FROM Logins;";
         cmd.Connection = connection;
         cmd.CommandText = query;
         cmd.Parameters.AddWithValue("@password", hashedPassword);

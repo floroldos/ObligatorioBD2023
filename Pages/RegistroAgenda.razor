@@ -17,6 +17,7 @@
 
     public Task<bool> InsertData()
     {
+        DatabaseService.InsertAgenda(ci, fechaAgenda);
         // select de agendas a base de datos where ci null
         // asignar cedula del usuario a cedula de agenda y hacer update
 

@@ -1,5 +1,6 @@
 @page "/Carnet"
 @inject NavigationManager NavigationManager
+@inject DatabaseService DatabaseService
 
 <h1>Registro de Carné de Salud</h1>
 @if (!uploadedCarnet){
@@ -46,15 +47,12 @@
     private void uploadCarnet(){
         uploadedCarnet = true;
     }
-
-
     private async Task<bool> OnSubmitForm()
     {
         bool check = false;
     try
     {
-        DatabaseService dbs = new DatabaseService();
-        dbs.InsertCarnet(emissionDate, expirationDate, image);
+        DatabaseService.InsertCarnet(emissionDate, expirationDate, image);
        
     }
     catch (Exception e)
