@@ -1,6 +1,7 @@
 
 using MySql.Data.MySqlClient;
 using StackExchange.Redis;
+using System.Data;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -99,10 +100,10 @@ public class DatabaseService
         return reader.HasRows;
     }
 
-    public bool InsertAgenda(string ci, DateOnly agendDate)
+    public bool InsertAgenda(int ci, DateOnly agendDate)
     {
         
-        redisService.SetValue(ci, agendDate.ToString()); // Agregar la cedula del funcionario junto a la fecha de la agenda al cache
+        redisService.SetValue(ci.ToString(), agendDate.ToString()); // Agregar la cedula del funcionario junto a la fecha de la agenda al cache
 
         Connect();
         cmd.Parameters.Clear();
@@ -122,10 +123,10 @@ public class DatabaseService
         Disconnect();
         return check;
     }
-    public bool InsertWorker(string ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email)
+    public bool InsertWorker(int ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email)
     {
 
-        redisService.setListElement("funcionarios", ci); // Agregar el funcionario a la lista de funcionarios de la cache
+        redisService.setListElement("funcionarios", ci.ToString()); // Agregar el funcionario a la lista de funcionarios de la cache
 
         Connect();
         cmd.Parameters.Clear();
@@ -150,13 +151,24 @@ public class DatabaseService
         return check;
     }
 
-    public bool InsertCarnet (string Fch_Emision, string Fch_Vencimiento, string Comprobante){
-
+   public bool InsertCarnet(DateTime fch_emision, DateTime fch_vencimiento, byte[] comprobante)
+    { 
         Connect();
         cmd.Parameters.Clear();
         bool check = false;
+        string query = $"INSERT INTO Carnet_Salud (Fch_Emision, Fch_Vencimiento, Comprobante) VALUES (@fch_emision, @fch_vencimiento, @comprobante)";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.AddWithValue("@fch_emision", fch_emision);
+        cmd.Parameters.AddWithValue("@fch_vencimiento", fch_vencimiento);
+        cmd.Parameters.AddWithValue("@comprobante", comprobante);
+        cmd.Prepare();
+        int result = cmd.ExecuteNonQuery();
+        if (result > 0)
+        {
+            check = true;
+        }
+        Disconnect();
         return check;
-
     }
 }
- 
