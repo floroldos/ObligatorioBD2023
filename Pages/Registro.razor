@@ -1,55 +1,67 @@
-@inject DatabaseService DatabaseService;
 @page "/registro"
+@inject DatabaseService DatabaseService;
 
 <h1 id = "register-page">Alta de funcionario</h1>
 
-<form >
+    <form @onsubmit="OnSubmitForm">
     <label>Cédula de identidad</label> 
     <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
     <label>Nombre</label> 
-    <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre" @bind="nombre">
+    <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre" @bind="name">
     <label>Apellido</label>
-    <input type="text" name="apellido" id="apellido" placeholder="Ingrese su apellido" @bind="apellido">
+    <input type="text" name="apellido" id="apellido" placeholder="Ingrese su apellido" @bind="lastName">
     <label>Fecha de nacimiento</label>
-    <input type="date" name="fechaN" id="FechaN" placeholder="Ingrese su fecha de nacimiento" @bind="fechaN"> 
+    <input type="date" name="fechaN" id="FechaN" placeholder="Ingrese su fecha de nacimiento" @bind="birthDate"> 
     <hr> 
     <label for="tieneCarnetSalud">¿Tiene carnet de salud vigente?</label><br>
-        <div id="opcionesCarnetSalud" class = "form-check">
-            <input class="form-check-input" type="checkbox" id="carnetSi" @bind="mostrarSubirDocumento" /> Si
-            <br>
-            <input class="form-check-input" type="checkbox" id="carnetNo" @bind="mostrarAgendarCita" /> No
+            <input type="checkbox" id="carnetSi" @bind="showDocument" /> Si
+        <div id="opcionesCarnetSalud">
+            <input type="checkbox" id="carnetNo" @bind="showAgenda" /> No
         </div>
-        @if (mostrarSubirDocumento)
+        @if (showDocument)
         {
         <div id="subirDocumento">
             <input type="file" id="documentoInput" name="documentoInput">
         </div>
         }
-        @if (mostrarAgendarCita){
+        @if (showAgenda){
         <div id="agendarCita">
             <a href="/RegistroAgenda">Agendar Cita</a>
         </div>
         }
     <hr>
     <label>Ingrese su domicilio completo</label> 
-    <input type="text" name="domicilioCompleto" id="domicilioCompleto" placeholder="Ingrese su domicilio de residencia" @bind="domicilioCompleto"> 
+    <input type="text" name="domicilioCompleto" id="domicilioCompleto" placeholder="Ingrese su domicilio de residencia" @bind="adress"> 
     <label>Ingrese su correo electrónico</label> 
-    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo electrónico" @bind="correo"> 
+    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo electrónico" @bind="email"> 
     <label>Ingrese su teléfono de contacto</label>
-    <input type="text" name="telefono" id="telefono" placeholder="Ingrese su teléfono" @bind="telefono"> 
+    <input type="text" name="telefono" id="telefono" placeholder="Ingrese su teléfono" @bind="telephone"> 
     <button id="botonRegistro" type="submit" class="btn btn-primary">Registrarse</button>
 </form>
 
 @code{
-    private bool mostrarSubirDocumento = false;
-    private bool mostrarAgendarCita = false;
+    private bool showDocument = false;
+    private bool showAgenda = false;
     private string ci = "";
-    private string nombre = "";
-    private string apellido = "";
-    private DateTime fechaN;
-    private string domicilioCompleto = "";
-    private string correo = "";
-    private int telefono;
+     private string name = "";
+    private DateTime birthDate;
+    private string adress = "";
+    private string email = "";
+    private int telephone = 0;
+    private string lastName = "";
+    private async Task<bool> OnSubmitForm(){
+   
+        bool check = false;
+        try {
+            DatabaseService.InsertWorker(ci, name, lastName, birthDate, adress, telephone, email);
+        } catch (Exception e) {
+            check = true;
+            Console.WriteLine(e);
+
+        }
+        return check;
+    }
+        
 }
 
 
