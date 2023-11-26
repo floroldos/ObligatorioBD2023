@@ -1,5 +1,7 @@
 
 using MySql.Data.MySqlClient;
+using StackExchange.Redis;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 public class DatabaseService
@@ -7,6 +9,7 @@ public class DatabaseService
     private MySqlConnection? connection;
     private MySqlCommand cmd = new MySqlCommand();
     private MySqlDataReader? reader;
+    RedisService redisService = new RedisService();
     private const string CONNECTION_STRING = "Server=localhost;";
 
     //Conexión y desconexión a la base de datos --------------------------------------------------------------------
@@ -66,23 +69,41 @@ public class DatabaseService
         }
     }
 
-    //Funciones de la base de datos --------------------------------------------------------------------------------
-    
+    //-------------------------------------- Funciones de la base de datos -------------------------------------- //
     public bool CheckUser(int ci){
-        Connect();
-        cmd.Connection = connection;
-        cmd.CommandText = "SELECT * FROM Funcionarios WHERE CI = @number;" ;
-        cmd.Parameters.Clear();
-        cmd.Parameters.AddWithValue("@number", ci);
-        cmd.Prepare();
-        cmd.ExecuteNonQuery();
-        reader = cmd.ExecuteReader();
-        Disconnect();
+
+
+        RedisValue[] lista = redisService.getList("funcionarios"); // Obtener la lista de funcionarios de la cache
+
+        if(lista != null){
+            foreach (RedisValue value in lista)
+            {
+                if(value == ci.ToString()){
+                    return true; // Si el funcionario esta en la cache, no hace falta consultar a la base de datos
+                }
+            }
+            return false; // El funcionario no está en la lista de funcionarios de la cache
+        }
+        else{ // Si el funcionario no esta en la cache, hay que consultar a la base de datos
+            Connect();
+            cmd.Connection = connection;
+            cmd.CommandText = "SELECT * FROM Funcionarios WHERE CI = @number;" ;
+            cmd.Parameters.Clear();
+            cmd.Parameters.AddWithValue("@number", ci);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            reader = cmd.ExecuteReader();
+            Disconnect();
+        }
+
+        
 
         return reader.HasRows;
     }
+
     public bool InsertAgenda(string ci, DateOnly agendDate)
     {
+        // aca podemos asumir
         Connect();
         cmd.Parameters.Clear();
         bool check = false;
@@ -103,6 +124,9 @@ public class DatabaseService
     }
     public bool InsertWorker(string ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email)
     {
+
+        redisService.setListElement("funcionarios", ci); // Agregar el funcionario a la lista de funcionarios de la cache
+
         Connect();
         cmd.Parameters.Clear();
         bool check = false;
@@ -126,4 +150,4 @@ public class DatabaseService
         return check;
     }
 }
-
+ 
