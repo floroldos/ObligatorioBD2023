@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Drawing;
 
+
 public class DatabaseService
 {
     private MySqlConnection? connection;
@@ -15,6 +16,14 @@ public class DatabaseService
     private MySqlDataReader? reader;
     RedisService redisService = new RedisService();
     private const string CONNECTION_STRING = "Server=localhost;";
+
+    private static DatabaseService? instance = null;
+    public static DatabaseService GetInstance(){
+        if(instance == null){
+            instance = new DatabaseService();
+        }
+        return instance;
+    }
 
     //Conexión y desconexión a la base de datos --------------------------------------------------------------------
     public bool CheckConnection(){
@@ -29,7 +38,6 @@ public class DatabaseService
         try
         {
             connection.Open();
-            Console.WriteLine("Conectado a la base de datos... existe!");
             cmd.Connection = connection;
             Disconnect();
             return true;
@@ -39,7 +47,6 @@ public class DatabaseService
             Console.WriteLine("Error al conectar a la base de datos: " + ex.Message);
             return false;
         }
-        
     }
 
     public void Connect()
@@ -55,7 +62,6 @@ public class DatabaseService
         try
         {
             connection.Open();
-            Console.WriteLine("Conectado a la base de datos");
         }
         catch (MySqlException ex)
         {
@@ -67,7 +73,6 @@ public class DatabaseService
     {
         if(connection != null){
             connection.Close();
-            Console.WriteLine("Desconectado de la base de datos");
         }else{
             Console.Error.WriteLine("Se intento desconectarse de la base de datos pero no habia una conexion activa");
         }
@@ -187,6 +192,7 @@ public class DatabaseService
         Disconnect();
         return check;
     }
+
     public bool RegisterUser(string hashedPassword)
     {
         Console.WriteLine("ENTRO A REGISTER USER");
@@ -230,6 +236,214 @@ public class DatabaseService
         Disconnect();
         return check;
     }
+  
+    public bool CheckIfValidDate()
+    {
+    bool validDate = false;
+
+    Connect();
+
+    DateTime currentDate = DateTime.Now;
+    int YEAR = currentDate.Year;
+    int MONTH = currentDate.Month;
+    int SEMESTER;
+
+    if (MONTH >= 1 && MONTH <= 6) {
+        SEMESTER = 1;
+    } else {
+        SEMESTER = 2;
+    }
+
+    string query = $"SELECT * FROM Periodos_Actualizacion WHERE Fch_Inicio <= @date AND Fch_Fin >= @date AND Anio = @year AND Semestre = @semester;";
+
+    cmd.Connection = connection;
+    cmd.CommandText = query;
+    cmd.Parameters.Clear();
+    cmd.Parameters.AddWithValue("@date", currentDate);
+    cmd.Parameters.AddWithValue("@year", YEAR);
+    cmd.Parameters.AddWithValue("@semester", SEMESTER);
+    cmd.Prepare();
+    cmd.ExecuteNonQuery();
+
+    reader = cmd.ExecuteReader();
+
+    if (reader.HasRows) {
+        validDate = true;
+    }
+
+    Disconnect();
+    return validDate;
+    }
+
+    public DateTime? GetLastValidDate(){
+        Connect();
+
+        DateTime currentDate = DateTime.Now;
+        int YEAR = currentDate.Year;
+
+        string query = $"SELECT * FROM Periodos_Actualizacion WHERE Anio = @year ORDER BY Fch_Fin DESC LIMIT 1;";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@year", YEAR);
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+
+        reader = cmd.ExecuteReader();
+
+        DateTime? lastValidDate = null;
+
+        if(reader.HasRows){
+            reader.Read();
+            lastValidDate = reader.GetDateTime(3);
+        }
+
+
+        Disconnect();
+        return lastValidDate;
+    }
+
+    public bool CheckIfValidAdmin(int ci, string password)
+    {
+        bool validAdmin = false;
+
+        Connect();
+
+        string query = @"SELECT EXISTS (
+            SELECT 1
+            FROM UsuarioRol ur
+            JOIN Funcionarios f ON ur.Ci_Funcionario = f.Ci
+            JOIN Rol r ON ur.Id_Rol = r.Id
+            JOIN Logins l ON f.LogId = l.LogId
+            WHERE f.CI = @CI AND l.Password = @Password AND r.Rol = @AdminRole
+        ) AS isAdmin;";
+
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@AdminRole", "Admin");
+        cmd.Parameters.AddWithValue("@Password", password);
+        cmd.Parameters.AddWithValue("@Ci", ci);
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+
+        reader = cmd.ExecuteReader();
+
+        if (reader.HasRows) {
+            reader.Read();
+            validAdmin = reader.GetBoolean(0);
+        }
+
+        Disconnect();
+        return validAdmin;
+   }
+
+   public bool AddNewDate(DateTime start, DateTime end){
+        Connect();
+
+
+        string query = $"INSERT INTO Periodos_Actualizacion (Anio, Semestre, Fch_Inicio, Fch_Fin) VALUES (@year, @semester, @start, @end);";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@year", start.Year);
+        cmd.Parameters.AddWithValue("@semester", start.Month <= 6 ? 1 : 2);
+        cmd.Parameters.AddWithValue("@start", start);
+        cmd.Parameters.AddWithValue("@end", end);
+        cmd.Prepare();
+
+        if(cmd.ExecuteNonQuery() > 0){
+            Disconnect();
+            return true;
+        }else{
+            Disconnect();
+            return false;
+        }
+   }
+
+   public bool ChangeCurrentDate(DateTime start, DateTime newStart, DateTime end, DateTime newEnd){
+        Connect();
+
+        string query = $"UPDATE Periodos_Actualizacion SET Fch_Inicio = @newStart, Fch_Fin = @newEnd WHERE Fch_Inicio = @start AND Fch_Fin = @end;";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@start", start.ToString("yyyy-MM-dd"));
+        cmd.Parameters.AddWithValue("@end", end.ToString("yyyy-MM-dd"));
+        cmd.Parameters.AddWithValue("@newStart", newStart.ToString("yyyy-MM-dd"));
+        cmd.Parameters.AddWithValue("@newEnd", newEnd.ToString("yyyy-MM-dd"));
+
+        //print query
+        Console.WriteLine(cmd.CommandText.ToString().Replace("@start", "'" + start.ToString("yyyy-MM-dd") + "'").Replace("@end", "'" + end.ToString("yyyy-MM-dd") + "'").Replace("@newStart", "'" + newStart.ToString("yyyy-MM-dd") + "'").Replace("@newEnd", "'" + newEnd.ToString("yyyy-MM-dd") + "'"));
+        cmd.Prepare();
+
+        if(cmd.ExecuteNonQuery() > 0){
+            Disconnect();
+            return true;
+        }else{
+            Disconnect();
+            return false;
+        }
+   }
+
+   public DateTime GetCurrentStartDate(){
+         Connect();
+
+        DateTime currentDate = DateTime.Now;
+        int YEAR = currentDate.Year;
+
+        string query = $"SELECT * FROM Periodos_Actualizacion WHERE Anio = @year ORDER BY Fch_Fin DESC LIMIT 1;";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@year", YEAR);
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+
+        reader = cmd.ExecuteReader();
+
+        DateTime? lastValidDate = null;
+
+        if(reader.HasRows){
+            reader.Read();
+            lastValidDate = reader.GetDateTime(2);
+            Disconnect();
+            return (DateTime)lastValidDate;
+        }else{
+            Disconnect();
+            return DateTime.Now;
+        }
+   }
+
+   public DateTime GetCurrentEndDate(){
+         Connect();
+
+        DateTime currentDate = DateTime.Now;
+        int YEAR = currentDate.Year;
+
+        string query = $"SELECT * FROM Periodos_Actualizacion WHERE Anio = @year ORDER BY Fch_Fin DESC LIMIT 1;";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@year", YEAR);
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+
+        reader = cmd.ExecuteReader();
+
+        DateTime? lastValidDate = null;
+
+        if(reader.HasRows){
+            reader.Read();
+            lastValidDate = reader.GetDateTime(3);
+            Disconnect();
+            return (DateTime)lastValidDate;
+        }else{
+            Disconnect();
+            return DateTime.Now;
+        }
+   }
+
     public bool UserRegisterTransaction(int ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email, string password)
     {
         bool transactionCheck = false;

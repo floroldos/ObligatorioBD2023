@@ -44,8 +44,6 @@
     </div>
 </div>
 
-
-
 @code {
     public string? formCI;
     public string? password;
@@ -65,12 +63,13 @@
                 await Task.Delay(2000);
                 NavigationManager.NavigateTo("/formulario");
             }else{
-                error_str = "El usuario no existe... \n\n\n Redireccionando a la pagina de registro";
+                error_str = "El usuario no existe...";
                 await Task.Delay(2000);
                 NavigationManager.NavigateTo("/registro");                
             }
             
         }
+
         catch(Exception e){
             Console.WriteLine(e.Message);
             error_str = "La cédula debe ser un número.";

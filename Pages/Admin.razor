@@ -1,0 +1,106 @@
+@page "/admin/login"
+@inject DatabaseService DatabaseService
+@inject ILocalStorageService ls;
+@inject NavigationManager NM;
+
+<PageTitle>Admin Login</PageTitle>
+
+<div id="contenedor" class="container">
+    <div class="row">
+        <div class="col-sm-6 mx-auto">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h1> Panel de administracion </h1>
+                    <hr>
+                    @if(errorText != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @errorText
+                        </div>
+                        <hr>
+                    }
+                    <form @onsubmit="OnSubmitForm">
+                    <div class="form-group">
+                            <label for="ci">CI</label>
+                            <input type="text" class="form-control" id="ci" @bind="Ci" placeholder="Introduce su cedula">
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="password">Contraseña</label>
+                            <input type="password" class="form-control" id="password" @bind="Password" placeholder="Introduce tu contraseña">
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string? Ci { get; set; }
+    private string? Password { get; set; }
+    private string? errorText { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var ci = await ls.GetItemAsync<string>("ci");
+        var password = await ls.GetItemAsync<string>("password");
+
+        if(ci != null && password != null)
+        {
+            bool valid = DatabaseService.CheckIfValidAdmin(Int32.Parse(ci), password);
+            if(valid){
+                NM.NavigateTo("/admin");
+            }else{
+                await ls.RemoveItemAsync("ci");
+                await ls.RemoveItemAsync("password");
+            }
+        }else{
+            Console.WriteLine("No hay datos guardados");
+        }
+    }
+
+    private void OnSubmitForm()
+    {        
+        if(Ci == null || Password == null)
+        {
+            errorText = "Debe llenar todos los campos";
+            return;
+        }else if(Ci.Length < 7)
+        {
+            errorText = "La cedula debe tener al menos 7 digitos";
+            return;
+        }else if(Ci.Length > 8)
+        {
+            errorText = "La cedula debe tener como maximo 8 digitos";
+            return;
+        }else if(Password.Length < 6)
+        {
+            errorText = "La contraseña debe tener al menos 6 caracteres";
+            return;
+        }else if(!Ci.All(char.IsDigit))
+        {
+            errorText = "La cedula solo debe contener numeros";
+            return;
+        }
+
+        string MD5HashPassword = MD5Hash.Hash.Content(Password);
+
+        bool valid = DatabaseService.CheckIfValidAdmin(Int32.Parse(Ci), MD5HashPassword);
+        Console.WriteLine(valid);
+        if(!valid){
+            errorText = "Cedula o contraseña incorrecta";
+            return;
+        }
+
+        ls.RemoveItemAsync("ci");
+        ls.RemoveItemAsync("password");
+
+        ls.SetItemAsync("ci", Ci);
+        ls.SetItemAsync("password", MD5HashPassword);
+        
+        NM.NavigateTo("/admin");
+    }
+}
