@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Utilities;
 using StackExchange.Redis;
+using System.Data;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -105,6 +106,7 @@ public class DatabaseService
     {
         
         redisService.SetValue(ci.ToString(), agendDate.ToString()); // Agregar la cedula del funcionario junto a la fecha de la agenda al cache
+        redisService.SetValue(ci.ToString(), agendDate.ToString()); // Agregar la cedula del funcionario junto a la fecha de la agenda al cache
 
         Connect();
         cmd.Parameters.Clear();
@@ -173,13 +175,24 @@ public class DatabaseService
         return check;
     }
 
-    public bool InsertCarnet (string Fch_Emision, string Fch_Vencimiento, string Comprobante){
-
+    public bool InsertCarnet (DateTime fch_emision, DateTime fch_vencimiento, byte[] comprobante){
         Connect();
         cmd.Parameters.Clear();
         bool check = false;
+        string query = $"INSERT INTO Carnet_Salud (Fch_Emision, Fch_Vencimiento, Comprobante) VALUES (@fch_emision, @fch_vencimiento, @comprobante)";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.AddWithValue("@fch_emision", fch_emision);
+        cmd.Parameters.AddWithValue("@fch_vencimiento", fch_vencimiento);
+        cmd.Parameters.AddWithValue("@comprobante", comprobante);
+        cmd.Prepare();
+        int result = cmd.ExecuteNonQuery();
+        if (result > 0)
+        {
+            check = true;
+        }
+        Disconnect();
         return check;
-
     }
     public bool UserRegisterTransaction(int ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email, string password)
     {
@@ -214,4 +227,3 @@ public class DatabaseService
         return transactionCheck;
     }
 }
- 

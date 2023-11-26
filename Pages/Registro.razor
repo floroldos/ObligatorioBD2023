@@ -1,8 +1,8 @@
 @page "/registro"
 @inject DatabaseService DatabaseService;
 
-    <h1 id = "register-page">Alta de funcionario</h1>
-    <form id= "alert alert-danger" @onsubmit="OnSubmitForm">
+<h1 id = "register-page">Alta de funcionario</h1>
+<form id= "alert alert-danger" @onsubmit="OnSubmitForm">
     <label>Cédula de identidad</label> 
     <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
     <label>Nombre</label> 
@@ -23,12 +23,17 @@
         @if (showDocument)
         {
         <div id="uploadDocument">
+            <label for="documentoInput">Subir comprobante de carné de salud</label>
+            <input type="file" id="documentoInput" accept=".jpg, .pdf" name="documentoInput"  OnChange="HandleFileChange" />
             <label for="docInput">Subir comprobante de carné de salud</label>
             <input type="file" id="docInput" accept=".jpg, .pdf" name="docInput">
             <label>Fecha de emisión:</label>
+            <input type="date" name="fechaE" id="FechaE" placeholder="Ingrese la fecha de emisión" @bind="emissionDate">
             <input type="date" name="eDate" id="eDate" placeholder="Ingrese la fecha de emisión">
             <label>Fecha de vencimiento:</label>
+            <input type="date" name="fechaV" id="FechaV" placeholder="Ingrese la fecha de vencimiento" @bind = "expirationDate">
             <input type="date" name="vDate" id="vDate" placeholder="Ingrese la fecha de vencimiento">
+            <button @onclick="Confirmar" class="btn btn-primary">Confirmar</button>
         </div>
         }
         @if (showAgenda){
@@ -51,13 +56,19 @@
     private bool showDocument = false;
     private bool showAgenda = false;
     private int ci;
-     private string name = "";
+    private string name = "";
     private DateTime birthDate;
     private string address = "";
     private string email = "";
-    private int telephone;
+    private int telephone = 0;
     private string lastName = "";
+
+    private DateTime emissionDate;
+    private DateTime expirationDate;
+    private byte[] imageBytes = null;
     private string password = "";
+
+
     private async Task<bool> OnSubmitForm()
     {
         bool check = false;
@@ -71,8 +82,44 @@
         Console.WriteLine(e);
     }
     return check;
+    } 
+
+    private void HandleFileChange(InputFileChangeEventArgs e)
+    {
+        var imageFile = e.File;
+
+        using (var stream = imageFile.OpenReadStream())
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                imageBytes = memoryStream.ToArray();
+            }
+        }
+    }
+
+    private void Confirmar()
+    {
+        try
+        {
+            bool success = DatabaseService.InsertCarnet(emissionDate, expirationDate, imageBytes);
+
+            if (success)
+            {
+                Console.WriteLine("Imagen guardada exitosamente en la base de datos.");
+            }
+            else
+            {
+                Console.WriteLine("Error al guardar la imagen en la base de datos.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
 }
-        
+
 }
 
 
