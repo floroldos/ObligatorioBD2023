@@ -24,7 +24,7 @@ public class DatabaseService
             connection.Open();
             Console.WriteLine("Conectado a la base de datos... existe!");
             cmd.Connection = connection;
-            Desconectar();
+            Disconnect();
             return true;
         }
         catch (MySqlException ex)
@@ -35,7 +35,7 @@ public class DatabaseService
         
     }
 
-    public void Conectar()
+    public void Connect()
     {
         StringBuilder connectionString = new StringBuilder();
         connectionString.Append(CONNECTION_STRING);
@@ -56,7 +56,7 @@ public class DatabaseService
         }
     }
 
-    private void Desconectar()
+    private void Disconnect()
     {
         if(connection != null){
             connection.Close();
@@ -69,7 +69,7 @@ public class DatabaseService
     //Funciones de la base de datos --------------------------------------------------------------------------------
     
     public bool CheckUser(int ci){
-        Conectar();
+        Connect();
         cmd.Connection = connection;
         cmd.CommandText = "SELECT * FROM Funcionarios WHERE CI = @number;" ;
         cmd.Parameters.Clear();
@@ -77,13 +77,13 @@ public class DatabaseService
         cmd.Prepare();
         cmd.ExecuteNonQuery();
         reader = cmd.ExecuteReader();
-        Desconectar();
+        Disconnect();
 
         return reader.HasRows;
     }
-    public bool InsertarRegistroAgenda(string ci, DateOnly agendDate)
+    public bool InsertAgenda(string ci, DateOnly agendDate)
     {
-        Conectar();
+        Connect();
         cmd.Parameters.Clear();
         bool check = false;
         var aux = agendDate.ToString("yyyy-MM-dd");
@@ -98,32 +98,31 @@ public class DatabaseService
         {
             check = true;
         }
-        Desconectar();
+        Disconnect();
         return check;
     }
-    public bool InsertarFuncionario(string ci, string nombre, string apellido, DateOnly nacimiento, string direccion, string telefono, string email, string logId)
+    public bool InsertWorker(string ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email)
     {
-        Conectar();
+        Connect();
         cmd.Parameters.Clear();
         bool check = false;
-        string query = $"INSERT INTO Funcionarios (Ci, Nombre, Apellido, Fch_Nacimiento, Direccion, Telefono, Email, LogId) VALUES (@ci, @nombre, @apellido, @nacimiento, @direccion, @telefono, @email)";
+        string query = $"INSERT INTO Funcionarios (Ci, Nombre, Apellido, Fch_Nacimiento, Direccion, Telefono, Email) VALUES (@ci, @nombre, @apellido, @nacimiento, @direccion, @telefono, @email)";
         cmd.Connection = connection;
         cmd.CommandText = query;
         cmd.Parameters.AddWithValue("@ci", ci);
-        cmd.Parameters.AddWithValue("@nombre", nombre);
-        cmd.Parameters.AddWithValue("@apellido", apellido);
-        cmd.Parameters.AddWithValue("@nacimiento", nacimiento);
-        cmd.Parameters.AddWithValue("@direccion", direccion);
-        cmd.Parameters.AddWithValue("@telefono", telefono);
+        cmd.Parameters.AddWithValue("@nombre", name);
+        cmd.Parameters.AddWithValue("@apellido", lastName);
+        cmd.Parameters.AddWithValue("@nacimiento", birthDate);
+        cmd.Parameters.AddWithValue("@direccion", adress);
+        cmd.Parameters.AddWithValue("@telefono", telephone);
         cmd.Parameters.AddWithValue("@email", email);
-        cmd.Parameters.AddWithValue("@logId", logId);
         cmd.Prepare();  
         int result = cmd.ExecuteNonQuery();
         if (result > 0)
         {
             check = true;
         }
-        Desconectar();
+        Disconnect();
         return check;
     }
 }
