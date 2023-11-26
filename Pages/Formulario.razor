@@ -2,32 +2,56 @@
 @inject DatabaseService DatabaseService
 @inject NavigationManager NavigationManager
 
-<h2>FORMULARIO INICIO</h2>
+<h1>FORMULARIO INICIO</h1>
 
 @if(error){
     <h3>ERROR: @error_str</h3>
 }
 
-<!-- :v -->
-
 <form @onsubmit="OnSubmitForm">
     <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="formCI">
-    <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre">
-    <input type="text" name="apellido" id="apellido" placeholder="Ingrese su apellido">
-    <input type="date" name="fechaN" id="FechaN" placeholder="Ingrese su fecha de nacimiento"> 
-    <select name="carneSalud" id="carneSalud">
-        <option value="null" default>Ingrese una opcion</option>
-        <option value="si">Si</option>
-        <option value="no">No</option>
-    </select>
+    <input type="text" name="name" id="name" placeholder="Ingrese su nombre">
+    <input type="text" name="lastName" id="lastName" placeholder="Ingrese su apellido">
+    <input type="date" name="born-date" id="born-date" placeholder="Ingrese su fecha de nacimiento"> 
+    <label for="healthCard">¿Tiene carnet de salud vigente?</label><br>
+        <div id="healthCardOptions" class = "form-check">
+            <input class="form-check-input" type="checkbox" id="carnetSi" @bind="showDocument" /> Si
+            <br>
+            <input class="form-check-input" type="checkbox" id="carnetNo" @bind="showAgenda" /> No
+        </div>
+        @if (showDocument)
+        {
+        <div id="uploadDocument">
+            <label for="docInput">Subir comprobante de carné de salud</label>
+            <input type="file" id="documentoInput" accept=".jpg, .pdf" name="documentoInput"  OnChange="HandleFileChange" />
+            <label>Fecha de emisión:</label>
+            <input type="date" name="fechaE" id="FechaE" placeholder="Ingrese la fecha de emisión" @bind="emissionDate">
+            <input type="date" name="eDate" id="eDate" placeholder="Ingrese la fecha de emisión">
+            <label>Fecha de vencimiento:</label>
+            <input type="date" name="fechaV" id="FechaV" placeholder="Ingrese la fecha de vencimiento" @bind = "expirationDate">
+            <input type="date" name="vDate" id="vDate" placeholder="Ingrese la fecha de vencimiento">
+            <button @onclick="Confirmar" class="btn btn-primary">Confirmar</button>
+        </div>
+        }
+        @if (showAgenda){
+        <p>Usted debe tener el carné de salud al día. Agende una cita médica para poder continuar.</p>
+        <div id="bookAppointment">
+            <a href="/RegistroAgenda">Agendar Cita</a>
+        </div>
+        }
+    <hr>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
 @code{
+    private bool showDocument = false;
+    private bool showAgenda = false;
     public bool error = false;
     public string error_str = "";
     public string? formCI;
-
+    private DateTime emissionDate;
+    private DateTime expirationDate;
+    private byte[] imageBytes = null;
     private async Task OnSubmitForm()
     {
         int ci;
@@ -51,6 +75,26 @@
             error = true;
             error_str = "La cedula debe ser un numero";
             return;
+        }
+    }
+    private void Confirmar()
+    {
+        try
+        {
+            bool success = DatabaseService.InsertCarnet(emissionDate, expirationDate, imageBytes);
+
+            if (success)
+            {
+                Console.WriteLine("Imagen guardada exitosamente en la base de datos.");
+            }
+            else
+            {
+                Console.WriteLine("Error al guardar la imagen en la base de datos.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
         }
     }
 }

@@ -3,14 +3,14 @@
 
 <h1 id = "register-page">Alta de funcionario</h1>
 <form id= "alert alert-danger" @onsubmit="OnSubmitForm">
-    <label>Cédula de identidad</label> 
-    <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
     <label>Nombre</label> 
-    <label>Contraseña</label> 
-    <input type="password" name="password" id="password" placeholder="Ingrese una contraseña" @bind="password">
     <input type="text" name="name" id="name" placeholder="Ingrese su nombre" @bind="name">
     <label>Apellido</label>
     <input type="text" name="lastName" id="lastName" placeholder="Ingrese su apellido" @bind="lastName">
+    <label>Cédula de identidad</label> 
+    <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
+    <label>Contraseña</label> 
+    <input type="password" name="password" id="password" placeholder="Ingrese una contraseña" @bind="password">
     <label>Fecha de nacimiento</label>
     <input type="date" name="bithDate" id="birthDate" placeholder="Ingrese su fecha de nacimiento" @bind="birthDate"> 
     <hr> 
@@ -62,11 +62,10 @@
     private string email = "";
     private int telephone = 0;
     private string lastName = "";
-
+    private string password = "";
     private DateTime emissionDate;
     private DateTime expirationDate;
     private byte[] imageBytes = null;
-    private string password = "";
 
 
     private async Task<bool> OnSubmitForm()
@@ -74,7 +73,7 @@
         bool check = false;
     try
     {
-        DatabaseService.InsertWorker(ci, name, lastName, birthDate, address, telephone, email);
+        //DatabaseService.InsertWorker(ci, name, lastName, birthDate, address, telephone, email);
         DatabaseService.InsertCarnet(emissionDate, expirationDate, imageBytes);
     }
     catch (Exception e)
