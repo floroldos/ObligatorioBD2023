@@ -124,16 +124,18 @@ public class DatabaseService
         Disconnect();
         return check;
     }
-    public bool InsertWorker(int ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email, int logId)
+    public bool InsertWorker(int ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email, int logID)
     {
 
         redisService.setListElement("funcionarios", ci.ToString()); // Agregar el funcionario a la lista de funcionarios de la cache
 
         Connect();
         cmd.Parameters.Clear();
-        bool check = false;
-        string query = $"INSERT INTO Funcionarios (Ci, Nombre, Apellido, Fch_Nacimiento, Direccion, Telefono, Email, LogId) VALUES (@ci, @nombre, @apellido, @nacimiento, @direccion, @telefono, @email, @logId)";
         cmd.Connection = connection;
+        cmd.Connection.BeginTransaction();
+        bool check = false;
+
+        string query = $"INSERT INTO Funcionarios (Ci, Nombre, Apellido, Fch_Nacimiento, Direccion, Telefono, Email, LogId) VALUES (@ci, @nombre, @apellido, @nacimiento, @direccion, @telefono, @email, @logId)";
         cmd.CommandText = query;
         cmd.Parameters.AddWithValue("@ci", ci);
         cmd.Parameters.AddWithValue("@nombre", name);
@@ -142,6 +144,7 @@ public class DatabaseService
         cmd.Parameters.AddWithValue("@direccion", adress);
         cmd.Parameters.AddWithValue("@telefono", telephone);
         cmd.Parameters.AddWithValue("@email", email);
+        cmd.Parameters.AddWithValue("@logId", logID);
         cmd.Prepare();  
         int result = cmd.ExecuteNonQuery();
         if (result > 0)
@@ -190,6 +193,7 @@ public class DatabaseService
             string hashedPassword = MD5Hash.Hash.Content(password);
             bool transaction1 = RegisterUser(hashedPassword);
             string logID = cmd.CommandText = "SELECT LAST_INSERT_ID();";
+            Console.WriteLine(logID);
             bool transaction2 = InsertWorker(ci, name, lastName, birthDate, adress, telephone, email, Int32.Parse(logID));
             if (transaction1 && transaction2)
             {

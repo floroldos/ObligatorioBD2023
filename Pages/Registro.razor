@@ -63,7 +63,7 @@
         bool check = false;
     try
     {
-        DatabaseService.InsertWorker(ci, name, lastName, birthDate, address, telephone, email);
+        DatabaseService.UserRegisterTransaction(ci, name, lastName, birthDate, address, telephone, email, password);
     }
     catch (Exception e)
     {
