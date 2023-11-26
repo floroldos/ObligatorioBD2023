@@ -84,7 +84,7 @@ public class DatabaseService
             }
             return false; // El funcionario no está en la lista de funcionarios de la cache
         }
-        else{ // Si el funcionario no esta en la cache, hay que consultar a la base de datos
+        else { // Si el funcionario no esta en la cache, hay que consultar a la base de datos
             Connect();
             cmd.Connection = connection;
             cmd.CommandText = "SELECT * FROM Funcionarios WHERE CI = @number;" ;
