@@ -21,7 +21,7 @@
         @if (showDocument)
         {
         <div id="subirDocumento">
-            <input type="file" id="documentoInput" name="documentoInput">
+            <input type="file" id="documentoInput" accept=".jpg, .pdf" name="documentoInput"  @onchange="HandleFileUpload">
         </div>
         }
         @if (showAgenda){
@@ -49,6 +49,13 @@
     private string email = "";
     private int telephone = 0;
     private string lastName = "";
+
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        await ImageService.UploadImageAsync(imageModel, file);
+        Console.WriteLine("pepe");
+    }
     private async Task<bool> OnSubmitForm(){
    
         bool check = false;
