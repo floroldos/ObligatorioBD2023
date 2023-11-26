@@ -1,7 +1,7 @@
 @page "/admin"
 @inject DatabaseService DatabaseService 
-@inject IJSRuntime JSRuntime
-
+@inject ILocalStorageService ls;
+@inject NavigationManager NM;
 
 <PageTitle>Login</PageTitle>
 
@@ -11,13 +11,16 @@
             <div class="card">
                 <div class="card-body text-center">
                     <h1>Panel de administrador</h1>
-                    @if(checkIfValidTime()){
+                    <hr>
+                    @if(valid){
                          <div class="alert alert-success">
                             <h1>Actualmente hay periodo de fecha valido!</h1>
                             <p>¿Desea modificarlo?</p>
-                            <form @onsubmit="changeValidTime">
-                                <input type="date" placeholder="Ingrese nueva fecha de inicio...">
-                                <input type="date" placeholder="Ingrese nueva fecha de fin...">
+                            <p>El periodo actual es desde @(currentStart.ToString().Split(" ")[0]) hasta @(currentEnd.ToString().Split(" ")[0])</p>
+                            <form @onsubmit="changeCurrentValidTime">
+                                <input type="date" placeholder="Ingrese nueva fecha de inicio..." @bind="newCurrentStart">
+                                <input type="date" placeholder="Ingrese nueva fecha de fin..." @bind="newCurrentEnd">
+                                <br><br>
                                 <button type="submit" class="btn btn-primary">Cambiar</button>
                             </form>
                          </div>
@@ -25,17 +28,19 @@
                     else{
                         <div class="alert alert-danger">
                             <h1>Actualmente no hay periodo de fecha valido!</h1>
-                            @if(lastValidDate != null){
-                                <p>El ultimo periodo valido fue desde @lastValidDate</p>
+                            @if(DatabaseService.GetLastValidDate() != null){
+                                <p>El ultimo periodo valido fue desde @(currentStart.ToString().Split(" ")[0]) hasta @(currentEnd.ToString().Split(" ")[0])</p>
+                                <p>¿Desea modificarlo?</p>
+                                <form @onsubmit="changeCurrentValidTime">
+                                    <input type="date" placeholder="Ingrese nueva fecha de inicio..." @bind="newCurrentStart">
+                                    <input type="date" placeholder="Ingrese nueva fecha de fin..." @bind="newCurrentEnd">
+                                    <br><br>
+                                    <button type="submit" class="btn btn-primary">Cambiar</button>
+                                </form>
+                                
                             }else{
                                 <p>No hay periodos validos anteriores</p>
                             }
-                            <p>¿Desea crear uno nuevo?</p>
-                            <form @onsubmit="changeValidTime">
-                                <input type="date" placeholder="Ingrese nueva fecha de inicio...">
-                                <input type="date" placeholder="Ingrese nueva fecha de fin...">
-                                <button type="submit" class="btn btn-primary">Cambiar</button>
-                            </form>
                         </div>
                     }
 
@@ -45,15 +50,17 @@
                         <h1>Crear nuevo periodo de fecha</h1>
                         <p>¿Desea crear uno nuevo?</p>
                         <form @onsubmit="changeValidTime">
-                            <input type="date" placeholder="Ingrese nueva fecha de inicio...">
-                            <input type="date" placeholder="Ingrese nueva fecha de fin...">
-                            <button type="submit" class="btn btn-primary">Cambiar</button>
+                            <input type="date" placeholder="Ingrese nueva fecha de inicio..." @bind="start">
+                            <input type="date" placeholder="Ingrese nueva fecha de fin..." @bind="end">
+                            <br>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Crear</button>
                         </form>
                     </div>
 
                     <hr>
 
-                    <button type="button" class="btn btn-primary" @onclick="logout">Volver al menu</button>
+                    <button type="button" class="btn btn-primary" @onclick="logout">Cerrar sesión</button>
                 </div>
             </div>
         </div>
@@ -61,16 +68,56 @@
 </div>
 
 @code {
-    string? lastValidDate = null;
+    bool valid = false;
 
-    bool checkIfValidTime()
+    protected override void OnInitialized()
+    {
+        valid = CheckIfValidTime();
+
+        if(valid){
+            currentStart = DatabaseService.GetCurrentStartDate();
+            currentEnd = DatabaseService.GetCurrentEndDate();
+
+            if(currentStart != null){
+                newCurrentStart = currentStart.Value;
+            }
+
+            if(currentEnd != null){
+                newCurrentEnd = currentEnd.Value;
+            }
+        }
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var ci = await ls.GetItemAsync<string>("ci");
+        var password = await ls.GetItemAsync<string>("password");
+
+        Console.WriteLine(password);
+
+        if(ci == null || password == null){
+            NM.NavigateTo("/admin/login");
+        }else{
+            bool valid = DatabaseService.CheckIfValidAdmin(Int32.Parse(ci), password);
+            if(!valid){
+                await ls.RemoveItemAsync("ci");
+                await ls.RemoveItemAsync("password");
+                NM.NavigateTo("/admin/login");
+            }
+        
+        }
+    }
+
+    bool CheckIfValidTime()
     {
         bool valid = DatabaseService.CheckIfValidDate();
         switch(valid){
             case false:
-                DateTime? date = DatabaseService.GetLastValidDate();
+                DateTime? date = DatabaseService.GetCurrentEndDate();
                 if(date != null){
-                    lastValidDate = date.Value.ToString("dd/MM/yyyy");
+                    currentStart = DatabaseService.GetCurrentStartDate();
+                    currentEnd = DatabaseService.GetCurrentEndDate();
                 }
 
                 return false;
@@ -79,14 +126,91 @@
         }
     }
 
+    DateTime? currentStart;
+    DateTime? newCurrentStart;
+    DateTime? currentEnd;
+    DateTime? newCurrentEnd;
+
+    DateTime? start;
+    DateTime? end;
+
+    string errString = "";
+
     void changeValidTime()
     {
-        Console.WriteLine("Cambiando fecha");
+        if(start == null && end == null){
+            errString = "Debe ingresar ambas fechas!";
+            return;
+        }
+
+        if(start == null){
+            errString = "Debe ingresar la fecha de inicio!";
+            return;
+        }
+
+        if(end == null){
+            errString = "Debe ingresar la fecha de finalizacion!";
+            return;
+        }
+
+        if(start > end){
+            errString = "La fecha de inicio no puede ser mayor a la de finalizacion!";
+            return;
+        }
+
+        errString = "";
+
+        if(start != null){
+            if (end != null)
+            {
+                bool st = DatabaseService.AddNewDate(start.Value, end.Value);
+                if(st){
+                    NM.NavigateTo("/admin/login");
+                }
+            }
+        }
+    }
+
+    void changeCurrentValidTime(){
+        if(currentStart == null && currentEnd == null){
+            errString = "Debe ingresar ambas fechas!";
+            return;
+        }
+
+        if(currentStart == null){
+            errString = "Debe ingresar la fecha de inicio!";
+            return;
+        }
+
+        if(currentEnd == null){
+            errString = "Debe ingresar la fecha de finalizacion!";
+            return;
+        }
+
+        if(currentStart > currentEnd){
+            errString = "La fecha de inicio no puede ser mayor a la de finalizacion!";
+            return;
+        }
+
+        errString = "";
+
+        if(newCurrentStart != null){
+            if (newCurrentEnd != null)
+            {
+                bool status = DatabaseService.ChangeCurrentDate(currentStart.Value, newCurrentStart.Value, currentEnd.Value, newCurrentEnd.Value);
+                if(status){
+                    NM.NavigateTo("/admin/login");
+                }
+            
+            }
+        }
     }
 
     void logout()
     {
-        JSRuntime.InvokeVoidAsync("LocalStorage.removeItem", "ci");
-        JSRuntime.InvokeVoidAsync("LocalStorage.removeItem", "password");
+        ls.RemoveItemAsync("ci");
+        ls.RemoveItemAsync("password");
+        
+        NM.NavigateTo("/admin/login");
     }
 }

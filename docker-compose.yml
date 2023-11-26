@@ -10,3 +10,5 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: bernardo
       MYSQL_DATABASE: ObligatorioBD2023
+    volumes:
+      - ./sql-scripts:/docker-entrypoint-initdb.d

@@ -1,7 +1,5 @@
 using MySql.Data.MySqlClient;
 using System.Text;
-using System.Net.Mail;
-using System.Net;
 
 
 public class DatabaseService
@@ -124,7 +122,7 @@ public class DatabaseService
         SEMESTER = 2;
     }
 
-    string query = $"SELECT * FROM Periodos_Actualizacion WHERE Fch_Inicio <= @date AND Fch_Fin >= @date AND Año = @year AND Semestre = @semester;";
+    string query = $"SELECT * FROM Periodos_Actualizacion WHERE Fch_Inicio <= @date AND Fch_Fin >= @date AND Anio = @year AND Semestre = @semester;";
 
     cmd.Connection = connection;
     cmd.CommandText = query;
@@ -151,7 +149,7 @@ public class DatabaseService
         DateTime currentDate = DateTime.Now;
         int YEAR = currentDate.Year;
 
-        string query = $"SELECT * FROM Periodos_Actualizacion WHERE Año = @year ORDER BY Fch_Fin DESC LIMIT 1;";
+        string query = $"SELECT * FROM Periodos_Actualizacion WHERE Anio = @year ORDER BY Fch_Fin DESC LIMIT 1;";
         cmd.Connection = connection;
         cmd.CommandText = query;
         cmd.Parameters.Clear();
@@ -172,4 +170,145 @@ public class DatabaseService
         Desconectar();
         return lastValidDate;
     }
+
+    public bool CheckIfValidAdmin(int ci, string password)
+    {
+        bool validAdmin = false;
+
+        Conectar();
+
+        string query = @"SELECT EXISTS (
+            SELECT 1
+            FROM UsuarioRol ur
+            JOIN Funcionarios f ON ur.Ci_Funcionario = f.Ci
+            JOIN Rol r ON ur.Id_Rol = r.Id
+            JOIN Logins l ON f.LogId = l.LogId
+            WHERE f.CI = @CI AND l.Password = @Password AND r.Rol = @AdminRole
+        ) AS isAdmin;";
+
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@AdminRole", "Admin");
+        cmd.Parameters.AddWithValue("@Password", password);
+        cmd.Parameters.AddWithValue("@Ci", ci);
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+
+        reader = cmd.ExecuteReader();
+
+        if (reader.HasRows) {
+            reader.Read();
+            validAdmin = reader.GetBoolean(0);
+        }
+
+        Desconectar();
+        return validAdmin;
+   }
+
+   public bool AddNewDate(DateTime start, DateTime end){
+        Conectar();
+
+
+        string query = $"INSERT INTO Periodos_Actualizacion (Anio, Semestre, Fch_Inicio, Fch_Fin) VALUES (@year, @semester, @start, @end);";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@year", start.Year);
+        cmd.Parameters.AddWithValue("@semester", start.Month <= 6 ? 1 : 2);
+        cmd.Parameters.AddWithValue("@start", start);
+        cmd.Parameters.AddWithValue("@end", end);
+        cmd.Prepare();
+
+        if(cmd.ExecuteNonQuery() > 0){
+            Desconectar();
+            return true;
+        }else{
+            Desconectar();
+            return false;
+        }
+   }
+
+   public bool ChangeCurrentDate(DateTime start, DateTime newStart, DateTime end, DateTime newEnd){
+        Conectar();
+
+        string query = $"UPDATE Periodos_Actualizacion SET Fch_Inicio = @newStart, Fch_Fin = @newEnd WHERE Fch_Inicio = @start AND Fch_Fin = @end;";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@start", start.ToString("yyyy-MM-dd"));
+        cmd.Parameters.AddWithValue("@end", end.ToString("yyyy-MM-dd"));
+        cmd.Parameters.AddWithValue("@newStart", newStart.ToString("yyyy-MM-dd"));
+        cmd.Parameters.AddWithValue("@newEnd", newEnd.ToString("yyyy-MM-dd"));
+
+        //print query
+        Console.WriteLine(cmd.CommandText.ToString().Replace("@start", "'" + start.ToString("yyyy-MM-dd") + "'").Replace("@end", "'" + end.ToString("yyyy-MM-dd") + "'").Replace("@newStart", "'" + newStart.ToString("yyyy-MM-dd") + "'").Replace("@newEnd", "'" + newEnd.ToString("yyyy-MM-dd") + "'"));
+        cmd.Prepare();
+
+        if(cmd.ExecuteNonQuery() > 0){
+            Desconectar();
+            return true;
+        }else{
+            Desconectar();
+            return false;
+        }
+   }
+
+   public DateTime GetCurrentStartDate(){
+         Conectar();
+
+        DateTime currentDate = DateTime.Now;
+        int YEAR = currentDate.Year;
+
+        string query = $"SELECT * FROM Periodos_Actualizacion WHERE Anio = @year ORDER BY Fch_Fin DESC LIMIT 1;";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@year", YEAR);
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+
+        reader = cmd.ExecuteReader();
+
+        DateTime? lastValidDate = null;
+
+        if(reader.HasRows){
+            reader.Read();
+            lastValidDate = reader.GetDateTime(2);
+            Desconectar();
+            return (DateTime)lastValidDate;
+        }else{
+            Desconectar();
+            return DateTime.Now;
+        }
+   }
+
+   public DateTime GetCurrentEndDate(){
+         Conectar();
+
+        DateTime currentDate = DateTime.Now;
+        int YEAR = currentDate.Year;
+
+        string query = $"SELECT * FROM Periodos_Actualizacion WHERE Anio = @year ORDER BY Fch_Fin DESC LIMIT 1;";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@year", YEAR);
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+
+        reader = cmd.ExecuteReader();
+
+        DateTime? lastValidDate = null;
+
+        if(reader.HasRows){
+            reader.Read();
+            lastValidDate = reader.GetDateTime(3);
+            Desconectar();
+            return (DateTime)lastValidDate;
+        }else{
+            Desconectar();
+            return DateTime.Now;
+        }
+   }
 }

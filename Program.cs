@@ -1,4 +1,6 @@
 using System.Threading;
+using Blazored.LocalStorage;
+
 
 class Program
 {
@@ -21,6 +23,7 @@ class Program
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
         builder.Services.AddSingleton<DatabaseService>();
+        builder.Services.AddBlazoredLocalStorage();
 
         var app = builder.Build();
 
@@ -58,11 +61,15 @@ class Program
         Console.WriteLine("Email thread started...");
         while (true)
         {
-            Console.WriteLine("");
+            Console.WriteLine("Sending emails...");
+
             //db.sendEmails();
 
             //AQUI SE DEBERIAN DE AGARRAR LOS MAILS QUE NO ENVIARON EL CARNE DE SALUD Y MANDARLE UN EMAIL
             //GENERAR Y MANDAR EMAILS
+
+            Console.WriteLine("Emails sent!");
+            Console.WriteLine("Waiting 24 hours to send emails again...");
             Thread.Sleep(24 * 60 * 60 * 1000);
         }
     }

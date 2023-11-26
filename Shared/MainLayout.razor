@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject DatabaseService DatabaseService
-@inject NavigationManager NavigationManager;
+@inject NavigationManager NM;
 
 <PageTitle>FuncionarioSano</PageTitle>
 
@@ -51,7 +51,7 @@
     protected override void OnInitialized()
     {
         connected = DatabaseService.CheckConnection();
-        path = "/" + NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+        path = "/" + NM.Uri.Replace(NM.BaseUri, "");
     }
 
     string? lastValidDate = null;
