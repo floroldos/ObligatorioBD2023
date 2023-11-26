@@ -1,0 +1,92 @@
+@page "/admin"
+@inject DatabaseService DatabaseService 
+@inject IJSRuntime JSRuntime
+
+
+<PageTitle>Login</PageTitle>
+
+<div id="contenedor" class="container">
+    <div class="row">
+        <div class="col-sm-6 mx-auto">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h1>Panel de administrador</h1>
+                    @if(checkIfValidTime()){
+                         <div class="alert alert-success">
+                            <h1>Actualmente hay periodo de fecha valido!</h1>
+                            <p>¿Desea modificarlo?</p>
+                            <form @onsubmit="changeValidTime">
+                                <input type="date" placeholder="Ingrese nueva fecha de inicio...">
+                                <input type="date" placeholder="Ingrese nueva fecha de fin...">
+                                <button type="submit" class="btn btn-primary">Cambiar</button>
+                            </form>
+                         </div>
+                    }
+                    else{
+                        <div class="alert alert-danger">
+                            <h1>Actualmente no hay periodo de fecha valido!</h1>
+                            @if(lastValidDate != null){
+                                <p>El ultimo periodo valido fue desde @lastValidDate</p>
+                            }else{
+                                <p>No hay periodos validos anteriores</p>
+                            }
+                            <p>¿Desea crear uno nuevo?</p>
+                            <form @onsubmit="changeValidTime">
+                                <input type="date" placeholder="Ingrese nueva fecha de inicio...">
+                                <input type="date" placeholder="Ingrese nueva fecha de fin...">
+                                <button type="submit" class="btn btn-primary">Cambiar</button>
+                            </form>
+                        </div>
+                    }
+
+                    <hr>
+
+                    <div class="alert alert-secondary">
+                        <h1>Crear nuevo periodo de fecha</h1>
+                        <p>¿Desea crear uno nuevo?</p>
+                        <form @onsubmit="changeValidTime">
+                            <input type="date" placeholder="Ingrese nueva fecha de inicio...">
+                            <input type="date" placeholder="Ingrese nueva fecha de fin...">
+                            <button type="submit" class="btn btn-primary">Cambiar</button>
+                        </form>
+                    </div>
+
+                    <hr>
+
+                    <button type="button" class="btn btn-primary" @onclick="logout">Volver al menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    string? lastValidDate = null;
+
+    bool checkIfValidTime()
+    {
+        bool valid = DatabaseService.CheckIfValidDate();
+        switch(valid){
+            case false:
+                DateTime? date = DatabaseService.GetLastValidDate();
+                if(date != null){
+                    lastValidDate = date.Value.ToString("dd/MM/yyyy");
+                }
+
+                return false;
+            case true:
+                return true;
+        }
+    }
+
+    void changeValidTime()
+    {
+        Console.WriteLine("Cambiando fecha");
+    }
+
+    void logout()
+    {
+        JSRuntime.InvokeVoidAsync("LocalStorage.removeItem", "ci");
+        JSRuntime.InvokeVoidAsync("LocalStorage.removeItem", "password");
+    }
+}

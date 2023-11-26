@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject DatabaseService DatabaseService
+@inject NavigationManager NavigationManager;
 
 <PageTitle>FuncionarioSano</PageTitle>
 
@@ -11,7 +12,22 @@
         <article class="content px-4">
             @if(connected)
             {
-                @Body
+                if(path.Contains("/admin")){
+                    @Body
+                }
+                else if(checkIfValidTime()){
+                    @Body
+                }else{
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">¡Estás fuera de fecha para actualizar el carné de salud!</h4>
+                        <hr>
+                        @if(lastValidDate != null){
+                            <p>La fecha límite para subir el carné de salud fue <strong>@lastValidDate</strong>.</p>
+                        }else{
+                            <p>En este año aún no hubo períodos válidos para actualizar la información.</p>
+                        }
+                    </div>
+                }
             }
             else
             {
@@ -30,8 +46,29 @@
 @code{
     bool connected = false;
     bool loader = false;
+    
+    string path = "";
     protected override void OnInitialized()
     {
         connected = DatabaseService.CheckConnection();
+        path = "/" + NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+    }
+
+    string? lastValidDate = null;
+
+    bool checkIfValidTime()
+    {
+        bool valid = DatabaseService.CheckIfValidDate();
+        switch(valid){
+            case false:
+                DateTime? date = DatabaseService.GetLastValidDate();
+                if(date != null){
+                    lastValidDate = date.Value.ToString("dd/MM/yyyy");
+                }
+
+                return false;
+            case true:
+                return true;
+        }
     }
 }

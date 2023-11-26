@@ -1,5 +1,8 @@
 using MySql.Data.MySqlClient;
 using System.Text;
+using System.Net.Mail;
+using System.Net;
+
 
 public class DatabaseService
 {
@@ -7,6 +10,14 @@ public class DatabaseService
     private MySqlCommand cmd = new MySqlCommand();
     private MySqlDataReader? reader;
     private const string CONNECTION_STRING = "Server=localhost;";
+
+    private static DatabaseService? instance = null;
+    public static DatabaseService GetInstance(){
+        if(instance == null){
+            instance = new DatabaseService();
+        }
+        return instance;
+    }
 
     //Conexión y desconexión a la base de datos --------------------------------------------------------------------
     public bool CheckConnection(){
@@ -21,18 +32,7 @@ public class DatabaseService
         try
         {
             connection.Open();
-            Console.WriteLine("Conectado a la base de datos... existe!");
             cmd.Connection = connection;
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS Logins( LogId INT PRIMARY KEY , Password VARCHAR(50) NOT NULL );";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS Funcionarios( Ci INT(8) PRIMARY KEY , Nombre VARCHAR(50) NOT NULL , Apellido VARCHAR(50) NOT NULL , Fch_Nacimiento DATE NOT NULL , Direccion VARCHAR(100) NOT NULL , Telefono INT NOT NULL , Email VARCHAR(100) NOT NULL , LogId INT NOT NULL , FOREIGN KEY (LogId) REFERENCES Logins(LogId) );";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS Agenda( Nro INT PRIMARY KEY AUTO_INCREMENT , Ci INT(8) NOT NULL , Fch_Agenda DATE NOT NULL );";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS Carnet_Salud( Ci INT(8) PRIMARY KEY , Fch_Emision DATE NOT NULL , Fch_Vencimiento DATE NOT NULL , Comprobante VARCHAR(200) NOT NULL , FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci) );";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS Periodos_Actualizacion( Año YEAR NOT NULL , Semestre VARCHAR(20) , Fch_Inicio DATE PRIMARY KEY , Fch_Fin DATE NOT NULL );";
-            cmd.ExecuteNonQuery();
             Desconectar();
             return true;
         }
@@ -41,7 +41,6 @@ public class DatabaseService
             Console.WriteLine("Error al conectar a la base de datos: " + ex.Message);
             return false;
         }
-        
     }
 
     public void Conectar()
@@ -57,7 +56,6 @@ public class DatabaseService
         try
         {
             connection.Open();
-            Console.WriteLine("Conectado a la base de datos");
         }
         catch (MySqlException ex)
         {
@@ -69,7 +67,6 @@ public class DatabaseService
     {
         if(connection != null){
             connection.Close();
-            Console.WriteLine("Desconectado de la base de datos");
         }else{
             Console.Error.WriteLine("Se intento desconectarse de la base de datos pero no habia una conexion activa");
         }
@@ -82,14 +79,15 @@ public class DatabaseService
         cmd.Connection = connection;
         cmd.CommandText = "SELECT * FROM Funcionarios WHERE CI = @number;" ;
         cmd.Parameters.Clear();
-        cmd.Parameters.AddWithValue("@number", ci);
         cmd.Prepare();
+        cmd.Parameters.AddWithValue("@number", ci);
         cmd.ExecuteNonQuery();
         reader = cmd.ExecuteReader();
         Desconectar();
 
         return reader.HasRows;
     }
+
     public bool InsertarRegistroAgenda(string ci, DateOnly fechaAgenda)
     {
         Conectar();
@@ -109,5 +107,69 @@ public class DatabaseService
         Desconectar();
         return check;
     }
+    public bool CheckIfValidDate()
+    {
+    bool validDate = false;
 
+    Conectar();
+
+    DateTime currentDate = DateTime.Now;
+    int YEAR = currentDate.Year;
+    int MONTH = currentDate.Month;
+    int SEMESTER;
+
+    if (MONTH >= 1 && MONTH <= 6) {
+        SEMESTER = 1;
+    } else {
+        SEMESTER = 2;
+    }
+
+    string query = $"SELECT * FROM Periodos_Actualizacion WHERE Fch_Inicio <= @date AND Fch_Fin >= @date AND Año = @year AND Semestre = @semester;";
+
+    cmd.Connection = connection;
+    cmd.CommandText = query;
+    cmd.Parameters.Clear();
+    cmd.Parameters.AddWithValue("@date", currentDate);
+    cmd.Parameters.AddWithValue("@year", YEAR);
+    cmd.Parameters.AddWithValue("@semester", SEMESTER);
+    cmd.Prepare();
+    cmd.ExecuteNonQuery();
+
+    reader = cmd.ExecuteReader();
+
+    if (reader.HasRows) {
+        validDate = true;
+    }
+
+    Desconectar();
+    return validDate;
+    }
+
+    public DateTime? GetLastValidDate(){
+        Conectar();
+
+        DateTime currentDate = DateTime.Now;
+        int YEAR = currentDate.Year;
+
+        string query = $"SELECT * FROM Periodos_Actualizacion WHERE Año = @year ORDER BY Fch_Fin DESC LIMIT 1;";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@year", YEAR);
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+
+        reader = cmd.ExecuteReader();
+
+        DateTime? lastValidDate = null;
+
+        if(reader.HasRows){
+            reader.Read();
+            lastValidDate = reader.GetDateTime(3);
+        }
+
+
+        Desconectar();
+        return lastValidDate;
+    }
 }

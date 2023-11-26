@@ -8,8 +8,6 @@
     <h3>ERROR: @error_str</h3>
 }
 
-<!-- :v -->
-
 <form @onsubmit="OnSubmitForm">
     <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="formCI">
     <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre">
@@ -32,7 +30,6 @@
     {
         int ci;
         try{
-            //(formCI ?? "a") si formCI no es un numero se intenta parsear J a int y eso da error :D
             ci = int.Parse(formCI ?? "J");
             bool res = DatabaseService.CheckUser(ci);
 
