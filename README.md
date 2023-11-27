@@ -23,7 +23,6 @@ Clona este repositorio: `https://github.com/floroldos/ObligatorioBD2023.git`
 ## Uso
 
 1. Iniciar la Aplicación con Docker Compose
-Dirigirse a la carpeta *sql-scripts*, `cd sql-scripts`.
 Ejecutar `docker-compose up` para levantar la aplicación y su base de datos.
 
 3. Compilar y Ejecutar con dotnet watch.
