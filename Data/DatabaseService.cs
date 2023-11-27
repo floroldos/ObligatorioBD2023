@@ -137,7 +137,9 @@ public class DatabaseService
         }
     }
 
-    public bool selectAgendas(string ci, string fecha){
+    public async Task<bool> selectAgendas(string ci, string fecha){
+        Console.WriteLine(fecha);
+
         Connect();
         cmd.Parameters.Clear();
         bool check = false;

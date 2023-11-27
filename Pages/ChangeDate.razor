@@ -1,5 +1,5 @@
 @page "/admin"
-@inject DatabaseService DatabaseService 
+@inject DatabaseService DatabaseService;
 @inject ILocalStorageService ls;
 @inject NavigationManager NM;
 
@@ -70,16 +70,14 @@
                     <!-- div to add agenda dates -->
 
                     <hr>
-                    <form @onsubmit="createNewAgenda">
+                    <form onsubmit="@createNewAgenda">
                         <h1>Crear nueva agenda</h1>
-                        <input type="date" placeholder="Ingrese nueva fecha de inicio..." @bind="newDateStart">
-                        <input type="date" placeholder="Ingrese nueva fecha de fin..." @bind="newDateEnd">
+                        <input type="date" placeholder="Ingrese nueva fecha de inicio..." @bind="newCurrentStart">
+                        <input type="date" placeholder="Ingrese nueva fecha de fin..." @bind="newCurrentEnd">
                         <br>
                         <br>
                         <button type="submit" class="btn btn-primary">Crear</button>
                     </form>
-                    
-
                     <button type="button" class="btn btn-primary" @onclick="logout">Cerrar sesión</button>
                 </div>
             </div>
@@ -125,10 +123,8 @@
                 await ls.RemoveItemAsync("password");
                 NM.NavigateTo("/admin/login");
             }
-        
         }
     }
-
     bool CheckIfValidTime()
     {
         bool valid = DatabaseService.CheckIfValidDate();
@@ -139,7 +135,6 @@
                     currentStart = DatabaseService.GetCurrentStartDate();
                     currentEnd = DatabaseService.GetCurrentEndDate();
                 }
-
                 return false;
             case true:
                 return true;
@@ -248,7 +243,6 @@
         }else{
             return false;
         }
-
     }
 
     void logout()

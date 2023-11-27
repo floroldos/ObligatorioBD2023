@@ -21,7 +21,11 @@
     private int ci;
     private DateOnly fechaAgenda;
     public bool alert_str = false;
+    public Task<bool> result;
 
+    private void OnSubmitForm(){
+        result = DatabaseService.selectAgendas(ci.ToString(), fechaAgenda.ToString());
+    }
 
     public Task<bool> InsertData()
     {
