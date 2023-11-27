@@ -7,6 +7,50 @@ body {
     padding: 0;
 }
 
+#contenedor {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #e7e7e7;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+#contenedor .col-sm-6 {
+    font-size: 32px;
+    color: #333333;
+    margin-bottom: 20px;
+    font-size: 35px;
+    font-weight: 900;
+    position: relative;
+}
+
+#contenedor .card {
+    position: relative;
+}
+
+#contenedor h1 {
+    margin-bottom: 20px;
+    font-size: 35px;
+    font-weight: 900;
+}
+
+#contenedor hr {
+    border: none;
+    height: 3px;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+    margin-bottom: 20px;
+}
+
+#contenedor .alert {
+    margin-bottom: 20px;
+}
+
+#contenedor form {
+    margin-bottom: 0; /* Evita que el formulario tenga un margen inferior */
+}
+
+
 #register-form {
     max-width: 600px;
     margin: 20px auto;
@@ -16,7 +60,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-#register-page, #login-page, #card-page {
+#register-page, #login-page, #card-page, #contenedor {
     font-size: 32px;
     color: #333333;
     margin-bottom: 20px;
