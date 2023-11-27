@@ -18,19 +18,19 @@
                             <img src="favicon.ico" alt="Logo" class="logo">
                         </div>
                         <br>
-                        <h1 id = "iniciar-sesion"> INICIAR SESIÓN </h1>
+                        <div id="register-page">Iniciar sesión</div>
                         <br>
                         <div class="form-group">
                             <label for="ci">Cedula</label>
-                            <input type="text" id="ci" class="form-control" placeholder="Ingrese su cedula..." @bind="formCI">
+                            <input type="text" id="ci" class="form-control" placeholder="Ingrese su cédula" @bind="formCI">
                         </div>
                         <br>
                         <div class="form-group">
                             <label for="Password">Contraseña</label>
-                            <input type="password" class="form-control" id="Password" placeholder="Password" @bind="password">
+                            <input type="password" class="form-control" id="Password" placeholder="Ingrese su contraseña" @bind="password">
                         </div>
                         <br>
-                        <button type="submit" class="btn btn-primary">Ingresar</button>
+                        <button id="login-button" type="submit" class="btn btn-primary">Ingresar</button>
                         <br>
                         <br>
                         @if(error_str.Length > 0)

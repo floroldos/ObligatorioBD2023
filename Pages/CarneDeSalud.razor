@@ -2,19 +2,27 @@
 @inject NavigationManager NavigationManager
 @inject DatabaseService DatabaseService
 
-<h1>Registro de Carné de Salud</h1>
+<PageTitle>Subir carnet</PageTitle>
+
+
 @if (!uploadedCarnet){
     <form @onsubmit="OnSubmitForm">
+    <div class = "logo-container">
+        <img src="logo-ucu.png" alt="Logo" class="logo-ucu-reg">
+        <img src="favicon.ico" alt="Logo" class="logo-reg">
+    </div>
+    <div id="card-page">Subir carnet de salud</div>
     <label for="healthCard">¿Tiene carnet de salud vigente?</label><br>
         <div id="healthCardOptions" class = "form-check">
             <input class="form-check-input" type="checkbox" id="carnetSi" @bind="showDocument" /> Si
             <br>
             <input class="form-check-input" type="checkbox" id="carnetNo" @bind="showAgenda" /> No
         </div>
+        <hr>
         @if (showDocument)
         {
         <div id="uploadDocument">
-            <label for="docInput">Subir comprobante de carné de salud</label>
+            <label for="docInput">Subir comprobante de carnet de salud</label>
             <input type="file" id="documentoInput" accept=".jpg, .pdf" name="documentoInput" @bind="image" />
             <label>Fecha de emisión:</label>
             <input type="date" name="fechaE" id="FechaE" placeholder="Ingrese la fecha de emisión" @bind="emissionDate">

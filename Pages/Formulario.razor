@@ -2,18 +2,28 @@
 @inject DatabaseService DatabaseService
 @inject NavigationManager NavigationManager
 
-<h1>FORMULARIO INICIO</h1>
+<PageTitle>Formulario de actualización</PageTitle>
+
 
 @if(error){
     <h3>ERROR: @error_str</h3>
 }
 
-<form @onsubmit="OnSubmitForm">
-    <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="formCI">
-    <input type="text" name="name" id="name" placeholder="Ingrese su nombre">
-    <input type="text" name="lastName" id="lastName" placeholder="Ingrese su apellido">
-    <input type="date" name="born-date" id="born-date" placeholder="Ingrese su fecha de nacimiento"> 
-    <button type="submit" class="btn btn-primary">Submit</button>
+<form id="login-form" @onsubmit="OnSubmitForm">
+    <div class = "logo-container">
+        <img src="logo-ucu.png" alt="Logo" class="logo-ucu-reg">
+        <img src="favicon.ico" alt="Logo" class="logo-reg">
+    </div>
+    <div id="login-page">Formulario de actualización</div>
+    <label>Cedula de identidad</label>
+    <input type="text" name="ci" id="ci" placeholder="Ingrese su cédula" @bind="formCI">
+    <label>Nombre</label>
+    <input type="text" name="name" id="name" placeholder="Ingrese su nombre" @bind = "name">
+    <label>Apellido</label>
+    <input type="text" name="lastName" id="lastName" placeholder="Ingrese su apellido" @bind = "lastName">
+    <label>Fecha de nacimiento</label>
+    <input type="date" name="born-date" id="born-date" placeholder="Ingrese su fecha de nacimiento" @bind = "birthDate"> 
+    <button id="login-button" type="submit" class="btn btn-primary">Enviar datos</button>
 </form>
 
 @code{
@@ -21,9 +31,29 @@
     private bool showAgenda = false;
     public bool error = false;
     public string error_str = "";
-    public string? formCI;
+    public string formCI;
+    private string name = "";
+    private string lastName = "";
+    private DateTime birthDate;
+
+    public string alert_str = "";
+    public bool toggle_alert = false;
     private async Task OnSubmitForm()
     {
+        if (formCI.ToString().Length != 8){
+            alert_str = "La cedula de identidad debe tener 8 dígitos";
+            toggle_alert = true;
+        }
+        else if (name == "")
+        {
+            alert_str = "El nombre no puede estar vacio";
+            toggle_alert = true;
+        }
+        else if (lastName == "")
+        {
+            alert_str = "El apellido no puede estar vacio";
+            toggle_alert = true;
+        }
         int ci;
         try{
             ci = int.Parse(formCI ?? "J");
