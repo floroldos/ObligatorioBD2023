@@ -57,3 +57,6 @@ Se tienen dos dsitintas páginas de login.
 - Cuando el funcionario selecciona la opción de agendarse a una consulta, se navega a 'http://localhost:5199/RegistroAgenda'. Allí,
 
 ## Diagrama visual
+
+![DiagramaVisual_BD](Diagrama visual BD.png)
+
