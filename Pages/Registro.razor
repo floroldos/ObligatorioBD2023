@@ -2,31 +2,32 @@
 @inject DatabaseService DatabaseService;
 @inject NavigationManager NavigationManager;
 
-<h1 id = "register-page">Alta de funcionario</h1>
-<form id= "alert alert-danger" @onsubmit="OnSubmitForm">
-    <label>Nombre</label> 
+<h1 id="register-page">Alta de funcionario</h1>
+<form id="alert alert-danger" @onsubmit="OnSubmitForm">
+    <label>Nombre</label>
     <input type="text" name="name" id="name" placeholder="Ingrese su nombre" @bind="name">
     <label>Apellido</label>
     <input type="text" name="lastName" id="lastName" placeholder="Ingrese su apellido" @bind="lastName">
-    <label>Cédula de identidad</label> 
+    <label>Cédula de identidad</label>
     <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
-    <label>Contraseña</label> 
+    <label>Contraseña</label>
     <input type="password" name="password" id="password" placeholder="Ingrese una contraseña" @bind="password">
     <label>Fecha de nacimiento</label>
-    <input type="date" name="bithDate" id="birthDate" placeholder="Ingrese su fecha de nacimiento" @bind="birthDate"> 
-    <label>Ingrese su domicilio completo</label> 
-    <input type="text" name="domicilioCompleto" id="domicilioCompleto" placeholder="Ingrese su domicilio de residencia" @bind="address"> 
-    <label>Ingrese su correo electrónico</label> 
-    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo electrónico" @bind="email"> 
+    <input type="date" name="bithDate" id="birthDate" placeholder="Ingrese su fecha de nacimiento" @bind="birthDate">
+    <label>Ingrese su domicilio completo</label>
+    <input type="text" name="domicilioCompleto" id="domicilioCompleto" placeholder="Ingrese su domicilio de residencia"
+        @bind="address">
+    <label>Ingrese su correo electrónico</label>
+    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo electrónico" @bind="email">
     <label>Ingrese su teléfono de contacto</label>
-    <input type="text" name="telefono" id="telefono" placeholder="Ingrese su teléfono" @bind="telephone"> 
+    <input type="text" name="telefono" id="telefono" placeholder="Ingrese su teléfono" @bind="telephone">
     <button id="botonRegistro" type="submit" class="btn btn-primary">Registrarse</button>
-    @if(alert_str == true)
-        {
-        <div class="alert alert-success" role="alert">
-             <p>Usuario registrado con éxito</p>
+    @if (toggle_alert == true)
+    {
+        <div class="alert alert-danger" role="alert">
+            <p>@alert_str</p>
         </div>
-        }
+    }
 </form>
 
 
@@ -39,16 +40,56 @@
     private int telephone;
     private string lastName = "";
     private string password = "";
-    public bool alert_str = false;
+    public string alert_str = "";
+    public bool toggle_alert = false;
+    /*
+    campos a chequear:
+    password: no puede ser vacio y tiene que tener al menos 8 caracteres
+    telephone: no puede ser vacio
+    */
     private async Task<bool> OnSubmitForm()
     {
+        if (ci.ToString().Length != 8){
+            alert_str = "La cedula de identidad debe tener 8 dígitos";
+            toggle_alert = true;
+            return false;
+        }
+        else if (name == "")
+        {
+            alert_str = "El nombre no puede estar vacio";
+            toggle_alert = true;
+            return false;
+        }
+        else if (lastName == "")
+        {
+            alert_str = "El apellido no puede estar vacio";
+            toggle_alert = true;
+            return false;
+        }
+        else if (email == "" || !email.Contains("@")){
+            alert_str = "El email no puede estar vacio y tiene que tener @";
+            toggle_alert = true;
+        } else if (address == ""){
+            alert_str = "La dirección no puede estar vacía.";
+            toggle_alert = true;
+            return false;   
+        } else if (telephone.ToString().Length < 8 ){
+            alert_str = "El teléfono debe tener más de 8 dígitos.";
+            toggle_alert = true;
+            return false;
+        } else if (password.Length < 8){
+            alert_str = "La contraseña tiene que tener al menos 8 caracteres";
+            toggle_alert = true;
+            return false;
+        }
+
+
         bool check = false;
         try
         {
             DatabaseService.UserRegisterTransaction(ci, name, lastName, birthDate, address, telephone, email, password);
             check = true;
-            alert_str = true;
-            await Task.Delay(2000);
+            await Task.Delay(2000); 
             NavigationManager.NavigateTo("/Carnet");
         }
         catch (Exception e)
@@ -57,8 +98,5 @@
             Console.WriteLine(e);
         }
         return check;
-        } 
 }
-
-
-
+}
