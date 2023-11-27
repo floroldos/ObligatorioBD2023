@@ -500,4 +500,27 @@ public class DatabaseService
     }
 
 
+    public string[] GenerateReport(){
+        Connect();
+        cmd.Connection = connection;
+        cmd.CommandText = "SELECT * FROM Funcionarios f LEFT JOIN Carnet_Salud c ON f.Ci = c.Ci WHERE (c.Ci IS NULL OR c.Fch_Vencimiento < @date) AND f.Ci != 11111111;";        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@date", DateTime.Now);
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+        reader = cmd.ExecuteReader();
+        
+        string[] report = new string[reader.FieldCount];
+        int i = 0;
+
+        while(reader.Read()){
+            report[i] = reader.GetString(0) + " - " + reader.GetString(1) + " - " + " Carnet no vigente o no actualizado";
+            i++;
+        }
+
+        Disconnect();
+
+        return report;
+
+    }
+
 }
