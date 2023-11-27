@@ -58,18 +58,33 @@ class Program
 
     static void taskEmailWaiter()
     {
-        Console.WriteLine("Email thread started...");
+        Console.WriteLine("Report thread started...");
         while (true)
         {
-            Console.WriteLine("Sending emails...");
+            Console.WriteLine("Generating report...");
 
-            //db.sendEmails();
+            string[] report = DatabaseService.GetInstance().GenerateReport();
 
-            //AQUI SE DEBERIAN DE AGARRAR LOS MAILS QUE NO ENVIARON EL CARNE DE SALUD Y MANDARLE UN EMAIL
-            //GENERAR Y MANDAR EMAILS
+            string path = "report.log";
 
-            Console.WriteLine("Emails sent!");
-            Console.WriteLine("Waiting 24 hours to send emails again...");
+            using(var writer = new StreamWriter(path, true)) {
+                writer.WriteLine("========================= Reporte de carnet de salud =========================");
+                writer.WriteLine("----------------------------- Fecha: " + DateTime.Now.ToString("dd/MM/yyyy") + " ------------------------------");
+                foreach (string line in report) {
+                    if (line != "" && line != null && line != " " && line != "\n") {
+                        writer.WriteLine(line);
+                    }
+                }
+                writer.WriteLine("=============================== Fin de reporte ===============================");
+                writer.WriteLine("");
+                writer.Close();
+            }
+
+            report = new string[0];
+
+
+            Console.WriteLine("Report generated!");
+            Console.WriteLine("Waiting 24 hours to generate another report...");
             Thread.Sleep(24 * 60 * 60 * 1000);
         }
     }
