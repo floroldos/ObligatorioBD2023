@@ -60,6 +60,26 @@
 
                     <hr>
 
+                    @if(errString != ""){
+                        <div class="alert alert-danger">
+                            <p>@errString</p>
+                        </div>
+                        <hr>
+                    }
+
+                    <!-- div to add agenda dates -->
+
+                    <hr>
+                    <form @onsubmit="createNewAgenda">
+                        <h1>Crear nueva agenda</h1>
+                        <input type="date" placeholder="Ingrese nueva fecha de inicio..." @bind="newDateStart">
+                        <input type="date" placeholder="Ingrese nueva fecha de fin..." @bind="newDateEnd">
+                        <br>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Crear</button>
+                    </form>
+                    
+
                     <button type="button" class="btn btn-primary" @onclick="logout">Cerrar sesión</button>
                 </div>
             </div>
@@ -204,6 +224,31 @@
             
             }
         }
+    }
+
+    DateTime? newAgendaDate;
+
+    bool createNewAgenda(){
+        if(newAgendaDate == null){
+            errString = "Debe ingresar una fecha!";
+            return false;
+        }
+
+        if(newAgendaDate < DateTime.Now){
+            errString = "La fecha no puede ser menor a la actual!";
+            return false;
+        }
+
+        errString = "";
+
+        bool status = DatabaseService.AddNewAgendaDate(newAgendaDate.Value);
+        if(status){
+            NM.NavigateTo("/admin/login");
+            return status;
+        }else{
+            return false;
+        }
+
     }
 
     void logout()
