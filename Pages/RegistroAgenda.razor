@@ -1,16 +1,17 @@
 @page "/RegistroAgenda"
 @inject DatabaseService DatabaseService 
+@inject ILocalStorageService ls;
 
 <PageTitle>Registro Agenda</PageTitle>
         
 <h2>Registro Agenda</h2>
 
-    <form @onsubmit="InsertData">
-        <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="this.ci">
-        <input type="date" name="fechaAgenda" id="fechaAgenda" @bind="this.fechaAgenda">
+    <form @onsubmit="OnSubmitForm">
+        <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
+        <input type="date" name="fechaAgenda" id="fechaAgenda" @bind="fechaAgenda">
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    @if(alert_str == true)
+    @if(alert_str != "")
         {
         <div class="alert alert-success" role="alert">
             @alert_str
@@ -18,30 +19,36 @@
         }
 
 @code{
-    private int ci;
+    private string ci;
     private DateOnly fechaAgenda;
-    public bool alert_str = false;
-    public Task<bool> result;
+    public string alert_str = "";
+    public bool hayFecha;
 
-    private void OnSubmitForm(){
-        result = DatabaseService.selectAgendas(ci.ToString(), fechaAgenda.ToString());
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var ci = await ls.GetItemAsync<string>("ci");
+        
+        if(ci != null)
+        {
+            this.ci = ci;
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
-    public Task<bool> InsertData()
+    void OnSubmitForm()
     {
-        DatabaseService.InsertAgenda(ci, fechaAgenda);
-        // select de agendas a base de datos where ci null
-        // asignar cedula del usuario a cedula de agenda y hacer update
+        hayFecha = DatabaseService.selectAgendas(ci, fechaAgenda.ToString("yyyy-MM-dd"));
 
-        bool check = false;
-        try
+        Console.WriteLine(fechaAgenda.ToString("yyyy-MM-dd"));
+
+        if(hayFecha == true)
         {
-            check = DatabaseService.InsertAgenda(ci, fechaAgenda);
+            alert_str = "Agenda realizada con éxito";
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine($"Error al insertar datos: {ex.Message}");
+            alert_str = "No existe una agenda disponible en esa fecha o ya está ocupada";
         }
-        return Task.FromResult(check);
-    }     
+    }
 }

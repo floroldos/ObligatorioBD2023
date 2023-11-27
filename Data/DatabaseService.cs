@@ -137,25 +137,32 @@ public class DatabaseService
         }
     }
 
-    public async Task<bool> selectAgendas(string ci, string fecha){
+    public bool selectAgendas(string ci, string fecha){
         Console.WriteLine(fecha);
-
+        
         Connect();
-        cmd.Parameters.Clear();
         bool check = false;
-        string query = $"SELECT * FROM Agenda WHERE ci IS NULL AND Fch_Agenda = {fecha};";
+        string query = $"SELECT * FROM Agenda WHERE ci IS NULL AND Fch_Agenda = @fecha;";
         cmd.Connection = connection;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@fecha", fecha);
         cmd.CommandText = query;
         cmd.Prepare(); 
         cmd.ExecuteNonQuery(); 
         MySqlDataReader result = cmd.ExecuteReader();
-
+        
+        Disconnect();
+        
         if (result != null)
         {
+            Connect();
             cmd.Parameters.Clear();
-            string queryUpd = $"UPDATE Agenda SET ci = {ci} WHERE Fch_Agenda = {fecha};";
+            string queryUpd = $"UPDATE Agenda SET ci = @ci WHERE Fch_Agenda = @fecha;";
             cmd.Connection = connection;
-            cmd.CommandText = query;
+            cmd.Parameters.Clear();
+            cmd.Parameters.AddWithValue("@fecha", fecha);
+            cmd.Parameters.AddWithValue("@ci", ci);
+            cmd.CommandText = queryUpd;
             cmd.Prepare();  
             var resultQuery = cmd.ExecuteNonQuery();
             if(resultQuery > 0 ){
@@ -164,8 +171,8 @@ public class DatabaseService
             else{
                 Console.WriteLine("Hubo un error actualizando la base de datos");
             }
+            Disconnect();
         }
-        Disconnect();
         return check;
     }
 
@@ -525,19 +532,19 @@ public class DatabaseService
     }
 
     public bool AddNewAgendaDate(DateTime day){
-        Connect();
         bool check = false;
 
-        //Insert if not exists agenda that day
+        Connect();
+
         string query = $"INSERT INTO Agenda (Fch_Agenda) SELECT @day WHERE NOT EXISTS (SELECT * FROM Agenda WHERE Fch_Agenda = @day);";
         cmd.Connection = connection;
         cmd.CommandText = query;
         cmd.Parameters.Clear();
-        cmd.Parameters.AddWithValue("@day", day);
+        Console.WriteLine(query.Replace("@day", "'" + day.ToString("yyyy-MM-dd") + "'"));
+        cmd.Parameters.AddWithValue("@day", day.ToString("yyyy-MM-dd"));
         cmd.Prepare();
-        int result = cmd.ExecuteNonQuery();
-        if (result > 0)
-        {
+        
+        if(cmd.ExecuteNonQuery() > 0){
             check = true;
         }
 

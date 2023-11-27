@@ -12,7 +12,7 @@
                 <div class="card-body text-center">
                     <h1>Panel de administrador</h1>
                     <hr>
-                    @if(valid){
+                    @if(valid == true){
                          <div class="alert alert-success">
                             <h1>Actualmente hay periodo de fecha valido!</h1>
                             <p>¿Desea modificarlo?</p>
@@ -68,16 +68,18 @@
                     }
 
                     <!-- div to add agenda dates -->
-
-                    <hr>
-                    <form onsubmit="@createNewAgenda">
-                        <h1>Crear nueva agenda</h1>
-                        <input type="date" placeholder="Ingrese nueva fecha de inicio..." @bind="newCurrentStart">
-                        <input type="date" placeholder="Ingrese nueva fecha de fin..." @bind="newCurrentEnd">
-                        <br>
-                        <br>
-                        <button type="submit" class="btn btn-primary">Crear</button>
-                    </form>
+                    @if (valid == true)
+                    {
+                        <form onsubmit="@createNewAgenda">
+                            <h1>Crear nueva agenda</h1>
+                            <p>¿Desea crear una nueva agenda?</p>
+                            <input type="date" placeholder="Ingrese fecha." @bind="newAgendaDate">
+                            <br>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Crear</button>
+                        </form>
+                        <hr>
+                    }
                     <button type="button" class="btn btn-primary" @onclick="logout">Cerrar sesión</button>
                 </div>
             </div>
@@ -91,6 +93,8 @@
     protected override void OnInitialized()
     {
         valid = CheckIfValidTime();
+        
+        Console.WriteLine(valid);
 
         if(valid){
             currentStart = DatabaseService.GetCurrentStartDate();
@@ -104,6 +108,8 @@
                 newCurrentEnd = currentEnd.Value;
             }
         }
+        
+        newAgendaDate = DateTime.Now;
 
     }
 
@@ -223,26 +229,27 @@
 
     DateTime? newAgendaDate;
 
-    bool createNewAgenda(){
+    void createNewAgenda(){
         if(newAgendaDate == null){
             errString = "Debe ingresar una fecha!";
-            return false;
         }
 
         if(newAgendaDate < DateTime.Now){
             errString = "La fecha no puede ser menor a la actual!";
-            return false;
         }
 
         errString = "";
 
         bool status = DatabaseService.AddNewAgendaDate(newAgendaDate.Value);
+        
         if(status){
             NM.NavigateTo("/admin/login");
-            return status;
-        }else{
-            return false;
         }
+        else
+        {
+            errString = "Error al crear la agenda, ese dia ya existe!";
+        }
+
     }
 
     void logout()
