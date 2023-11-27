@@ -171,7 +171,6 @@ public class DatabaseService
     {
         
         redisService.SetValue(ci.ToString(), agendDate.ToString()); // Agregar la cedula del funcionario junto a la fecha de la agenda al cache
-        redisService.SetValue(ci.ToString(), agendDate.ToString()); // Agregar la cedula del funcionario junto a la fecha de la agenda al cache
 
         Connect();
         cmd.Parameters.Clear();
@@ -194,18 +193,18 @@ public class DatabaseService
     
     
 
-    public bool InsertCarnet (DateTime fch_emision, DateTime fch_vencimiento, string comprobante){
-
-        // redis Settear
-
+    public bool InsertCarnet (int ci, DateTime fch_emision, DateTime fch_vencimiento, string comprobante){
         Connect();
         cmd.Parameters.Clear();
         bool check = false;
-        string query = $"INSERT INTO Carnet_Salud (Fch_Emision, Fch_Vencimiento, Comprobante) VALUES (@fch_emision, @fch_vencimiento, @comprobante)";
+        var aux1 = fch_emision.ToString("yyyy-MM-dd");
+        var aux2 = fch_vencimiento.ToString("yyyy-MM-dd");
+        string query = $"INSERT INTO Carnet_Salud (Ci, Fch_Emision, Fch_Vencimiento, Comprobante) VALUES (@ci, @fch_emision, @fch_vencimiento, @comprobante)";
         cmd.Connection = connection;
         cmd.CommandText = query;
-        cmd.Parameters.AddWithValue("@fch_emision", fch_emision);
-        cmd.Parameters.AddWithValue("@fch_vencimiento", fch_vencimiento);
+        cmd.Parameters.AddWithValue("@ci", ci);
+        cmd.Parameters.AddWithValue("@fch_emision", aux1);
+        cmd.Parameters.AddWithValue("@fch_vencimiento", aux2);
         cmd.Parameters.AddWithValue("@comprobante", comprobante);
         cmd.Prepare();
         int result = cmd.ExecuteNonQuery();

@@ -1,16 +1,17 @@
 @page "/formulario"
 @inject DatabaseService DatabaseService
 @inject NavigationManager NavigationManager
+@inject ILocalStorageService ls;
 
 <PageTitle>Formulario de actualización</PageTitle>
 
-
-@if(error){
+@if (error)
+{
     <h3>ERROR: @error_str</h3>
 }
 
 <form id="login-form" @onsubmit="OnSubmitForm">
-    <div class = "logo-container">
+    <div class="logo-container">
         <img src="logo-ucu.png" alt="Logo" class="logo-ucu-reg">
         <img src="favicon.ico" alt="Logo" class="logo-reg">
     </div>
@@ -18,11 +19,11 @@
     <label>Cedula de identidad</label>
     <input type="text" name="ci" id="ci" placeholder="Ingrese su cédula" @bind="formCI">
     <label>Nombre</label>
-    <input type="text" name="name" id="name" placeholder="Ingrese su nombre" @bind = "name">
+    <input type="text" name="name" id="name" placeholder="Ingrese su nombre" @bind="name">
     <label>Apellido</label>
-    <input type="text" name="lastName" id="lastName" placeholder="Ingrese su apellido" @bind = "lastName">
+    <input type="text" name="lastName" id="lastName" placeholder="Ingrese su apellido" @bind="lastName">
     <label>Fecha de nacimiento</label>
-    <input type="date" name="born-date" id="born-date" placeholder="Ingrese su fecha de nacimiento" @bind = "birthDate"> 
+    <input type="date" name="born-date" id="born-date" placeholder="Ingrese su fecha de nacimiento" @bind="birthDate">
     <button id="login-button" type="submit" class="btn btn-primary">Enviar datos</button>
 </form>
 
@@ -32,47 +33,52 @@
     public bool error = false;
     public string error_str = "";
     public string formCI;
+    private int ci_local;
     private string name = "";
     private string lastName = "";
     private DateTime birthDate;
-
     public string alert_str = "";
     public bool toggle_alert = false;
     private async Task OnSubmitForm()
-    {
-        if (formCI.ToString().Length != 8){
+    {        
+        if (formCI.Length != 8)
+        {
             alert_str = "La cedula de identidad debe tener 8 dígitos";
             toggle_alert = true;
         }
         else if (name == "")
         {
-            alert_str = "El nombre no puede estar vacio";
+            alert_str = "El nombre no puede estar vacío";
             toggle_alert = true;
         }
         else if (lastName == "")
         {
-            alert_str = "El apellido no puede estar vacio";
+            alert_str = "El apellido no puede estar vacío";
             toggle_alert = true;
         }
-        int ci;
-        try{
-            ci = int.Parse(formCI ?? "J");
+
+        try
+        {
+            int ci = int.Parse(formCI ?? "J");
             bool res = DatabaseService.CheckUser(ci);
 
-            if(res){
+            if (res)
+            {
                 error = false;
                 NavigationManager.NavigateTo("/Carnet");
-            }else{
+            }
+            else
+            {
                 error = true;
                 error_str = "El usuario no existe";
                 await Task.Delay(2000);
-                NavigationManager.NavigateTo("/registro");                
+                NavigationManager.NavigateTo("/registro");
             }
         }
-
-        catch(Exception){
+        catch (Exception)
+        {
             error = true;
-            error_str = "La cedula debe ser un numero";
+            error_str = "La cedula debe ser un número";
             return;
         }
     }

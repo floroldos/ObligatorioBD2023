@@ -2,6 +2,7 @@
 
 @inject DatabaseService DatabaseService
 @inject NavigationManager NavigationManager
+@inject ILocalStorageService ls
 
 <PageTitle>Iniciar sesión</PageTitle>
 
@@ -59,16 +60,16 @@
         try
         {
             int ci = int.Parse(formCI);
+            await ls.SetItemAsStringAsync("ci", formCI);
             string hashedPassword = MD5Hash.Hash.Content(password);
-            Console.WriteLine(hashedPassword);
             bool res = DatabaseService.Login(ci, hashedPassword);
 
                 if(res){
-                    await Task.Delay(5000);
+                    await Task.Delay(2000);
                     NavigationManager.NavigateTo("/formulario");
                 }else{
                     error_str = "El usuario no existe. Redirigiendo a registro...";
-                    await Task.Delay(5000);
+                    await Task.Delay(2000);
                     NavigationManager.NavigateTo("/registro");                
                 }
             }

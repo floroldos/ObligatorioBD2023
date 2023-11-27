@@ -1,19 +1,20 @@
 @page "/Carnet"
 @inject NavigationManager NavigationManager
 @inject DatabaseService DatabaseService
+@inject ILocalStorageService ls;
 
 <PageTitle>Subir carnet</PageTitle>
 
-
-@if (!uploadedCarnet){
+@if (!uploadedCarnet)
+{
     <form @onsubmit="OnSubmitForm">
-    <div class = "logo-container">
-        <img src="logo-ucu.png" alt="Logo" class="logo-ucu-reg">
-        <img src="favicon.ico" alt="Logo" class="logo-reg">
-    </div>
-    <div id="card-page">Subir carnet de salud</div>
-    <label for="healthCard">¿Tiene carnet de salud vigente?</label><br>
-        <div id="healthCardOptions" class = "form-check">
+        <div class="logo-container">
+            <img src="logo-ucu.png" alt="Logo" class="logo-ucu-reg">
+            <img src="favicon.ico" alt="Logo" class="logo-reg">
+        </div>
+        <div id="card-page">Subir carnet de salud</div>
+        <label for="healthCard">¿Tiene carnet de salud vigente?</label><br>
+        <div id="healthCardOptions" class="form-check">
             <input class="form-check-input" type="checkbox" id="carnetSi" @bind="showDocument" /> Si
             <br>
             <input class="form-check-input" type="checkbox" id="carnetNo" @bind="showAgenda" /> No
@@ -21,53 +22,71 @@
         <hr>
         @if (showDocument)
         {
-        <div id="uploadDocument">
-            <label for="docInput">Subir comprobante de carnet de salud</label>
-            <input type="file" id="documentoInput" accept=".jpg, .pdf" name="documentoInput" @bind="image" />
-            <label>Fecha de emisión:</label>
-            <input type="date" name="fechaE" id="FechaE" placeholder="Ingrese la fecha de emisión" @bind="emissionDate">
-            <label>Fecha de vencimiento:</label>
-            <input type="date" name="fechaV" id="FechaV" placeholder="Ingrese la fecha de vencimiento" @bind = "expirationDate">
-            <button class="btn btn-primary" @onclick="uploadCarnet">Confirmar</button>
-        </div>
+            <div id="uploadDocument">
+                <label for="docInput">Subir comprobante de carnet de salud</label>
+                <input type="file" id="documentoInput" accept=".jpg, .pdf" name="documentoInput" @bind="image" />
+                <label>Fecha de emisión:</label>
+                <input type="date" name="fechaE" id="FechaE" placeholder="Ingrese la fecha de emisión" @bind="emissionDate">
+                <label>Fecha de vencimiento:</label>
+                <input type="date" name="fechaV" id="FechaV" placeholder="Ingrese la fecha de vencimiento" @bind="expirationDate">
+                <button class="btn btn-primary" @onclick="uploadCarnet">Confirmar</button>
+            </div>
         }
-        @if (showAgenda){
-        <p>Usted debe tener el carné de salud al día. Agende una cita médica para poder continuar.</p>
-        <div id="bookAppointment">
-            <a @onclick="uploadCarnet" href="/RegistroAgenda">Agendar Cita</a>
-        </div>
+        @if (showAgenda)
+        {
+            <p>Usted debe tener el carné de salud al día. Agende una cita médica para poder continuar.</p>
+            <div id="bookAppointment">
+                <a @onclick="uploadCarnet" href="/RegistroAgenda">Agendar Cita</a>
+            </div>
         }
-    <hr>
-</form>
-}else{
+        <hr>
+    </form>
+}
+else
+{
     <h1>Formulario completado</h1>
 }
-
 
 @code {
     private bool showDocument = false;
     private bool showAgenda = false;
+    private int ci;
     private bool uploadedCarnet = false;
     private DateTime emissionDate;
     private DateTime expirationDate;
     private string image = null;
 
-    private void uploadCarnet(){
-        uploadedCarnet = true;
-    }
-    private async Task<bool> OnSubmitForm()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        bool check = false;
-    try
-    {
-        DatabaseService.InsertCarnet(emissionDate, expirationDate, image);
-       
+        var ci = await ls.GetItemAsync<int>("ci");
     }
-    catch (Exception e)
+
+    private async Task OnSubmitForm()
     {
-        check = true;
-        Console.WriteLine(e);
+        try
+        {
+
+            if (ls != null)
+            {
+                Console.WriteLine(ci);
+                DatabaseService.InsertCarnet(ci, emissionDate, expirationDate, image);
+                await ls.RemoveItemAsync("ci");
+            }
+            else
+            {
+                Console.WriteLine("No hay datos guardados");
+            }
+
+            uploadedCarnet = true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
-    return check;
-    } 
+
+    private void uploadCarnet()
+    {
+        NavigationManager.NavigateTo("/Carnet");
+    }
 }
