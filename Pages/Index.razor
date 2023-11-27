@@ -21,7 +21,7 @@
                         <h1 id = "iniciar-sesion"> INICIAR SESIÓN </h1>
                         <br>
                         <div class="form-group">
-                            <label for="ci">Cédula de identidad</label>
+                            <label for="ci">Cedula</label>
                             <input type="text" id="ci" class="form-control" placeholder="Ingrese su cedula..." @bind="formCI">
                         </div>
                         <br>
@@ -31,6 +31,8 @@
                         </div>
                         <br>
                         <button type="submit" class="btn btn-primary">Ingresar</button>
+                        <br>
+                        <br>
                         @if(error_str.Length > 0)
                         {
                             <div class="alert alert-danger" role="alert">
@@ -46,32 +48,38 @@
     public string? formCI;
     public string? password;
     public string error_str = "";
-   private async Task OnSubmitForm()
+    private async Task OnSubmitForm()
     {
-        if(formCI == null || password == null){
-            error_str = "Debe llenar todos los campos.";
+        if (formCI == null || password == null)
+        {
+            error_str = "Debe llenar todos los campos";
             return;
         }
 
-        try{
+        try
+        {
             int ci = int.Parse(formCI);
-            bool res = DatabaseService.CheckUser(ci);
+            string hashedPassword = MD5Hash.Hash.Content(password);
+            Console.WriteLine(hashedPassword);
+            bool res = DatabaseService.Login(ci, hashedPassword);
 
-            if(res){
-                await Task.Delay(2000);
-                NavigationManager.NavigateTo("/formulario");
-            }else{
-                error_str = "El usuario no existe. Redirigiendo a registro...";
-                await Task.Delay(2000);
-                NavigationManager.NavigateTo("/registro");                
+                if(res){
+                    await Task.Delay(2000);
+                    NavigationManager.NavigateTo("/formulario");
+                }else{
+                    error_str = "El usuario no existe. Redirigiendo a registro...";
+                    await Task.Delay(2000);
+                    NavigationManager.NavigateTo("/registro");                
+                }
             }
-            
-        }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                error_str = "El usuario no existe...";
+                NavigationManager.NavigateTo("/registro");
+                return;
+            }
 
-        catch(Exception e){
-            Console.WriteLine(e.Message);
-            error_str = "La cédula debe ser un número.";
-            return;
         }
     }
 }

@@ -45,8 +45,7 @@
         bool check = false;
         try
         {
-            var hashedPassword = MD5Hash.Hash.Content(password);
-            DatabaseService.RegisterUser(hashedPassword);
+            DatabaseService.UserRegisterTransaction(ci, name, lastName, birthDate, address, telephone, email, password);
             check = true;
             alert_str = true;
             await Task.Delay(2000);
@@ -54,7 +53,7 @@
         }
         catch (Exception e)
         {
-            check = true;
+            check = false;
             Console.WriteLine(e);
         }
         return check;
