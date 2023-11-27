@@ -138,8 +138,9 @@ public class DatabaseService
     }
 
     public bool selectAgendas(string ci, string fecha){
+        Console.WriteLine(ci);
         Console.WriteLine(fecha);
-        
+
         Connect();
         bool check = false;
         string query = $"SELECT * FROM Agenda WHERE ci IS NULL AND Fch_Agenda = @fecha;";
