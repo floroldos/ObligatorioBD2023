@@ -58,25 +58,15 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var ci = await ls.GetItemAsync<int>("ci");
+        ci = await ls.GetItemAsync<int>("ci");
     }
 
     private async Task OnSubmitForm()
     {
         try
         {
-
-            if (ls != null)
-            {
-                Console.WriteLine(ci);
-                DatabaseService.InsertCarnet(ci, emissionDate, expirationDate, image);
-                await ls.RemoveItemAsync("ci");
-            }
-            else
-            {
-                Console.WriteLine("No hay datos guardados");
-            }
-
+            Console.WriteLine(ci);
+            DatabaseService.InsertCarnet(ci, emissionDate, expirationDate, image);
             uploadedCarnet = true;
         }
         catch (Exception e)
