@@ -107,6 +107,35 @@ public class DatabaseService
 
         return reader.HasRows;
     }
+    public bool Login(int ci, string hashedPassword){
+        Connect();
+        cmd.Connection = connection;
+        cmd.CommandText = "SELECT LogId FROM Funcionarios WHERE CI = @number;";
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@number", ci);
+        cmd.Prepare();
+        var logId = cmd.ExecuteScalar();
+        if (logId == null)
+        {
+            throw new System.ArgumentException("El usuario no existe");
+        }else{
+            logId = (int)logId;
+        }
+        cmd.CommandText = "SELECT Password FROM Logins WHERE LogId = @logId;";
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@logId", logId);
+        cmd.Prepare();
+        string dbPassword = (string)cmd.ExecuteScalar();
+        Disconnect();
+        if (dbPassword == hashedPassword)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     public bool selectAgendas(string ci, string fecha){
         Connect();
@@ -162,57 +191,8 @@ public class DatabaseService
         Disconnect();
         return check;
     }
-    public bool InsertWorker(int ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email, int logID)
-    {
-
-        redisService.setListElement("funcionarios", ci.ToString()); // Agregar el funcionario a la lista de funcionarios de la cache
-
-        Connect();
-        cmd.Parameters.Clear();
-        cmd.Connection = connection;
-        cmd.Connection.BeginTransaction();
-        bool check = false;
-
-        string query = $"INSERT INTO Funcionarios (Ci, Nombre, Apellido, Fch_Nacimiento, Direccion, Telefono, Email, LogId) VALUES (@ci, @nombre, @apellido, @nacimiento, @direccion, @telefono, @email, @logId)";
-        cmd.CommandText = query;
-        cmd.Parameters.AddWithValue("@ci", ci);
-        cmd.Parameters.AddWithValue("@nombre", name);
-        cmd.Parameters.AddWithValue("@apellido", lastName);
-        cmd.Parameters.AddWithValue("@nacimiento", birthDate);
-        cmd.Parameters.AddWithValue("@direccion", adress);
-        cmd.Parameters.AddWithValue("@telefono", telephone);
-        cmd.Parameters.AddWithValue("@email", email);
-        cmd.Parameters.AddWithValue("@logId", logID);
-        cmd.Prepare();  
-        int result = cmd.ExecuteNonQuery();
-        if (result > 0)
-        {
-            check = true;
-        }
-        Disconnect();
-        return check;
-    }
-
-    public bool RegisterUser(string hashedPassword)
-    {
-        Console.WriteLine("ENTRO A REGISTER USER");
-        Connect();
-        cmd.Parameters.Clear();
-        bool check = false;
-        string query = $"INSERT INTO Logins (LogId, Password) SELECT MAX(LogId) + 1, @password FROM Logins;";
-        cmd.Connection = connection;
-        cmd.CommandText = query;
-        cmd.Parameters.AddWithValue("@password", hashedPassword);
-        cmd.Prepare();  
-        int result = cmd.ExecuteNonQuery();
-        Console.WriteLine("EL RESULTADO DE INSERTAR EN LOGINS ES: " + result);
-        if (result > 0)
-        {
-            check = true;
-        }
-        Disconnect();
-        return check;
-    }
+    
+    
 
     public bool InsertCarnet (DateTime fch_emision, DateTime fch_vencimiento, string comprobante){
 
@@ -374,7 +354,6 @@ public class DatabaseService
         cmd.Parameters.AddWithValue("@newEnd", newEnd.ToString("yyyy-MM-dd"));
 
         //print query
-        Console.WriteLine(cmd.CommandText.ToString().Replace("@start", "'" + start.ToString("yyyy-MM-dd") + "'").Replace("@end", "'" + end.ToString("yyyy-MM-dd") + "'").Replace("@newStart", "'" + newStart.ToString("yyyy-MM-dd") + "'").Replace("@newEnd", "'" + newEnd.ToString("yyyy-MM-dd") + "'"));
         cmd.Prepare();
 
         if(cmd.ExecuteNonQuery() > 0){
@@ -452,11 +431,11 @@ public class DatabaseService
             Connect();
             cmd.Connection = connection;
             cmd.Parameters.Clear();
-            cmd.Transaction = connection.BeginTransaction();
+            cmd.Transaction = cmd.Connection.BeginTransaction();
             string hashedPassword = MD5Hash.Hash.Content(password);
             bool transaction1 = RegisterUser(hashedPassword);
-            string logID = cmd.CommandText = "SELECT LAST_INSERT_ID();";
-            Console.WriteLine("EL LOGID ES ESTE: " + logID);
+            cmd.CommandText = "SELECT MAX(LogId) FROM Logins;";
+            string logID = cmd.ExecuteScalar().ToString();
             bool transaction2 = InsertWorker(ci, name, lastName, birthDate, adress, telephone, email, Int32.Parse(logID));
             if (transaction1 && transaction2)
             {
@@ -476,5 +455,49 @@ public class DatabaseService
         }
         return transactionCheck;
     }
+    public bool InsertWorker(int ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email, int logID)
+    {
+
+        redisService.setListElement("funcionarios", ci.ToString()); // Agregar el funcionario a la lista de funcionarios de la cache
+
+        cmd.Parameters.Clear();
+        cmd.Connection = connection;
+        bool check = false;
+
+        string query = $"INSERT INTO Funcionarios (Ci, Nombre, Apellido, Fch_Nacimiento, Direccion, Telefono, Email, LogId) VALUES (@ci, @nombre, @apellido, @nacimiento, @direccion, @telefono, @email, @logId)";
+        cmd.CommandText = query;
+        cmd.Parameters.AddWithValue("@ci", ci);
+        cmd.Parameters.AddWithValue("@nombre", name);
+        cmd.Parameters.AddWithValue("@apellido", lastName);
+        cmd.Parameters.AddWithValue("@nacimiento", birthDate);
+        cmd.Parameters.AddWithValue("@direccion", adress);
+        cmd.Parameters.AddWithValue("@telefono", telephone);
+        cmd.Parameters.AddWithValue("@email", email);
+        cmd.Parameters.AddWithValue("@logId", logID);
+        cmd.Prepare();  
+        int result = cmd.ExecuteNonQuery();
+        if (result > 0)
+        {
+            check = true;
+        }
+        return check;
+    }
+    public bool RegisterUser(string hashedPassword)
+    {
+        cmd.Parameters.Clear();
+        bool check = false;
+        string query = $"INSERT INTO Logins (LogId, Password) SELECT MAX(LogId) + 1, @password FROM Logins;";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.AddWithValue("@password", hashedPassword);
+        cmd.Prepare();  
+        int result = cmd.ExecuteNonQuery();
+        if (result > 0)
+        {
+            check = true;
+        }
+        return check;
+    }
+
 
 }

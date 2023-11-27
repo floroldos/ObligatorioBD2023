@@ -47,14 +47,13 @@
         bool check = false;
         try
         {
-            var hashedPassword = MD5Hash.Hash.Content(password);
-            DatabaseService.RegisterUser(hashedPassword);
+            DatabaseService.UserRegisterTransaction(ci, name, lastName, birthDate, address, telephone, email, password);
             check = true;
-            alert_str = true;
+            NavigationManager.NavigateTo("/Carnet");
         }
         catch (Exception e)
         {
-            check = true;
+            check = false;
             Console.WriteLine(e);
         }
         return check;
