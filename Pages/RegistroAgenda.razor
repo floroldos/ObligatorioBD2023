@@ -12,17 +12,51 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     @if(alert_str != "")
-        {
-        <div class="alert alert-success" role="alert">
-            @alert_str
+    {
+    <div class="alert alert-success" role="alert">
+        @alert_str
+    </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Listado de fechas</h5>
         </div>
-        }
+        
+        <div class="card-body">
+             @if (agendas != null && agendas.Length > 0)
+            {
+                <p>Fechas disponibles:</p>
+                @foreach(var agenda in this.agendas)
+                {
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">@agenda</h5>
+                        </div>
+                    </div>
+                    
+                    <hr/>
+                }
+            }
+            else
+            {
+                <p>No hay fechas disponibles</p>
+            }
+        </div>
+       
+    </div>
+
+
+        
+
+
 
 @code{
     private string ci;
     private DateOnly fechaAgenda;
     public string alert_str = "";
     public bool hayFecha;
+    private string[] agendas;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -32,7 +66,6 @@
         {
             this.ci = ci;
         }
-
         await base.OnAfterRenderAsync(firstRender);
     }
 
@@ -45,6 +78,8 @@
         await Task.Delay(1000);
 
         Console.WriteLine(fechaAgenda.ToString("yyyy-MM-dd"));
+        hayFecha = DatabaseService.selectAgendas(ci, fechaAgenda.ToString("yyyy-MM-dd"));
+        
 
         if(hayFecha == true)
         {
