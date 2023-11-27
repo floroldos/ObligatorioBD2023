@@ -10,18 +10,24 @@
         <input type="date" name="fechaAgenda" id="fechaAgenda" @bind="this.fechaAgenda">
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    @if(alert_str == true)
+        {
+        <div class="alert alert-success" role="alert">
+            @alert_str
+        </div>
+        }
 
 @code{
     private int ci;
     private DateOnly fechaAgenda;
+    public bool alert_str = false;
+
 
     public Task<bool> InsertData()
     {
         DatabaseService.InsertAgenda(ci, fechaAgenda);
         // select de agendas a base de datos where ci null
         // asignar cedula del usuario a cedula de agenda y hacer update
-
-        
 
         bool check = false;
         try

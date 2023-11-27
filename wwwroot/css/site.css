@@ -35,6 +35,12 @@ form {
     align-items: center; 
 }
 
+h1 {
+    font-size: 32px;
+    color: #333333;
+    margin-bottom: 20px;
+  }
+
 .logo-container {
     display: flex;
     justify-content: space-between;
@@ -90,7 +96,7 @@ form {
 hr {
     margin: 20px 0;
     border: none;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #dddddd;
 }
 
 label {
@@ -118,10 +124,6 @@ input {
 
 #documentoInput {
     margin-top: 10px;
-}
-
-h1:focus {
-    outline: none;
 }
 
 a, .btn-link {
@@ -204,3 +206,13 @@ a, .btn-link {
     margin-bottom: 0px;
     font-size: 12px;
 }
+
+@media screen and (max-width: 600px) {
+    .form-container {
+      margin: 20px;
+    }
+  
+    h1 {
+      font-size: 28px;
+    }
+  }

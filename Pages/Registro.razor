@@ -24,7 +24,7 @@
     @if(alert_str == true)
         {
         <div class="alert alert-success" role="alert">
-             @alert_str
+             <p>Usuario registrado con éxito</p>
         </div>
         }
 </form>
@@ -40,8 +40,6 @@
     private string lastName = "";
     private string password = "";
     public bool alert_str = false;
-
-
     private async Task<bool> OnSubmitForm()
     {
         bool check = false;
@@ -51,6 +49,8 @@
             DatabaseService.RegisterUser(hashedPassword);
             check = true;
             alert_str = true;
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/Carnet");
         }
         catch (Exception e)
         {
