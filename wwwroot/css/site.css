@@ -177,6 +177,27 @@ h1 {
     text-align : center;
   }
 
+#sent{
+    font-size: 32px;
+    color: #333333;
+    margin-bottom: 20px;
+    text-align : center;
+    font-weight: 900;
+}
+
+.sent{
+    background-color: azure;
+}
+
+#sent-p{
+    font-size: 22px;
+    color: #333333;
+    margin-bottom: 20px;
+    text-align : center;
+    font-weight: 700;
+
+}
+
 .logo-container {
     display: flex;
     justify-content: space-between;

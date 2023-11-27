@@ -34,9 +34,9 @@
         }
         @if (showAgenda)
         {
-            <p>Usted debe tener el carné de salud al día. Agende una cita médica para poder continuar.</p>
+            <p>Usted debe tener el carnet de salud al día. Agende una cita médica para poder continuar.</p>
             <div id="bookAppointment">
-                <a @onclick="uploadCarnet" href="/RegistroAgenda">Agendar Cita</a>
+                <a href="/RegistroAgenda">Agendar Cita</a>
             </div>
         }
         <hr>
@@ -87,6 +87,6 @@ else
 
     private void uploadCarnet()
     {
-        NavigationManager.NavigateTo("/Carnet");
+        NavigationManager.NavigateTo("/Enviado");
     }
 }

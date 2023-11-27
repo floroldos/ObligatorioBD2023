@@ -1,6 +1,7 @@
 @page "/RegistroAgenda"
 @inject DatabaseService DatabaseService 
 @inject ILocalStorageService ls;
+@inject NavigationManager NavigationManager
 
 <PageTitle>Registro Agenda</PageTitle>
         
@@ -9,7 +10,7 @@
     <form @onsubmit="OnSubmitForm">
         <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
         <input type="date" name="fechaAgenda" id="fechaAgenda" @bind="fechaAgenda">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" @onclick="book">Enviar</button>
     </form>
     @if(alert_str != "")
     {
@@ -45,11 +46,6 @@
         </div>
        
     </div>
-
-
-        
-
-
 
 @code{
     private string ci;
@@ -91,5 +87,10 @@
         {
             alert_str = "No existe una agenda disponible en esa fecha o ya está ocupada";
         }
+    }
+
+     private void book()
+    {
+        NavigationManager.NavigateTo("/Enviado");
     }
 }
