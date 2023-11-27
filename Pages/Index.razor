@@ -64,23 +64,22 @@
             string hashedPassword = MD5Hash.Hash.Content(password);
             bool res = DatabaseService.Login(ci, hashedPassword);
 
-                if(res){
-                    await Task.Delay(2000);
-                    NavigationManager.NavigateTo("/formulario");
-                }else{
-                    error_str = "El usuario no existe. Redirigiendo a registro...";
-                    await Task.Delay(2000);
-                    NavigationManager.NavigateTo("/registro");                
-                }
+            if(res){
+                await Task.Delay(2000);
+                NavigationManager.NavigateTo("/formulario");
+            }else{
+                error_str = "El usuario no existe. Redirigiendo a registro...";
+                await Task.Delay(2000);
+                NavigationManager.NavigateTo("/registro");                
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                error_str = "El usuario no existe...";
-                NavigationManager.NavigateTo("/registro");
-                return;
-            }
-
         }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            error_str = "El usuario no existe...";
+            NavigationManager.NavigateTo("/registro");
+            return;
+        }
+
     }
 }

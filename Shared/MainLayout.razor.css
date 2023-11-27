@@ -51,7 +51,7 @@ main {
     border-top: 8px solid #3498db;
     width: 60px;
     height: 60px;
-    -webkit-animation: spin 1s ease-in-out infinite; /* Safari */
+    -webkit-animation: spin 1s ease-in-out infinite;
     animation: spin 1s ease-in-out infinite;
 }
 

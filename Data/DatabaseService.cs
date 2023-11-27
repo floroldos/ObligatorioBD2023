@@ -522,4 +522,25 @@ public class DatabaseService
 
     }
 
+    public bool AddNewAgendaDate(DateTime day){
+        Connect();
+        bool check = false;
+
+        //Insert if not exists agenda that day
+        string query = $"INSERT INTO Agenda (Fch_Agenda) SELECT @day WHERE NOT EXISTS (SELECT * FROM Agenda WHERE Fch_Agenda = @day);";
+        cmd.Connection = connection;
+        cmd.CommandText = query;
+        cmd.Parameters.Clear();
+        cmd.Parameters.AddWithValue("@day", day);
+        cmd.Prepare();
+        int result = cmd.ExecuteNonQuery();
+        if (result > 0)
+        {
+            check = true;
+        }
+
+        Disconnect();
+        return check;
+    }
+
 }
