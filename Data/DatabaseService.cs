@@ -553,4 +553,30 @@ public class DatabaseService
         return check;
     }
 
+    public string[] getAviableAgendas()
+    {
+        Connect();
+        cmd.Connection = connection;
+        cmd.CommandText = "SELECT * FROM Agenda WHERE ci IS NULL;";
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+        reader = cmd.ExecuteReader();
+    
+        string[] agendas = new string[reader.FieldCount];
+        int i = 0;
+    
+        while(reader.Read()){
+            if(reader.GetString(2) != null && reader.GetString(2) != ""){
+                string date = reader.GetString(2).Split(" ")[0];
+                if(date != null && date != ""){
+                    agendas[i] = date;
+                    i++;
+                }
+            }
+        }
+    
+        Disconnect();
+    
+        return agendas;
+    }
 }

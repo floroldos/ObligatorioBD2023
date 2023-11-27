@@ -60,7 +60,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        ci = await ls.GetItemAsync<string>("ci");
+        var ci = await ls.GetItemAsync<string>("ci");
         
         if(ci != null)
         {
@@ -68,16 +68,18 @@
         }
         await base.OnAfterRenderAsync(firstRender);
     }
-
-    private async Task<bool> OnSubmitForm()
+    
+    protected override void OnInitialized()
     {
-        bool check = false;
-        check = DatabaseService.selectAgendas(ci, fechaAgenda.ToString("yyyy-MM-dd"));
-        Console.WriteLine(ci);
+        agendas = new string[0];
+        fechaAgenda = DateOnly.FromDateTime(DateTime.Now);
+        agendas = DatabaseService.getAviableAgendas();
+        agendas = agendas.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+        base.OnInitialized();
+    }
 
-        await Task.Delay(1000);
-
-        Console.WriteLine(fechaAgenda.ToString("yyyy-MM-dd"));
+    void OnSubmitForm()
+    {
         hayFecha = DatabaseService.selectAgendas(ci, fechaAgenda.ToString("yyyy-MM-dd"));
         
 
@@ -89,7 +91,5 @@
         {
             alert_str = "No existe una agenda disponible en esa fecha o ya está ocupada";
         }
-
-        return check;
     }
 }
