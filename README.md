@@ -54,7 +54,7 @@ Se tienen dos dsitintas páginas de login.
     - En caso de no tenerlo vigente, se le notifica al funcionario que debe tenerlo al día, e invita al funcionario a agendarse una consulta médica para actualizarlo.
 
 # Registro agenda
-- Cuando el funcionario selecciona la opción de agendarse a una consulta, se navega a 'http://localhost:5199/RegistroAgenda'. Allí,
+- Cuando el funcionario selecciona la opción de agendarse a una consulta, se navega a 'http://localhost:5199/RegistroAgenda'. Allí, se navega a 'http://localhost:5199/RegistroAgenda'. Se muestran varias opciones de fechas para registrar consultas médicas, una por día. El usuario debe escribir la fecha deseada dentro de las disponibles, y colocar su cédula. En ese paso se inserta la cédula en la tabla de agendas, indicando que el turno fue tomado por la persona.
 
 ## Diagrama visual
 
