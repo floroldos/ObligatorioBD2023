@@ -11,24 +11,24 @@
         <img src="favicon.ico" alt="Logo" class="logo-reg">
     </div>
     <div id="register-page">Alta de funcionario</div>
-    <label>Nombre</label>
-    <input type="text" name="name" id="name" placeholder="Ingrese su nombre" @bind="name">
-    <label>Apellido</label>
-    <input type="text" name="lastName" id="lastName" placeholder="Ingrese su apellido" @bind="lastName">
-    <label>Cédula de identidad</label>
-    <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
-    <label>Contraseña</label>
-    <input type="password" name="password" id="password" placeholder="Ingrese una contraseña" @bind="password">
-    <label>Fecha de nacimiento</label>
-    <input type="date" name="bithDate" id="birthDate" placeholder="Ingrese su fecha de nacimiento" @bind="birthDate">
-    <label>Ingrese su domicilio completo</label>
-    <input type="text" name="domicilioCompleto" id="domicilioCompleto" placeholder="Ingrese su domicilio de residencia"
-        @bind="address">
-    <label>Ingrese su correo electrónico</label>
-    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo electrónico" @bind="email">
-    <label>Ingrese su teléfono de contacto</label>
-    <input type="text" name="telefono" id="telefono" placeholder="Ingrese su teléfono" @bind="telephone">
-    <button id="botonRegistro" type="submit" class="btn btn-primary">Registrarse</button>
+        <label>Nombre</label>
+        <input type="text" name="name" id="name" placeholder="Ingrese su nombre" @bind="name">
+        <label>Apellido</label>
+        <input type="text" name="lastName" id="lastName" placeholder="Ingrese su apellido" @bind="lastName">
+        <label>Cédula de identidad</label>
+        <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
+        <label>Contraseña</label>
+        <input type="password" name="password" id="password" placeholder="Ingrese una contraseña" @bind="password">
+        <label>Fecha de nacimiento</label>
+        <input type="date" name="bithDate" id="birthDate" placeholder="Ingrese su fecha de nacimiento" @bind="birthDate">
+        <label>Ingrese su domicilio completo</label>
+        <input type="text" name="domicilioCompleto" id="domicilioCompleto" placeholder="Ingrese su domicilio de residencia"
+            @bind="address">
+        <label>Ingrese su correo electrónico</label>
+        <input type="text" name="correo" id="correo" placeholder="Ingrese su correo electrónico" @bind="email">
+        <label>Ingrese su teléfono de contacto</label>
+        <input type="text" name="telefono" id="telefono" placeholder="Ingrese su teléfono" @bind="telephone">
+        <button id="botonRegistro" type="submit" class="btn btn-primary">Registrarse</button>
     @if (toggle_alert == true)
     {
         <div class="alert alert-danger" role="alert">

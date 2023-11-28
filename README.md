@@ -23,16 +23,16 @@ Clona este repositorio: `https://github.com/floroldos/ObligatorioBD2023.git`
 
 ## Uso
 
-1. Iniciar la Aplicación con Docker Compose
+1. **Iniciar la Aplicación con Docker Compose.**
 Ejecutar `docker-compose up` para levantar la aplicación y su base de datos.
 
-2. Compilar y Ejecutar en consola.
+2. **Compilar y Ejecutar en consola.**
   Dentro del directorio de la aplicación, ejecutar:
   `dotnet watch`
   Este comando compilará la aplicación y la ejecutará. La opción watch permitirá que la aplicación se reinicie automáticamente cuando se realicen cambios en el código.
   En caso de no funcionar, utilizar  `dotnet build` seguido de `dotnet run`.
 
-4. Acceder a la Aplicación
+3. **Acceder a la Aplicación.**
 Abrir navegador y acceder a la aplicación en http://localhost:5199.
 
 ## Detalles de flujo del programa
@@ -51,7 +51,7 @@ Se tienen dos distintas páginas de login.
       - password: Administrador
 
 # Formulario de actualizacion
-- Una vez iniciada la sesión, se redirige al funcionario a 'http://localhost:5199/formulario'. En esta página se le pide al usuario que ingrese datos adicionales requeridos para completar el formulario, como nombre, apellido y fecha de nacimiento. Cabe mencionar que se realiza un control sobre la cédula de identidad. Una vez que el usuario manda sus datos, se redirige a 'http://localhost:5199/carnet'.
+- Una vez iniciada la sesión, se redirige al funcionario a 'http://localhost:5199/formulario'. En esta página se le pide al usuario que ingrese datos adicionales requeridos para completar el formulario, como nombre, apellido y fecha de nacimiento. Cabe mencionar que se realiza un control sobre la cédula de identidad. Una vez que el usuario manda sus datos, se redirige a 'http://localhost:5199/Carnet'.
 
 # Subir carnet de salud
 - En esta página se le pregunta al funcionario si tiene su carnet de salud vigente.
@@ -59,9 +59,10 @@ Se tienen dos distintas páginas de login.
     - En caso de no tenerlo vigente, se le notifica al funcionario que debe tenerlo al día, e invita al funcionario a agendarse una consulta médica para actualizarlo.
 
 # Registro agenda
-- Cuando el funcionario selecciona la opción de agendarse a una consulta, se navega a 'http://localhost:5199/RegistroAgenda'. Allí, se muestran varias opciones de fechas para registrar consultas médicas, una por día. El usuario debe escribir la fecha deseada dentro de las disponibles, y colocar su cédula. En ese paso se inserta la cédula en la tabla de agendas, indicando que el turno fue tomado por la persona.
+
+- Cuando el funcionario selecciona la opción de agendarse a una consulta, se navega a 'http://localhost:5199/RegistroAgenda'. Allí, se navega a 'http://localhost:5199/RegistroAgenda'. Se muestran varias opciones de fechas para registrar consultas médicas, una por día. El usuario debe escribir la fecha deseada dentro de las disponibles, y colocar su cédula. En ese paso se inserta la cédula en la tabla de agendas, indicando que el turno fue tomado por la persona.
 
 ## Diagrama visual
 
-![DiagramaVisual_BD](DiagramavisualBD.png)
+![DiagramaVisual_BD](DiagramaVisualBD.png)
 

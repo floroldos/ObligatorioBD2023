@@ -3,87 +3,81 @@
 @inject ILocalStorageService ls;
 @inject NavigationManager NM;
 
-<PageTitle>Login</PageTitle>
+<PageTitle>Administrar fechas</PageTitle>
 
 <div id="contenedor" class="container">
-    <div class="row">
         <div class="col-sm-6 mx-auto">
             <div class="card">
                 <div class="card-body text-center">
-                    <h1>Panel de administrador</h1>
+                    <h1 id="register-page">Panel de administrador</h1>
                     <hr>
-                    @if(valid == true){
+                    @if(valid){
                          <div class="alert alert-success">
-                            <h1>Actualmente hay periodo de fecha valido!</h1>
-                            <p>¿Desea modificarlo?</p>
-                            <p>El periodo actual es desde @(currentStart.ToString().Split(" ")[0]) hasta @(currentEnd.ToString().Split(" ")[0])</p>
+                            <h1 id="periodo-fecha">¡Actualmente hay periodo de fecha válido!</h1>
+                            <p id="date-text">¿Desea modificarlo?</p>
+                            <p id="date-text">El periodo actual comienza el @(currentStart.ToString().Split(" ")[0]) y finaliza el @(currentEnd.ToString().Split(" ")[0]).</p>
                             <form @onsubmit="changeCurrentValidTime">
                                 <input type="date" placeholder="Ingrese nueva fecha de inicio..." @bind="newCurrentStart">
                                 <input type="date" placeholder="Ingrese nueva fecha de fin..." @bind="newCurrentEnd">
                                 <br><br>
-                                <button type="submit" class="btn btn-primary">Cambiar</button>
+                                <button type="submit" class="btn btn-primary" id = "date-button">Cambiar</button>
                             </form>
                          </div>
                     }
                     else{
                         <div class="alert alert-danger">
-                            <h1>Actualmente no hay periodo de fecha valido!</h1>
+                            <h1 id="periodo-fecha">Actualmente no hay periodo de fecha valido!</h1>
                             @if(DatabaseService.GetLastValidDate() != null){
-                                <p>El ultimo periodo valido fue desde @(currentStart.ToString().Split(" ")[0]) hasta @(currentEnd.ToString().Split(" ")[0])</p>
-                                <p>¿Desea modificarlo?</p>
+                                <p id="date-text">El ultimo periodo valido fue desde @(currentStart.ToString().Split(" ")[0]) hasta @(currentEnd.ToString().Split(" ")[0])</p>
+                                <p id="date-text">¿Desea modificarlo?</p>
                                 <form @onsubmit="changeCurrentValidTime">
                                     <input type="date" placeholder="Ingrese nueva fecha de inicio..." @bind="newCurrentStart">
                                     <input type="date" placeholder="Ingrese nueva fecha de fin..." @bind="newCurrentEnd">
                                     <br><br>
-                                    <button type="submit" class="btn btn-primary">Cambiar</button>
+                                    <button type="submit" class="btn btn-primary" >Cambiar</button>
                                 </form>
                                 
                             }else{
-                                <p>No hay periodos validos anteriores</p>
+                                <p id="date-text">No hay periodos validos anteriores</p>
                             }
                         </div>
                     }
 
                     <hr>
-
+                    
                     <div class="alert alert-secondary">
-                        <h1>Crear nuevo periodo de fecha</h1>
-                        <p>¿Desea crear uno nuevo?</p>
+                        <h1 id="periodo-fecha">Crear nuevo periodo de fecha</h1>
+                        <p id="date-text">¿Desea crear uno nuevo?</p>
                         <form @onsubmit="changeValidTime">
                             <input type="date" placeholder="Ingrese nueva fecha de inicio..." @bind="start">
                             <input type="date" placeholder="Ingrese nueva fecha de fin..." @bind="end">
                             <br>
                             <br>
-                            <button type="submit" class="btn btn-primary">Crear</button>
+                            <button type="submit" class="btn btn-primary" id="date-button">Crear</button>
                         </form>
                     </div>
-
-                    <hr>
-
                     @if(errString != ""){
                         <div class="alert alert-danger">
                             <p>@errString</p>
                         </div>
-                        <hr>
                     }
 
                     <!-- div to add agenda dates -->
-                    @if (valid == true)
-                    {
-                        <form onsubmit="@createNewAgenda">
-                            <h1>Crear nueva agenda</h1>
-                            <p>¿Desea crear una nueva agenda?</p>
-                            <input type="date" placeholder="Ingrese fecha." @bind="newAgendaDate">
+                    <hr>
+                    <div class="alert alert-info">
+                        <h1 id="periodo-fecha">Crear nueva agenda</h1>
+                        <form onsubmit="createNewAgenda">
+                            <input type="date" placeholder="Ingrese nueva fecha de inicio..." @bind="newCurrentStart">
+                            <input type="date" placeholder="Ingrese nueva fecha de fin..." @bind="newCurrentEnd">
                             <br>
                             <br>
                             <button type="submit" class="btn btn-primary">Crear</button>
                         </form>
-                        <hr>
-                    }
-                    <button type="button" class="btn btn-primary" @onclick="logout">Cerrar sesión</button>
+                    </div>
+                <button type="button" class="btn btn-primary" @onclick="logout">Cerrar sesión</button>
+                <button type="button" class="btn btn-primary" @onclick="goBack">Volver al inicio</button>
                 </div>
             </div>
-        </div>
     </div>
 </div>
 
@@ -93,8 +87,6 @@
     protected override void OnInitialized()
     {
         valid = CheckIfValidTime();
-        
-        Console.WriteLine(valid);
 
         if(valid){
             currentStart = DatabaseService.GetCurrentStartDate();
@@ -108,8 +100,6 @@
                 newCurrentEnd = currentEnd.Value;
             }
         }
-        
-        newAgendaDate = DateTime.Now;
 
     }
 
@@ -229,27 +219,26 @@
 
     DateTime? newAgendaDate;
 
-    void createNewAgenda(){
+    bool createNewAgenda(){
         if(newAgendaDate == null){
             errString = "Debe ingresar una fecha!";
+            return false;
         }
 
         if(newAgendaDate < DateTime.Now){
             errString = "La fecha no puede ser menor a la actual!";
+            return false;
         }
 
         errString = "";
 
         bool status = DatabaseService.AddNewAgendaDate(newAgendaDate.Value);
-        
         if(status){
             NM.NavigateTo("/admin/login");
+            return status;
+        }else{
+            return false;
         }
-        else
-        {
-            errString = "Error al crear la agenda, ese dia ya existe!";
-        }
-
     }
 
     void logout()
@@ -258,5 +247,9 @@
         ls.RemoveItemAsync("password");
         
         NM.NavigateTo("/admin/login");
+    }
+
+    void goBack(){
+        NM.NavigateTo("/");
     }
 }
