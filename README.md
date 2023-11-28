@@ -55,6 +55,11 @@ Se tienen dos dsitintas páginas de login.
 
 ### Registro agenda
 - Cuando el funcionario selecciona la opción de agendarse a una consulta, se navega a 'http://localhost:5199/RegistroAgenda'. Allí, se navega a 'http://localhost:5199/RegistroAgenda'. Se muestran varias opciones de fechas para registrar consultas médicas, una por día. El usuario debe escribir la fecha deseada dentro de las disponibles, y colocar su cédula. En ese paso se inserta la cédula en la tabla de agendas, indicando que el turno fue tomado por la persona.
+  
+## Reporte
+Se puede acceder a un reporte guarda la lista de personas sin carnet de salud.
+
+### Si al ingresar el periodo de fechas está cerrado, se puede ingresar como admin y cambiar el periodo.
 
 ## Diagrama visual
 
