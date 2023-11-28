@@ -12,8 +12,14 @@ services:
       MYSQL_DATABASE: ObligatorioBD2023
     volumes:
       - ./sql-scripts:/docker-entrypoint-initdb.d
-      
-  # Redis Commander: tool to manage our Redis container from localhost
+
+  redis:
+    image: redis:6-alpine
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+
   redis-commander:
     image: rediscommander/redis-commander:latest
     environment:
@@ -23,9 +29,14 @@ services:
     depends_on:
       - redis
 
-  redis:
-    image: redis:6-alpine
-    expose:
-      - "6379"
+  blazor-app:
+    image: funcionario_sano:latest
     ports:
-      - "6379:6379"
+      - "5000:80"
+    depends_on:
+      db:
+        condition: service_started
+      redis:
+        condition: service_started
+      redis-commander:
+        condition: service_started

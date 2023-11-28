@@ -9,7 +9,7 @@ public class RedisService
 
     public RedisService() 
     {
-        redis = ConnectionMultiplexer.Connect("localhost:6379");
+        redis = ConnectionMultiplexer.Connect("127.0.0.1:6379");
         IDatabase db = redis.GetDatabase();
     }
 

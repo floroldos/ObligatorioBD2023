@@ -1,0 +1,56 @@
+@page "/report"
+
+@inject NavigationManager NavigationManager
+@inject DatabaseService DatabaseService
+@inject ILocalStorageService ls;
+@inject NavigationManager NM;
+
+<PageTitle>Reporte</PageTitle>
+
+<div class="sent">
+    <h1 id="sent">Reporte</h1>
+    <hr>
+    <br>
+    <div class="text-center">
+        @for (int i = 0; i < report.Length; i++)
+        {
+            <p>@report[i]</p>
+        }
+    
+        <br>
+        <hr>
+        <button type="button" class="btn btn-primary" @onclick="back">Volver</button>
+    </div>
+</div>
+
+@code{
+  string[] report;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var ci = await ls.GetItemAsync<string>("ci");
+        var password = await ls.GetItemAsync<string>("password");
+
+        if(ci == null || password == null){
+            NM.NavigateTo("/admin/login");
+        }else{
+            bool valid = DatabaseService.CheckIfValidAdmin(Int32.Parse(ci), password);
+            if(!valid){
+                await ls.RemoveItemAsync("ci");
+                await ls.RemoveItemAsync("password");
+                NM.NavigateTo("/admin/login");
+            }
+        }
+    }
+
+  protected override void OnInitialized()
+  {
+    string reportData = File.ReadAllText("report.log");
+    report = reportData.Split('\n');
+  }
+
+  void back()
+  {
+    NavigationManager.NavigateTo("/admin");
+  }
+}

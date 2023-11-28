@@ -9,3 +9,11 @@
 </div>
 
 
+@code{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await ls.ClearAsync();
+    }
+    
+}
+

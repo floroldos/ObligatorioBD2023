@@ -170,9 +170,6 @@ public class DatabaseService
             if(resultQuery > 0 ){
                 check = true;
             }
-            else{
-                Console.WriteLine("Hubo un error actualizando la base de datos");
-            }
             Disconnect();
         }
         return check;
@@ -536,13 +533,14 @@ public class DatabaseService
     public bool AddNewAgendaDate(DateTime day){
         bool check = false;
 
+        Console.WriteLine("Agregando nueva agenda");
+
         Connect();
 
         string query = $"INSERT INTO Agenda (Fch_Agenda) SELECT @day WHERE NOT EXISTS (SELECT * FROM Agenda WHERE Fch_Agenda = @day);";
         cmd.Connection = connection;
         cmd.CommandText = query;
         cmd.Parameters.Clear();
-        Console.WriteLine(query.Replace("@day", "'" + day.ToString("yyyy-MM-dd") + "'"));
         cmd.Parameters.AddWithValue("@day", day.ToString("yyyy-MM-dd"));
         cmd.Prepare();
         
@@ -551,6 +549,13 @@ public class DatabaseService
         }
 
         Disconnect();
+
+        if(check){
+            Console.WriteLine("Nueva agenda agregada");
+        }else{
+            Console.WriteLine("No se pudo agregar la nueva agenda");
+        }
+
         return check;
     }
 

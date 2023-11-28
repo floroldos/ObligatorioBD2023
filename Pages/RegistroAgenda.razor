@@ -10,13 +10,17 @@
     <form @onsubmit="OnSubmitForm">
         <input type="text" name="ci" id="ci" placeholder="Ingrese su cedula" @bind="ci">
         <input type="date" name="fechaAgenda" id="fechaAgenda" @bind="fechaAgenda">
-        <button type="submit" class="btn btn-primary" @onclick="book">Enviar</button>
+        <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
-    @if(alert_str != "")
+    @if(alert_str != "" && hayFecha == true)
     {
-    <div class="alert alert-success" role="alert">
-        @alert_str
-    </div>
+        <div class="alert alert-success" role="alert">
+            @alert_str
+        </div>
+    }else if(alert_str != ""){
+        <div class="alert alert-danger" role="alert">
+            @alert_str
+        </div>
     }
 
     <div class="card">
@@ -78,15 +82,13 @@
         if(hayFecha == true)
         {
             alert_str = "Agenda realizada con éxito";
+
+            Task.Delay(3000).Wait();
+            NavigationManager.NavigateTo("/Enviado");
         }
         else
         {
             alert_str = "No existe una agenda disponible en esa fecha o ya está ocupada";
         }
-    }
-
-     private void book()
-    {
-        NavigationManager.NavigateTo("/Enviado");
     }
 }

@@ -8,42 +8,47 @@
 
 
 <div class="login">
-            <div class="background">
-                <div class="shape"></div>
-                <div class="shape"></div>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form @onsubmit="OnSubmitForm" id="login">
+        <div class = "logo-container">
+            <img src="logo-ucu.png" alt="Logo" class="logo-ucu">
+            <img src="favicon.ico" alt="Logo" class="logo">
+        </div>
+        <br>
+        <div id="register-page">Iniciar sesión</div>
+        <br>
+        <div class="form-group">
+            <label for="ci">Cedula</label>
+            <input type="text" id="ci" class="form-control" placeholder="Ingrese su cédula" @bind="formCI">
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="Password">Contraseña</label>
+            <input type="password" class="form-control" id="Password" placeholder="Ingrese su contraseña" @bind="password">
+        </div>
+        <br>
+        <button id="login-button" type="submit" class="btn btn-primary">Ingresar</button>
+        <br>
+        <br>
+        @if(error_str.Length > 0)
+        {
+            <div class="alert alert-danger" role="alert">
+                @error_str
             </div>
-            <form @onsubmit="OnSubmitForm" id="login">
-                <div class = "logo-container">
-                    <img src="logo-ucu.png" alt="Logo" class="logo-ucu">
-                    <img src="favicon.ico" alt="Logo" class="logo">
-                </div>
-                <br>
-                <div id="register-page">Iniciar sesión</div>
-                <br>
-                <div class="form-group">
-                    <label for="ci">Cedula</label>
-                    <input type="text" id="ci" class="form-control" placeholder="Ingrese su cédula" @bind="formCI">
-                </div>
-                <br>
-                <div class="form-group">
-                    <label for="Password">Contraseña</label>
-                    <input type="password" class="form-control" id="Password" placeholder="Ingrese su contraseña" @bind="password">
-                </div>
-                <br>
-                <button id="login-button" type="submit" class="btn btn-primary">Ingresar</button>
-                <br>
-                <br>
-                @if(error_str.Length > 0)
-                {
-                    <div class="alert alert-danger" role="alert">
-                        @error_str
-                    </div>
-                }
-         </form>
+        }
+    </form>
 </div>
 
 
 @code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await ls.ClearAsync();
+    }
+
     public string? formCI;
     public string? password;
     public string error_str = "";
