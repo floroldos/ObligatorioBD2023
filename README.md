@@ -46,7 +46,7 @@ Se tienen dos dsitintas páginas de login.
 - En la página 'http://localhost:5199/admin', se pide cédula y contraseña para ingresar. Cuando se inicia sesión se controla el largo y tipo de la cédula. Por último, se realiza una consulta a la base de datos para verificar si la contraseña ingresada es correcta. En este paso se cifra la contraseña con MD5 por temas de seguridad.
 
 # Formulario de actualizacion
-- Una vez iniciada la sesión, se redirige al funcionario a 'http://localhost:5199/formulario'. En esta página se le pide al usuario que ingrese datos adicionales requeridos para completar el formulario, como nombre, apellido y fecha de nacimiento. Cabe mencionar que se realiza un control sobre la cédula de identidad. Una vez que el usuario manda sus datos, se redirige a 'http://localhost:5199/carnet'.
+- Una vez iniciada la sesión, se redirige al funcionario a 'http://localhost:5199/formulario'. En esta página se le pide al usuario que ingrese datos adicionales requeridos para completar el formulario, como nombre, apellido y fecha de nacimiento. Cabe mencionar que se realiza un control sobre la cédula de identidad. Una vez que el usuario manda sus datos, se redirige a 'http://localhost:5199/Carnet'.
 
 # Subir carnet de salud
 - En esta página se le pregunta al funcionario si tiene su carnet de salud vigente.
