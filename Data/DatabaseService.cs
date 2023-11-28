@@ -138,11 +138,13 @@ public class DatabaseService
     }
 
     public bool selectAgendas(string ci, string fecha){
+        Console.WriteLine("a"); 
+        Console.WriteLine(ci);
         Console.WriteLine(fecha);
-        
+        ci = "53692872";
         Connect();
         bool check = false;
-        string query = $"SELECT * FROM Agenda WHERE ci IS NULL AND Fch_Agenda = @fecha;";
+        string query = $"SELECT * FROM Agenda WHERE Ci IS NULL AND Fch_Agenda = @fecha;";
         cmd.Connection = connection;
         cmd.Parameters.Clear();
         cmd.Parameters.AddWithValue("@fecha", fecha);
@@ -157,7 +159,7 @@ public class DatabaseService
         {
             Connect();
             cmd.Parameters.Clear();
-            string queryUpd = $"UPDATE Agenda SET ci = @ci WHERE Fch_Agenda = @fecha;";
+            string queryUpd = $"UPDATE Agenda SET Ci = @ci WHERE Fch_Agenda = @fecha;";
             cmd.Connection = connection;
             cmd.Parameters.Clear();
             cmd.Parameters.AddWithValue("@fecha", fecha);

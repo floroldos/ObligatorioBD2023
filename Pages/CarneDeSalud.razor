@@ -34,9 +34,9 @@
         }
         @if (showAgenda)
         {
-            <p>Usted debe tener el carné de salud al día. Agende una cita médica para poder continuar.</p>
+            <p>Usted debe tener el carnet de salud al día. Agende una cita médica para poder continuar.</p>
             <div id="bookAppointment">
-                <a @onclick="uploadCarnet" href="/RegistroAgenda">Agendar Cita</a>
+                <a href="/RegistroAgenda">Agendar Cita</a>
             </div>
         }
         <hr>
@@ -58,25 +58,15 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var ci = await ls.GetItemAsync<int>("ci");
+        ci = await ls.GetItemAsync<int>("ci");
     }
 
     private async Task OnSubmitForm()
     {
         try
         {
-
-            if (ls != null)
-            {
-                Console.WriteLine(ci);
-                DatabaseService.InsertCarnet(ci, emissionDate, expirationDate, image);
-                await ls.RemoveItemAsync("ci");
-            }
-            else
-            {
-                Console.WriteLine("No hay datos guardados");
-            }
-
+            Console.WriteLine(ci);
+            DatabaseService.InsertCarnet(ci, emissionDate, expirationDate, image);
             uploadedCarnet = true;
         }
         catch (Exception e)
@@ -87,6 +77,6 @@ else
 
     private void uploadCarnet()
     {
-        NavigationManager.NavigateTo("/Carnet");
+        NavigationManager.NavigateTo("/Enviado");
     }
 }
