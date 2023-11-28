@@ -58,5 +58,5 @@ Se tienen dos dsitintas páginas de login.
 
 ## Diagrama visual
 
-![DiagramaVisual_BD](Diagrama visual BD.png)
+![DiagramaVisual_BD](DiagramaVisualBD.png)
 
