@@ -37,32 +37,38 @@ Abrir navegador y acceder a la aplicación en http://localhost:5199.
 
 ## Detalles de flujo del programa
 
-Se tienen dos distintas páginas de login.
-
-# Login de funcionarios
+Se tienen dos dsitintas páginas de login.
+### Login de funcionarios
 - Es la página principal que recibe al usuario al ingresar. Allí cualquier funcionario puede acceder con su cédula y contraseña a la plataforma.
 - Si las credenciales son correctas, se redirige al usuario al formulario de actualización, en 'http://localhost:5199/formulario'.
 - Si las credenciales no son correctas, se le notifica al funcionario a través de una alerta. Creemos importante mencionar que se realiza un control del largo y tipo de la cédula ingresada. Además, se realiza una consulta a la bases de datos para verificar la contraseña ingresada. En este paso se cifra la contraseña con MD5 por temas de seguridad.
-- 
-# Login de administradores
-- En la página 'http://localhost:5199/admin', se pide cédula y contraseña para ingresar. Cuando se inicia sesión se controla el largo y tipo de la cédula. Por último, se realiza una consulta a la base de datos para verificar si la contraseña ingresada es correcta. En este paso se cifra la contraseña con MD5 por temas de seguridad. El administrador accede a las funciones de modificación de plazos del formulario, además de la creación de fechas para las agendas médicas.
-- El usuario administrador es:
-      - ci: 11111111
-      - password: Administrador
+### Login de administradores
+- En la página 'http://localhost:5199/admin', se pide cédula y contraseña para ingresar. Cuando se inicia sesión se controla el largo y tipo de la cédula. Por último, se realiza una consulta a la base de datos para verificar si la contraseña ingresada es correcta. En este paso se cifra la contraseña con MD5 por temas de seguridad.
 
-# Formulario de actualizacion
+### Formulario de actualizacion
 - Una vez iniciada la sesión, se redirige al funcionario a 'http://localhost:5199/formulario'. En esta página se le pide al usuario que ingrese datos adicionales requeridos para completar el formulario, como nombre, apellido y fecha de nacimiento. Cabe mencionar que se realiza un control sobre la cédula de identidad. Una vez que el usuario manda sus datos, se redirige a 'http://localhost:5199/Carnet'.
 
-# Subir carnet de salud
+### Subir carnet de salud
 - En esta página se le pregunta al funcionario si tiene su carnet de salud vigente.
     - En caso de tenerlo vigente, se desplegan campos para que el funcionario ingrese, como imágen comprobante, fecha de emisión y de vencimiento. Cuando el usuario adjunte sus datos y envíe el formulario, se insertan los datos del carnet de salud en la base de datos.
     - En caso de no tenerlo vigente, se le notifica al funcionario que debe tenerlo al día, e invita al funcionario a agendarse una consulta médica para actualizarlo.
 
-# Registro agenda
-
+### Registro agenda
 - Cuando el funcionario selecciona la opción de agendarse a una consulta, se navega a 'http://localhost:5199/RegistroAgenda'. Allí, se navega a 'http://localhost:5199/RegistroAgenda'. Se muestran varias opciones de fechas para registrar consultas médicas, una por día. El usuario debe escribir la fecha deseada dentro de las disponibles, y colocar su cédula. En ese paso se inserta la cédula en la tabla de agendas, indicando que el turno fue tomado por la persona.
 
 ## Diagrama visual
 
 ![DiagramaVisual_BD](DiagramaVisualBD.png)
 
+# Extras
+
+BACKUP/RESTORE
+' ```sh '
+## Backup
+`mongodump --host=localhost --port=27017 --authenticationDatabase="admin" -u="sysadmin" -p="Ax18MpKoVtUt" --db=definiciones_fe_uy --gzip --out=/u01/backup/`
+
+## Restore
+
+sera necesario `--drop ?`
+para acelerar `--numParallelCollections=n1 --numInsertionWorkersPerCollection=n2`
+mongorestore `--host=localhost --port=27017 --authenticationDatabase="admin" -u="sysadmin" -p="Ax18MpKoVtUt" --db=definiciones_fe_uy --gzip --verbose /u01/backup/`
