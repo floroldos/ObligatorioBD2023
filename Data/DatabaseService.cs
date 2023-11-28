@@ -1,7 +1,6 @@
 
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Utilities;
-using StackExchange.Redis;
 using System.Data;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -14,8 +13,7 @@ public class DatabaseService
     private MySqlConnection? connection;
     private MySqlCommand cmd = new MySqlCommand();
     private MySqlDataReader? reader;
-    RedisService redisService = new RedisService();
-    private const string CONNECTION_STRING = "Server=localhost;";
+    private const string CONNECTION_STRING = "Server=db;";
 
     private static DatabaseService? instance = null;
     public static DatabaseService GetInstance(){
@@ -82,18 +80,7 @@ public class DatabaseService
     public bool CheckUser(int ci){
 
 
-        RedisValue[] lista = redisService.getList("funcionarios"); // Obtener la lista de funcionarios de la cache
 
-        if(lista != null){
-            foreach (RedisValue value in lista)
-            {
-                if(value == ci.ToString()){
-                    return true; // Si el funcionario esta en la cache, no hace falta consultar a la base de datos
-                }
-            }
-            return false; // El funcionario no está en la lista de funcionarios de la cache
-        }
-        else { // Si el funcionario no esta en la cache, hay que consultar a la base de datos
             Connect();
             cmd.Connection = connection;
             cmd.CommandText = "SELECT * FROM Funcionarios WHERE CI = @number;" ;
@@ -103,7 +90,7 @@ public class DatabaseService
             cmd.ExecuteNonQuery();
             reader = cmd.ExecuteReader();
             Disconnect();
-        }
+        
 
         return reader.HasRows;
     }
@@ -178,8 +165,6 @@ public class DatabaseService
     public bool InsertAgenda(int ci, DateOnly agendDate)
     {
         
-        redisService.SetValue(ci.ToString(), agendDate.ToString()); // Agregar la cedula del funcionario junto a la fecha de la agenda al cache
-
         Connect();
         cmd.Parameters.Clear();
         bool check = false;
@@ -464,8 +449,6 @@ public class DatabaseService
     }
     public bool InsertWorker(int ci, string name, string lastName, DateTime birthDate, string adress, int telephone, string email, int logID)
     {
-
-        redisService.setListElement("funcionarios", ci.ToString()); // Agregar el funcionario a la lista de funcionarios de la cache
 
         cmd.Parameters.Clear();
         cmd.Connection = connection;

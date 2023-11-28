@@ -12,31 +12,17 @@ services:
       MYSQL_DATABASE: ObligatorioBD2023
     volumes:
       - ./sql-scripts:/docker-entrypoint-initdb.d
-
-  redis:
-    image: redis:6-alpine
-    expose:
-      - "6379"
-    ports:
-      - "6379:6379"
-
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    environment:
-      - REDIS_HOSTS=redis
-    ports:
-      - "8013:8081"
-    depends_on:
-      - redis
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -pbernardo"]
+      interval: 15s
+      timeout: 30s
+      retries: 3
 
   blazor-app:
     image: funcionario_sano:latest
     ports:
-      - "5000:80"
+      - "80:80"
     depends_on:
       db:
-        condition: service_started
-      redis:
-        condition: service_started
-      redis-commander:
-        condition: service_started
+        condition: service_healthy
+    command: sh -c "sleep 15 && dotnet YourBlazorApp.dll"
